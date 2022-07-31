@@ -9,7 +9,6 @@ import {
 	Skeleton,
 } from '@mui/material';
 import { SideBlock } from '../side-block';
-
 import { CommentType } from '../../typedef';
 
 type Props = {

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { ReactElement } from 'react';
-import IconButton from '@mui/material/IconButton';
+import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
@@ -75,7 +75,7 @@ export const Post = ({
 							</li>
 						))}
 					</ul>
-                    
+
 					{children && <div className={styles.content}>{children}</div>}
 
 					<ul className={styles.postDetails}>
