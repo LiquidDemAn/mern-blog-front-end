@@ -1,5 +1,7 @@
 import styles from './header.module.scss';
 import { Button, Container } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { PathsEnum } from '../../app/App';
 
 export const Header = () => {
 	const isAuth = false;
@@ -10,15 +12,15 @@ export const Header = () => {
 		<header className={styles.header}>
 			<Container maxWidth='lg'>
 				<div className={styles.content}>
-					<a className={styles.logo} href='/'>
+					<Link to='' className={styles.logo}>
 						MERN BLOG
-					</a>
+					</Link>
 					<div className={styles.buttons}>
 						{isAuth ? (
 							<>
-								<a href='/posts/create'>
+								<Link to={PathsEnum.CreatePost}>
 									<Button variant='contained'>Написать статью</Button>
-								</a>
+								</Link>
 								<Button
 									onClick={onClickLogout}
 									variant='contained'
@@ -29,12 +31,12 @@ export const Header = () => {
 							</>
 						) : (
 							<>
-								<a href='/login'>
+								<Link to={PathsEnum.Login}>
 									<Button variant='outlined'>Войти</Button>
-								</a>
-								<a href='/register'>
+								</Link>
+								<Link to={PathsEnum.Register}>
 									<Button variant='contained'>Создать аккаунт</Button>
-								</a>
+								</Link>
 							</>
 						)}
 					</div>

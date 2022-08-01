@@ -5,7 +5,7 @@ import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from './theme';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
@@ -14,9 +14,9 @@ root.render(
 	<React.StrictMode>
 		<CssBaseline />
 		<ThemeProvider theme={theme}>
-			<HashRouter>
+			<BrowserRouter>
 				<App />
-			</HashRouter>
+			</BrowserRouter>
 		</ThemeProvider>
 	</React.StrictMode>
 );
