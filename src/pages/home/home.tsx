@@ -5,7 +5,7 @@ import { Comments } from '../../components/comments';
 import { PostType } from '../../typedef';
 import { useAppDispach } from '../../redux/store/hooks';
 import { useEffect } from 'react';
-import { loadPost } from '../../redux/services/posts/actions';
+import { loadAllPosts, loadPost } from '../../redux/services/posts/actions';
 
 const post: PostType = {
 	_id: 1,
@@ -28,6 +28,7 @@ export const Home = () => {
 
 	useEffect(() => {
 		dispatch(loadPost('62e7e72f7bc5718bb0ff33b7'));
+		dispatch(loadAllPosts());
 	}, []);
 	return (
 		<>

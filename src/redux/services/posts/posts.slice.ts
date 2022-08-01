@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loadPost } from './actions';
+import { loadPost, loadAllPosts } from './actions';
 import { PostsStateType } from './typedef';
 
 const initialState: PostsStateType = {
@@ -20,5 +20,12 @@ export const postsSlice = createSlice({
 			.addCase(loadPost.fulfilled, (state, { payload }) => {
 				state.loading = false;
 				state.selectedPost = payload;
+			})
+			.addCase(loadAllPosts.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(loadAllPosts.fulfilled, (state, { payload }) => {
+				state.loading = false;
+				state.posts = payload;
 			}),
 });

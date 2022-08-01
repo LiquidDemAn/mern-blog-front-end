@@ -9,3 +9,11 @@ export const loadPost = createAsyncThunk<PostType, string>(
 		return await response.data;
 	}
 );
+
+export const loadAllPosts = createAsyncThunk<PostType[]>(
+	'posts/load-all-posts',
+	async () => {
+		const response = await customeAxios.get('/posts');
+		return await response.data;
+	}
+);

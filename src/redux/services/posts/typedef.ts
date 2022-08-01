@@ -8,6 +8,7 @@ export type PostType = {
 	_id: string;
 	title: string;
 	text: string;
+	imageUrl?: string;
 	tags: string[];
 	viewsCount: number;
 	viewersId: string[];
