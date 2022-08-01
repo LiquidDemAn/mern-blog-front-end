@@ -12,7 +12,7 @@ export const Header = () => {
 		<header className={styles.header}>
 			<Container maxWidth='lg'>
 				<div className={styles.content}>
-					<Link to='' className={styles.logo}>
+					<Link to={PathsEnum.Home} className={styles.logo}>
 						MERN BLOG
 					</Link>
 					<div className={styles.buttons}>

@@ -11,7 +11,7 @@ export enum PathsEnum {
 	Login = 'login',
 	Register = 'register',
 	CreatePost = 'create/post',
-	Post = 'posts/:id',
+	// Post = `posts/:id`,
 }
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
 		<Routes>
 			<Route path={PathsEnum.Home} element={<Layout />}>
 				<Route index element={<Home />} />
-				<Route path={PathsEnum.Post} element={<FullPost />} />
+				<Route path='posts/:id' element={<FullPost />} />
 				<Route path={PathsEnum.CreatePost} element={<CreatePost />} />
 				<Route path={PathsEnum.Register} element={<Registration />} />
 				<Route path={PathsEnum.Login} element={<Login />} />
