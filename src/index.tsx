@@ -7,7 +7,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from './theme';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { store } from './redux/store/store';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
