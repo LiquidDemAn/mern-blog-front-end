@@ -7,6 +7,7 @@ import { Login } from '../pages/login';
 import { Registration } from '../pages/registration';
 
 export enum PathsEnum {
+	Host = 'http://localhost:4444',
 	Home = '/',
 	Login = 'login',
 	Register = 'register',

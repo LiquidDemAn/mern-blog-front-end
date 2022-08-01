@@ -3,6 +3,9 @@ import { Post } from '../../components/post';
 import { Tags } from '../../components/tags';
 import { Comments } from '../../components/comments';
 import { PostType } from '../../typedef';
+import { useAppDispach } from '../../redux/store/hooks';
+import { useEffect } from 'react';
+import { loadPost } from '../../redux/services/posts/actions';
 
 const post: PostType = {
 	_id: 1,
@@ -21,6 +24,11 @@ const post: PostType = {
 };
 
 export const Home = () => {
+	const dispatch = useAppDispach();
+
+	useEffect(() => {
+		dispatch(loadPost('62e7e72f7bc5718bb0ff33b7'));
+	}, []);
 	return (
 		<>
 			<Tabs
