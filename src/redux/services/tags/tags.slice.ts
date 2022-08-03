@@ -1,5 +1,5 @@
 import { loadTags } from './actions';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TagsStateType } from './typedef';
 
 const initialState: TagsStateType = {
@@ -22,7 +22,8 @@ export const tagsSlice = createSlice({
 				state.loading = false;
 				state.tags = payload;
 			})
-			.addCase(loadTags.rejected, (state) => {
+			.addCase(loadTags.rejected, (state, { payload }: PayloadAction<any>) => {
 				state.loading = false;
+				state.error = payload;
 			}),
 });

@@ -4,13 +4,14 @@ import { AddComment } from '../../components/add-comment';
 import { Comments } from '../../components/comments';
 import { Post } from '../../components/post';
 import { loadPost } from '../../redux/services/posts/actions';
-import { getPost } from '../../redux/services/posts/selectors';
+import { getPost, getPostsLoading } from '../../redux/services/posts/selectors';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 
 export const FullPost = () => {
 	const { id } = useParams();
 	const dispatch = useAppDispach();
 	const post = useAppSelector(getPost);
+	const postLoading = useAppSelector(getPostsLoading);
 
 	useEffect(() => {
 		if (id) {
@@ -20,7 +21,7 @@ export const FullPost = () => {
 
 	return (
 		<>
-			<Post post={post} isFullPost>
+			<Post isLoading={postLoading} post={post} isFullPost>
 				<p>{post?.text}</p>
 			</Post>
 			<Comments

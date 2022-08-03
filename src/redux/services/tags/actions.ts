@@ -3,8 +3,13 @@ import { customeAxios } from '../../axios';
 
 export const loadTags = createAsyncThunk<string[]>(
 	'tags/load-tags',
-	async () => {
-		const { data } = await customeAxios.get('/tags');
-		return await data;
+
+	async (_, { rejectWithValue }) => {
+		try {
+			const { data } = await customeAxios.get('/tags');
+			return data;
+		} catch (err: any) {
+			return rejectWithValue(err.response.data);
+		}
 	}
 );

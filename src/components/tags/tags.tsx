@@ -21,6 +21,7 @@ export const Tags = ({ tags, isLoading = true }: Props) => {
 				{tags.length ? (
 					(isLoading ? [...Array(5)] : tags).map((tag) => (
 						<a
+							key={tag}
 							style={{ textDecoration: 'none', color: 'black' }}
 							href={`/tags/${tag}`}
 						>
