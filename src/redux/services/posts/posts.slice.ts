@@ -15,11 +15,17 @@ export const postsSlice = createSlice({
 	extraReducers: (bulider) =>
 		bulider
 			.addCase(loadPost.pending, (state) => {
+				state.posts = [];
 				state.loading = true;
 			})
 			.addCase(loadPost.fulfilled, (state, { payload }) => {
 				state.loading = false;
 				state.selectedPost = payload;
+			})
+			.addCase(loadPost.rejected, (state, { payload }: any) => {
+				state.loading = false;
+				state.posts = [];
+				state.error = payload;
 			})
 			.addCase(loadAllPosts.pending, (state) => {
 				state.loading = true;
@@ -29,3 +35,5 @@ export const postsSlice = createSlice({
 				state.posts = payload;
 			}),
 });
+
+// export const {} = postsSlice.reducer;

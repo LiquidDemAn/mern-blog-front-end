@@ -5,14 +5,25 @@ import { Comments } from '../../components/comments';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useEffect } from 'react';
 import { loadAllPosts } from '../../redux/services/posts/actions';
-import { getAllPosts } from '../../redux/services/posts/selectors';
+import {
+	getAllPosts,
+	getPostsLoading,
+} from '../../redux/services/posts/selectors';
+import { loadTags } from '../../redux/services/tags/actions';
+import { getTags, getTagsLoading } from '../../redux/services/tags/selectors';
 
 export const Home = () => {
 	const dispatch = useAppDispach();
+
 	const posts = useAppSelector(getAllPosts);
+	const postsLoading = useAppSelector(getPostsLoading);
+
+	const tags = useAppSelector(getTags);
+	const tagsLoading = useAppSelector(getTagsLoading);
 
 	useEffect(() => {
 		dispatch(loadAllPosts());
+		dispatch(loadTags());
 	}, [dispatch]);
 
 	return (
@@ -27,12 +38,21 @@ export const Home = () => {
 			</Tabs>
 			<Grid container spacing={4}>
 				<Grid xs={8} item>
-					{posts.map((post) => (
-						<Post key={post._id} post={post} isEditable />
-					))}
+					{(postsLoading ? [...Array(5)] : posts).map((post, index) =>
+						postsLoading ? (
+							<Post key={index} isLoading={postsLoading} />
+						) : (
+							<Post
+								key={post._id}
+								isLoading={postsLoading}
+								post={post}
+								isEditable
+							/>
+						)
+					)}
 				</Grid>
 				<Grid xs={4} item>
-					<Tags items={['react', 'typescript', 'заметки']} isLoading={false} />
+					<Tags tags={tags} isLoading={tagsLoading} />
 					<Comments
 						items={[
 							{

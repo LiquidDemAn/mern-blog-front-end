@@ -10,33 +10,37 @@ import TagIcon from '@mui/icons-material/Tag';
 import { SideBlock } from '../side-block';
 
 type Props = {
-	items: string[];
+	tags: string[];
 	isLoading?: boolean;
 };
 
-export const Tags = ({ items, isLoading = true }: Props) => {
+export const Tags = ({ tags, isLoading = true }: Props) => {
 	return (
-		<SideBlock title='Тэги'>
+		<SideBlock title='Tags'>
 			<List>
-				{(isLoading ? [...Array(5)] : items).map((name, i) => (
-					<a
-						style={{ textDecoration: 'none', color: 'black' }}
-						href={`/tags/${name}`}
-					>
-						<ListItem key={i} disablePadding>
-							<ListItemButton>
-								<ListItemIcon>
-									<TagIcon />
-								</ListItemIcon>
-								{isLoading ? (
-									<Skeleton width={100} />
-								) : (
-									<ListItemText primary={name} />
-								)}
-							</ListItemButton>
-						</ListItem>
-					</a>
-				))}
+				{tags.length ? (
+					(isLoading ? [...Array(5)] : tags).map((tag) => (
+						<a
+							style={{ textDecoration: 'none', color: 'black' }}
+							href={`/tags/${tag}`}
+						>
+							<ListItem key={tag} disablePadding>
+								<ListItemButton>
+									<ListItemIcon>
+										<TagIcon />
+									</ListItemIcon>
+									{isLoading ? (
+										<Skeleton width={100} />
+									) : (
+										<ListItemText primary={tag} />
+									)}
+								</ListItemButton>
+							</ListItem>
+						</a>
+					))
+				) : (
+					<ListItem>List is empty</ListItem>
+				)}
 			</List>
 		</SideBlock>
 	);
