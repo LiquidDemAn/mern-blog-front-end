@@ -3,26 +3,28 @@
 	padding: 50px;
 	border: 1px solid #dedede;
 	margin: 50px auto;
-}
 
-.field {
-	// margin-bottom: 20px !important;
+	form {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		row-gap: 20px;
+	}
 }
 
 .form {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	row-gap: 20px;
 }
 
 .title {
 	text-align: center !important;
 	font-weight: bold !important;
-	margin-bottom: 30px !important;
+	margin-bottom: 25px !important;
 }
 
 .avatar {
-	display: flex;
-	justify-content: center;
-	margin-bottom: 30px;
+	margin-bottom: 10px;
 }

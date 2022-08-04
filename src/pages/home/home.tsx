@@ -11,7 +11,6 @@ import {
 } from '../../redux/services/posts/selectors';
 import { loadTags } from '../../redux/services/tags/actions';
 import { getTags, getTagsLoading } from '../../redux/services/tags/selectors';
-import { loginUser } from '../../redux/services/auth/actions';
 
 export const Home = () => {
 	const dispatch = useAppDispach();
@@ -23,12 +22,6 @@ export const Home = () => {
 	const tagsLoading = useAppSelector(getTagsLoading);
 
 	useEffect(() => {
-		// dispatch(
-		// 	loginUser({
-		// 		email: 'test@gmail.com',
-		// 		password: '12345',
-		// 	})
-		// );
 		dispatch(loadAllPosts());
 		dispatch(loadTags());
 	}, [dispatch]);

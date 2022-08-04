@@ -1,6 +1,12 @@
-export type loginInfoType = {
+export type loginType = {
 	email: string;
 	password: string;
+};
+
+export type registerType = {
+	email: string;
+	password: string;
+	fullName: string;
 };
 
 export type userDataType = {
