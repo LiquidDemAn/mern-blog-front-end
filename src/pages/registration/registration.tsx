@@ -5,6 +5,7 @@ import { AuthForm } from '../../components/auth-form';
 import { Avatar, TextField } from '@mui/material';
 import { Navigate } from 'react-router-dom';
 import { getIsAuth } from '../../redux/services/auth/selectors';
+import { registerUser } from '../../redux/services/auth/actions';
 
 export const Registration = () => {
 	const dispatch = useAppDispach();
@@ -25,7 +26,7 @@ export const Registration = () => {
 	});
 
 	const onSubmit = (values: registerType) => {
-		console.log(values);
+		dispatch(registerUser(values));
 	};
 
 	if (isAuth) {

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authStateType } from './typedef';
-import { loginUser, checkUserAuth } from './actions';
+import { loginUser, checkUserAuth, registerUser } from './actions';
 
 const initialState: authStateType = {
 	userData: null,
@@ -20,6 +20,7 @@ export const authSlice = createSlice({
 	},
 	extraReducers: (bulider) =>
 		bulider
+			//Login
 			.addCase(loginUser.pending, (state) => {
 				state.loading = true;
 				state.error = null;
@@ -34,6 +35,7 @@ export const authSlice = createSlice({
 				state.error = null;
 			})
 
+			// CheckAuth
 			.addCase(checkUserAuth.pending, (state) => {
 				state.loading = true;
 				state.error = null;
@@ -44,6 +46,21 @@ export const authSlice = createSlice({
 				state.userData = payload;
 			})
 			.addCase(checkUserAuth.rejected, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+
+			// Register
+			.addCase(registerUser.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(registerUser.fulfilled, (state, { payload }) => {
+				state.loading = false;
+				state.error = null;
+				state.userData = payload;
+			})
+			.addCase(registerUser.rejected, (state) => {
 				state.loading = true;
 				state.error = null;
 			}),
