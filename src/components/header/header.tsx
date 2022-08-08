@@ -2,11 +2,19 @@ import styles from './header.module.scss';
 import { Button, Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { PathsEnum } from '../../app/App';
+import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
+import { getIsAuth } from '../../redux/services/auth/selectors';
+import { logOut } from '../../redux/services/auth/auth.slice';
 
 export const Header = () => {
-	const isAuth = false;
+	const dispatch = useAppDispach();
+	const isAuth = useAppSelector(getIsAuth);
 
-	const onClickLogout = () => {};
+	const onClickLogout = () => {
+		if (window.confirm('Are you sure you want to log out?')) {
+			dispatch(logOut());
+		}
+	};
 
 	return (
 		<header className={styles.header}>

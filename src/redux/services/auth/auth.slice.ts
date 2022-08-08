@@ -11,7 +11,12 @@ const initialState: authStateType = {
 export const authSlice = createSlice({
 	name: 'auth',
 	initialState,
-	reducers: {},
+	reducers: {
+		logOut(state) {
+			state.error = null;
+			state.userData = null;
+		},
+	},
 	extraReducers: (bulider) =>
 		bulider
 			.addCase(loginUser.pending, (state) => {
@@ -28,3 +33,5 @@ export const authSlice = createSlice({
 				state.error = null;
 			}),
 });
+
+export const { logOut } = authSlice.actions;

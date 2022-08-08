@@ -1,12 +1,15 @@
 import { TextField } from '@mui/material';
 import { loginUser } from '../../redux/services/auth/actions';
-import { useAppDispach } from '../../redux/store/hooks';
+import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { loginType } from '../../redux/services/auth/typedef';
+import { loginType, userDataType } from '../../redux/services/auth/typedef';
 import { AuthForm } from '../../components/auth-form';
+import { getIsAuth } from '../../redux/services/auth/selectors';
+import { Navigate } from 'react-router-dom';
 
 export const Login = () => {
 	const dispatch = useAppDispach();
+	const isAuth = useAppSelector(getIsAuth);
 
 	const {
 		register,
@@ -24,6 +27,10 @@ export const Login = () => {
 	const onSubmit = (values: loginType) => {
 		dispatch(loginUser(values));
 	};
+
+	if (isAuth) {
+		return <Navigate to='/' />;
+	}
 
 	return (
 		<AuthForm handleSubmit={handleSubmit} onSubmit={onSubmit} title='Login'>
