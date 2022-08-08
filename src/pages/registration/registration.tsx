@@ -38,6 +38,7 @@ export const Registration = () => {
 			handleSubmit={handleSubmit}
 			onSubmit={onSubmit}
 			title='Registration'
+			isValid={isValid}
 		>
 			<Avatar sx={{ width: 100, height: 100 }} />
 

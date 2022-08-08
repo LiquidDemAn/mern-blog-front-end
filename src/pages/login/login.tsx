@@ -33,7 +33,12 @@ export const Login = () => {
 	}
 
 	return (
-		<AuthForm handleSubmit={handleSubmit} onSubmit={onSubmit} title='Login'>
+		<AuthForm
+			isValid={isValid}
+			handleSubmit={handleSubmit}
+			onSubmit={onSubmit}
+			title='Login'
+		>
 			<TextField
 				fullWidth
 				label='Email'

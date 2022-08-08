@@ -5,6 +5,7 @@ import { UseFormHandleSubmit } from 'react-hook-form';
 
 type Props<T> = {
 	handleSubmit: UseFormHandleSubmit<T>;
+	isValid: boolean;
 	onSubmit: (values: T) => void;
 	title: string;
 	btnName?: string;
@@ -13,6 +14,7 @@ type Props<T> = {
 
 export const AuthForm = <T extends object>({
 	handleSubmit,
+	isValid,
 	onSubmit,
 	title,
 	btnName,
@@ -26,7 +28,13 @@ export const AuthForm = <T extends object>({
 			<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 				{children}
 
-				<Button type='submit' size='large' variant='contained' fullWidth>
+				<Button
+					disabled={!isValid}
+					type='submit'
+					size='large'
+					variant='contained'
+					fullWidth
+				>
 					{btnName ? btnName : 'Submit'}
 				</Button>
 			</form>

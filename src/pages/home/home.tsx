@@ -11,9 +11,11 @@ import {
 } from '../../redux/services/posts/selectors';
 import { loadTags } from '../../redux/services/tags/actions';
 import { getTags, getTagsLoading } from '../../redux/services/tags/selectors';
+import { getUser } from '../../redux/services/auth/selectors';
 
 export const Home = () => {
 	const dispatch = useAppDispach();
+	const user = useAppSelector(getUser);
 
 	const posts = useAppSelector(getAllPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
@@ -38,18 +40,18 @@ export const Home = () => {
 			</Tabs>
 			<Grid container spacing={4}>
 				<Grid xs={8} item>
-					{(postsLoading ? [...Array(5)] : posts).map((post, index) =>
-						postsLoading ? (
-							<Post key={index} isLoading={postsLoading} />
-						) : (
-							<Post
-								key={post._id}
-								isLoading={postsLoading}
-								post={post}
-								isEditable
-							/>
-						)
-					)}
+					{postsLoading
+						? [...Array(5)].map((_, index) => (
+								<Post key={index} isLoading={postsLoading} />
+						  ))
+						: posts.map((post) => (
+								<Post
+									key={post._id}
+									isLoading={postsLoading}
+									post={post}
+									isEditable={user?._id === post.author._id}
+								/>
+						  ))}
 				</Grid>
 				<Grid xs={4} item>
 					<Tags tags={tags} isLoading={tagsLoading} />
