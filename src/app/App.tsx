@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from '../components/layout';
 import { CreatePost } from '../pages/create-post';
@@ -5,6 +6,8 @@ import { FullPost } from '../pages/full-post';
 import { Home } from '../pages/home';
 import { Login } from '../pages/login';
 import { Registration } from '../pages/registration';
+import { checkUserAuth } from '../redux/services/auth/actions';
+import { useAppDispach } from '../redux/store/hooks';
 
 export enum PathsEnum {
 	Host = 'http://localhost:4444',
@@ -16,6 +19,12 @@ export enum PathsEnum {
 }
 
 function App() {
+	const dispatch = useAppDispach();
+
+	useEffect(() => {
+		dispatch(checkUserAuth());
+	}, [dispatch]);
+
 	return (
 		<Routes>
 			<Route path={PathsEnum.Home} element={<Layout />}>

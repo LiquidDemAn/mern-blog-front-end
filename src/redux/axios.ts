@@ -4,12 +4,11 @@ export const customeAxios = axios.create({
 	baseURL: 'http://localhost:4444',
 });
 
-const token = window.localStorage.getItem('token');
-
 customeAxios.interceptors.request.use((config) => {
+	const token = window.localStorage.getItem('token');
 	if (token) {
 		// @ts-ignore
 		config.headers.Authorization = token;
-		return config;
 	}
+	return config;
 });

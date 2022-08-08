@@ -15,3 +15,11 @@ export const loginUser = createAsyncThunk<userDataType, loginType>(
 		return data;
 	}
 );
+
+export const checkUserAuth = createAsyncThunk<userDataType>(
+	'auth/check-user-auth',
+	async () => {
+		const response = await customeAxios.get('/auth/me');
+		return response.data;
+	}
+);

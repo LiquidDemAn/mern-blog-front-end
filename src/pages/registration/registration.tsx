@@ -1,11 +1,14 @@
-import { useAppDispach } from '../../redux/store/hooks';
+import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useForm } from 'react-hook-form';
 import { registerType } from '../../redux/services/auth/typedef';
 import { AuthForm } from '../../components/auth-form';
 import { Avatar, TextField } from '@mui/material';
+import { Navigate } from 'react-router-dom';
+import { getIsAuth } from '../../redux/services/auth/selectors';
 
 export const Registration = () => {
 	const dispatch = useAppDispach();
+	const isAuth = useAppSelector(getIsAuth);
 
 	const {
 		register,
@@ -24,6 +27,10 @@ export const Registration = () => {
 	const onSubmit = (values: registerType) => {
 		console.log(values);
 	};
+
+	if (isAuth) {
+		return <Navigate to='/' />;
+	}
 
 	return (
 		<AuthForm

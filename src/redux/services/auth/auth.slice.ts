@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authStateType } from './typedef';
-import { loginUser } from './actions';
+import { loginUser, checkUserAuth } from './actions';
 
 const initialState: authStateType = {
 	userData: null,
@@ -15,6 +15,7 @@ export const authSlice = createSlice({
 		logOut(state) {
 			state.error = null;
 			state.userData = null;
+			window.localStorage.removeItem('token');
 		},
 	},
 	extraReducers: (bulider) =>
@@ -29,6 +30,20 @@ export const authSlice = createSlice({
 				state.userData = payload;
 			})
 			.addCase(loginUser.rejected, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+
+			.addCase(checkUserAuth.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(checkUserAuth.fulfilled, (state, { payload }) => {
+				state.loading = false;
+				state.error = null;
+				state.userData = payload;
+			})
+			.addCase(checkUserAuth.rejected, (state) => {
 				state.loading = true;
 				state.error = null;
 			}),
