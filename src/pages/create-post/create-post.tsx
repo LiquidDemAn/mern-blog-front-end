@@ -4,10 +4,16 @@ import SimpleMDE from 'react-simplemde-editor';
 
 import 'easymde/dist/easymde.min.css';
 import styles from './create-post.module.scss';
+import { useAppSelector } from '../../redux/store/hooks';
+import { getIsAuth } from '../../redux/services/auth/selectors';
+import { Navigate } from 'react-router-dom';
+import { getToken } from '../../local-storage';
 
 export const CreatePost = () => {
 	const imageUrl = '';
 	const [value, setValue] = React.useState('');
+	const isAuth = useAppSelector(getIsAuth);
+	const token = getToken();
 
 	const handleChangeFile = () => {};
 
@@ -33,6 +39,10 @@ export const CreatePost = () => {
 		[]
 	);
 
+	if (!token && !isAuth) {
+		return <Navigate to='/login' />;
+	}
+
 	return (
 		<Paper style={{ padding: 30 }}>
 			<Button variant='outlined' size='large'>
@@ -51,8 +61,6 @@ export const CreatePost = () => {
 					alt='Uploaded'
 				/>
 			)}
-			<br />
-			<br />
 			<TextField
 				classes={{ root: styles.title }}
 				variant='standard'

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authStateType } from './typedef';
 import { loginUser, checkUserAuth, registerUser } from './actions';
+import { removeToken } from '../../../local-storage';
 
 const initialState: authStateType = {
 	userData: null,
@@ -15,7 +16,7 @@ export const authSlice = createSlice({
 		logOut(state) {
 			state.error = null;
 			state.userData = null;
-			window.localStorage.removeItem('token');
+			removeToken();
 		},
 	},
 	extraReducers: (bulider) =>

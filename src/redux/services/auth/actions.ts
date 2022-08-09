@@ -1,6 +1,7 @@
 import { customeAxios } from './../../axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { userDataType, loginType, registerType } from './typedef';
+import { setToken } from '../../../local-storage';
 
 export const checkUserAuth = createAsyncThunk<userDataType>(
 	'auth/check-auth',
@@ -17,7 +18,7 @@ export const loginUser = createAsyncThunk<userDataType, loginType>(
 		const data = response.data as userDataType;
 
 		if (data.token) {
-			window.localStorage.setItem('token', data.token);
+			setToken(data.token);
 		}
 
 		return data;
@@ -31,7 +32,7 @@ export const registerUser = createAsyncThunk<userDataType, registerType>(
 		const data = response.data as userDataType;
 
 		if (data.token) {
-			window.localStorage.setItem('token', data.token);
+			setToken(data.token);
 		}
 
 		return data;

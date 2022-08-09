@@ -2,7 +2,7 @@ import { TextField } from '@mui/material';
 import { loginUser } from '../../redux/services/auth/actions';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { loginType, userDataType } from '../../redux/services/auth/typedef';
+import { loginType } from '../../redux/services/auth/typedef';
 import { AuthForm } from '../../components/auth-form';
 import { getIsAuth } from '../../redux/services/auth/selectors';
 import { Navigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ export const Login = () => {
 	const {
 		register,
 		handleSubmit,
-		setError,
+		// setError,
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
