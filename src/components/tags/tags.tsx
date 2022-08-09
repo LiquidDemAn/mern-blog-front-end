@@ -8,22 +8,23 @@ import {
 } from '@mui/material';
 import TagIcon from '@mui/icons-material/Tag';
 import { SideBlock } from '../side-block';
+import { Link } from 'react-router-dom';
 
 type Props = {
 	tags: string[];
 	isLoading?: boolean;
 };
 
-export const Tags = ({ tags, isLoading = true }: Props) => {
+export const Tags = ({ tags, isLoading }: Props) => {
 	return (
 		<SideBlock title='Tags'>
 			<List>
 				{tags.length ? (
 					(isLoading ? [...Array(5)] : tags).map((tag) => (
-						<a
+						<Link
 							key={tag}
 							style={{ textDecoration: 'none', color: 'black' }}
-							href={`/tags/${tag}`}
+							to={`/tags/${tag}`}
 						>
 							<ListItem key={tag} disablePadding>
 								<ListItemButton>
@@ -37,7 +38,7 @@ export const Tags = ({ tags, isLoading = true }: Props) => {
 									)}
 								</ListItemButton>
 							</ListItem>
-						</a>
+						</Link>
 					))
 				) : (
 					<ListItem>List is empty</ListItem>

@@ -11,6 +11,7 @@ import { UserInfo } from '../user-info';
 import { PostSkeleton } from './skeleton';
 import { Link } from 'react-router-dom';
 import { PostType } from '../../redux/services/posts/typedef';
+import { PathsEnum } from '../../app/App';
 
 type Props = {
 	post?: PostType;
@@ -53,7 +54,7 @@ export const Post = ({
 					{post.imageUrl && (
 						<img
 							className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
-							src={post.imageUrl}
+							src={PathsEnum.Host + post.imageUrl}
 							alt={post.title}
 						/>
 					)}

@@ -6,7 +6,7 @@ export const getAllPosts = (state: AppState) => {
 	return posts.map((post) => {
 		return {
 			...post,
-			createdAt: new Date(post.createdAt).toUTCString(),
+			createdAt: new Date(post.createdAt).toDateString(),
 		};
 	});
 };
