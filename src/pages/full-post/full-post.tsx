@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 import { AddComment } from '../../components/add-comment';
 import { Comments } from '../../components/comments';
@@ -22,7 +23,7 @@ export const FullPost = () => {
 	return (
 		<>
 			<Post isLoading={postLoading} post={post} isFullPost>
-				<p>{post?.text}</p>
+				{post?.text ? <ReactMarkdown children={post?.text} /> : <></>}
 			</Post>
 			<Comments
 				items={[
