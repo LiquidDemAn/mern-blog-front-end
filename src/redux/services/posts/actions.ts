@@ -17,3 +17,10 @@ export const loadAllPosts = createAsyncThunk<PostType[]>(
 		return await response.data;
 	}
 );
+
+export const deletePost = createAsyncThunk(
+	'posts/delete-post',
+	async (id: string) => {
+		await customeAxios.delete(`/posts/${id}`);
+	}
+);

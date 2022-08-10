@@ -56,7 +56,7 @@ export const CreatePost = () => {
 				text,
 				imageUrl,
 				title: titleRef.current?.value,
-				tags: tagsRef.current?.value.replace(/ /g, '').split(','),
+				tags: tagsRef.current?.value,
 			};
 
 			const { data } = await customeAxios.post('/posts', params);

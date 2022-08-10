@@ -1,7 +1,6 @@
 import { Tabs, Tab, Grid } from '@mui/material';
 import { Post } from '../../components/post';
 import { Tags } from '../../components/tags';
-import { Comments } from '../../components/comments';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useEffect } from 'react';
 import { loadAllPosts } from '../../redux/services/posts/actions';

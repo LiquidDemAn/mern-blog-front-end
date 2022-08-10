@@ -18,7 +18,7 @@ export type PostType = {
 
 export type PostsStateType = {
 	posts: PostType[];
-	selectedPost?: PostType;
+	selectedPost?: PostType | null;
 	loading: boolean;
 	error: null | string;
 };

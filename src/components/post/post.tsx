@@ -12,6 +12,8 @@ import { PostSkeleton } from './skeleton';
 import { Link } from 'react-router-dom';
 import { PostType } from '../../redux/services/posts/typedef';
 import { PathsEnum } from '../../app/App';
+import { useAppDispach } from '../../redux/store/hooks';
+import { deletePost } from '../../redux/services/posts/actions';
 
 type Props = {
 	post?: PostType;
@@ -28,11 +30,20 @@ export const Post = ({
 	isLoading,
 	isEditable,
 }: Props) => {
+	const dispatch = useAppDispach();
+
+	const onClickRemove = () => {
+		if (
+			window.confirm('Are you sure you want to delete this post?') &&
+			post?._id
+		) {
+			dispatch(deletePost(post._id));
+		}
+	};
+
 	if (isLoading) {
 		return <PostSkeleton />;
 	}
-
-	const onClickRemove = () => {};
 
 	return (
 		<>
