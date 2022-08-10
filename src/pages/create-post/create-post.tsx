@@ -1,4 +1,11 @@
-import { useRef, useCallback, useMemo, useState, ChangeEvent } from 'react';
+import {
+	useRef,
+	useEffect,
+	useCallback,
+	useMemo,
+	useState,
+	ChangeEvent,
+} from 'react';
 import { TextField, Paper, Button } from '@mui/material';
 import SimpleMDE from 'react-simplemde-editor';
 
@@ -6,21 +13,45 @@ import 'easymde/dist/easymde.min.css';
 import styles from './create-post.module.scss';
 import { useAppSelector } from '../../redux/store/hooks';
 import { getIsAuth } from '../../redux/services/auth/selectors';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../local-storage';
 import { customeAxios } from '../../redux/axios';
+import { Link } from 'react-router-dom';
+import { PostType } from '../../redux/services/posts/typedef';
 
 export const CreatePost = () => {
+	const { id } = useParams();
 	const navigate = useNavigate();
+
+	const [loading, setLoading] = useState(false);
 	const [text, setText] = useState('');
 	const [imageUrl, setImageUrl] = useState('');
-	const [loading, setLoading] = useState(false);
-	const titleRef = useRef<null | HTMLInputElement>(null);
-	const tagsRef = useRef<null | HTMLInputElement>(null);
+	const [tags, setTags] = useState('');
+	const [title, setTitle] = useState('');
+
 	const fileRef = useRef<null | HTMLInputElement>(null);
 
-	const isAuth = useAppSelector(getIsAuth);
 	const token = getToken();
+	const isAuth = useAppSelector(getIsAuth);
+	const isEditing = Boolean(id);
+
+	useEffect(() => {
+		if (id) {
+			customeAxios.get(`/posts/${id}`).then((res) => {
+				const data = res.data as PostType;
+
+				setImageUrl(data.imageUrl ? data.imageUrl : '');
+				setText(data.text);
+				setTags(data.tags.join(', '));
+				setTitle(data.title);
+			});
+		} else {
+			setImageUrl('');
+			setText('');
+			setTags('');
+			setTitle('');
+		}
+	}, [id]);
 
 	const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
 		try {
@@ -31,7 +62,6 @@ export const CreatePost = () => {
 				const file = files[0];
 				formData.append('image', file);
 				const { data } = await customeAxios.post('/upload', formData);
-				console.log(data);
 				setImageUrl(data.url);
 			}
 		} catch (error) {
@@ -55,17 +85,18 @@ export const CreatePost = () => {
 			const params = {
 				text,
 				imageUrl,
-				title: titleRef.current?.value,
-				tags: tagsRef.current?.value,
+				title,
+				tags,
 			};
 
-			const { data } = await customeAxios.post('/posts', params);
-			const id = data._id;
+			const { data } = isEditing
+				? await customeAxios.patch(`/posts/${id}`, params)
+				: await customeAxios.post('/posts', params);
 
-			navigate(`/posts/${id}`);
+			navigate(`/posts/${data}`);
 		} catch (error) {
 			console.warn(error);
-			alert('Error while creating post');
+			alert('Error');
 		}
 	};
 
@@ -113,14 +144,20 @@ export const CreatePost = () => {
 			)}
 
 			<TextField
-				inputRef={titleRef}
+				onChange={(event) => {
+					setTitle(event.target.value);
+				}}
+				value={title}
 				classes={{ root: styles.title }}
 				variant='standard'
 				placeholder='Заголовок статьи...'
 				fullWidth
 			/>
 			<TextField
-				inputRef={tagsRef}
+				onChange={(event) => {
+					setTags(event.target.value);
+				}}
+				value={tags}
 				classes={{ root: styles.tags }}
 				variant='standard'
 				placeholder='Тэги'
@@ -134,11 +171,11 @@ export const CreatePost = () => {
 			/>
 			<div className={styles.buttons}>
 				<Button onClick={onSubmit} size='large' variant='contained'>
-					Опубликовать
+					{isEditing ? 'Save' : 'Publish'}
 				</Button>
-				<a href='/'>
-					<Button size='large'>Отмена</Button>
-				</a>
+				<Link to='/'>
+					<Button size='large'>Cancel</Button>
+				</Link>
 			</div>
 		</Paper>
 	);

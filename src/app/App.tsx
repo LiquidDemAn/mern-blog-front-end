@@ -31,6 +31,7 @@ function App() {
 				<Route index element={<Home />} />
 				<Route path='posts/:id' element={<FullPost />} />
 				<Route path={PathsEnum.CreatePost} element={<CreatePost />} />
+				<Route path='/posts/:id/edit' element={<CreatePost />} />
 				<Route path={PathsEnum.Register} element={<Registration />} />
 				<Route path={PathsEnum.Login} element={<Login />} />
 			</Route>
