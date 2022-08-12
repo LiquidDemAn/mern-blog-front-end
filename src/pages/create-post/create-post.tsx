@@ -17,7 +17,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../local-storage';
 import { customeAxios } from '../../redux/axios';
 import { Link } from 'react-router-dom';
-import { PostType } from '../../redux/services/posts/typedef';
+import { FullPostType } from '../../redux/services/posts/typedef';
 
 export const CreatePost = () => {
 	const { id } = useParams();
@@ -41,7 +41,7 @@ export const CreatePost = () => {
 	useEffect(() => {
 		if (id) {
 			customeAxios.get(`/posts/${id}`).then((res) => {
-				const data = res.data as PostType;
+				const data = res.data as FullPostType;
 
 				setPost({
 					imageUrl: data.imageUrl ? data.imageUrl : '',

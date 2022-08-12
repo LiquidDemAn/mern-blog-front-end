@@ -4,9 +4,13 @@ import { Post } from '../../components/post';
 import { Tags } from '../../components/tags';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useEffect, useState } from 'react';
-import { loadAllPosts } from '../../redux/services/posts/actions';
+import {
+	loadAllPosts,
+	loadPopularPosts,
+} from '../../redux/services/posts/actions';
 import {
 	getAllPosts,
+	getPopularPosts,
 	getPostsLoading,
 } from '../../redux/services/posts/selectors';
 import { loadTags } from '../../redux/services/tags/actions';
@@ -24,6 +28,7 @@ export const Home = () => {
 	const [value, setValue] = useState<TabsEnum>(TabsEnum.New);
 
 	const posts = useAppSelector(getAllPosts);
+	const popularPosts = useAppSelector(getPopularPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
 
 	const tags = useAppSelector(getTags);
@@ -37,7 +42,6 @@ export const Home = () => {
 	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
 	};
-	console.log(value);
 
 	return (
 		<>
@@ -50,9 +54,11 @@ export const Home = () => {
 				/>
 				<Tab
 					aria-controls={`tabpanel-${TabsEnum.Popular}`}
-					// onClick={() => {
-					// 	dispatch(loadTags());
-					// }}
+					onClick={() => {
+						if (!popularPosts.length) {
+							dispatch(loadPopularPosts());
+						}
+					}}
 					label={TabsEnum.Popular}
 					value={TabsEnum.Popular}
 				/>
@@ -74,7 +80,18 @@ export const Home = () => {
 							  ))}
 					</TabPanel>
 					<TabPanel value={value} index={TabsEnum.Popular}>
-						<>Popular</>
+						{postsLoading
+							? [...Array(5)].map((_, index) => (
+									<Post key={index} isLoading={postsLoading} />
+							  ))
+							: popularPosts.map((post) => (
+									<Post
+										key={post._id}
+										isLoading={postsLoading}
+										post={post}
+										isEditable={user?._id === post.author._id}
+									/>
+							  ))}
 					</TabPanel>
 				</Grid>
 				<Grid xs={4} item>

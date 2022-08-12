@@ -10,6 +10,16 @@ export const getAllPosts = (state: AppState) => {
 		};
 	});
 };
+export const getPopularPosts = (state: AppState) => {
+	const posts = state.posts.popularPosts;
+
+	return posts.map((post) => {
+		return {
+			...post,
+			createdAt: new Date(post.createdAt).toDateString(),
+		};
+	});
+};
 
 export const getPost = (state: AppState) => {
 	const post = state.posts.selectedPost;

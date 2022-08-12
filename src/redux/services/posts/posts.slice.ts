@@ -1,9 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loadPost, loadAllPosts, deletePost } from './actions';
+import {
+	loadPost,
+	loadAllPosts,
+	deletePost,
+	loadPopularPosts,
+} from './actions';
 import { PostsStateType } from './typedef';
 
 const initialState: PostsStateType = {
 	posts: [],
+	popularPosts: [],
 	loading: false,
 	error: null,
 };
@@ -35,6 +41,15 @@ export const postsSlice = createSlice({
 			.addCase(loadAllPosts.fulfilled, (state, { payload }) => {
 				state.loading = false;
 				state.posts = payload;
+			})
+
+			// Load popular posts
+			.addCase(loadPopularPosts.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(loadPopularPosts.fulfilled, (state, { payload }) => {
+				state.loading = false;
+				state.popularPosts = payload;
 			})
 
 			// Delete post
