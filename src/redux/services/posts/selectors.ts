@@ -21,15 +21,4 @@ export const getPopularPosts = (state: AppState) => {
 	});
 };
 
-export const getPost = (state: AppState) => {
-	const post = state.posts.selectedPost;
-
-	if (post) {
-		return {
-			...post,
-			createdAt: new Date(post.createdAt).toUTCString(),
-		};
-	}
-};
-
 export const getPostsLoading = (state: AppState) => state.posts.loading;

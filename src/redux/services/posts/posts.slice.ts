@@ -1,10 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-	loadPost,
-	loadAllPosts,
-	deletePost,
-	loadPopularPosts,
-} from './actions';
+import { loadAllPosts, deletePost, loadPopularPosts } from './actions';
 import { PostsStateType } from './typedef';
 
 const initialState: PostsStateType = {
@@ -20,20 +15,6 @@ export const postsSlice = createSlice({
 	reducers: {},
 	extraReducers: (bulider) =>
 		bulider
-			// load single post
-			.addCase(loadPost.pending, (state) => {
-				state.loading = true;
-			})
-			.addCase(loadPost.fulfilled, (state, { payload }) => {
-				state.loading = false;
-				state.selectedPost = payload;
-			})
-			.addCase(loadPost.rejected, (state, { payload }: any) => {
-				state.loading = false;
-				state.posts = [];
-				state.error = payload;
-			})
-
 			// Load all posts
 			.addCase(loadAllPosts.pending, (state) => {
 				state.loading = true;
@@ -59,7 +40,6 @@ export const postsSlice = createSlice({
 			})
 			.addCase(deletePost.fulfilled, (state, { meta }) => {
 				state.posts = state.posts.filter((item) => item._id !== meta.arg);
-				state.selectedPost = null;
 				state.loading = false;
 				state.error = null;
 			}),

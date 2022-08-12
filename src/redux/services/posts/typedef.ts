@@ -29,7 +29,6 @@ export type FullPostType = {
 export type PostsStateType = {
 	posts: PostType[];
 	popularPosts: PostType[];
-	selectedPost?: FullPostType | null;
 	loading: boolean;
 	error: null | string;
 };

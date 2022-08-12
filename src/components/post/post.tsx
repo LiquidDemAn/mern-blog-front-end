@@ -10,13 +10,13 @@ import styles from './post.module.scss';
 import { UserInfo } from '../user-info';
 import { PostSkeleton } from './skeleton';
 import { Link } from 'react-router-dom';
-import { PostType } from '../../redux/services/posts/typedef';
+import { FullPostType, PostType } from '../../redux/services/posts/typedef';
 import { PathsEnum } from '../../app/App';
 import { useAppDispach } from '../../redux/store/hooks';
 import { deletePost } from '../../redux/services/posts/actions';
 
 type Props = {
-	post?: PostType;
+	post?: PostType | FullPostType | null;
 	children?: ReactElement | ReactElement[];
 	isFullPost?: boolean;
 	isLoading?: boolean;

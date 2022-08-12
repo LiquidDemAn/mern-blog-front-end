@@ -1,31 +1,40 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 import { AddComment } from '../../components/add-comment';
 import { Comments } from '../../components/comments';
 import { Post } from '../../components/post';
+import { customeAxios } from '../../redux/axios';
 import { getUser } from '../../redux/services/auth/selectors';
-import { loadPost } from '../../redux/services/posts/actions';
-import { getPost, getPostsLoading } from '../../redux/services/posts/selectors';
-import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
+import { FullPostType } from '../../redux/services/posts/typedef';
+import { useAppSelector } from '../../redux/store/hooks';
 
 export const FullPost = () => {
 	const { id } = useParams();
-	const dispatch = useAppDispach();
-	const post = useAppSelector(getPost);
-	const postLoading = useAppSelector(getPostsLoading);
 	const user = useAppSelector(getUser);
+	const [isLoading, setIsLoading] = useState(false);
+	const [post, setPost] = useState<FullPostType | null>(null);
 
 	useEffect(() => {
+		setIsLoading(true);
 		if (id) {
-			dispatch(loadPost(id));
+			const loadPost = async () => {
+				const response = await customeAxios.get(`/posts/${id}`);
+				setPost(response.data);
+				setIsLoading(false);
+			};
+
+			loadPost().catch((error) => {
+				console.warn(error);
+				setIsLoading(false);
+			});
 		}
-	}, [dispatch, id]);
+	}, [id]);
 
 	return (
 		<>
 			<Post
-				isLoading={postLoading}
+				isLoading={isLoading}
 				isEditable={user?._id === post?.author._id}
 				post={post}
 				isFullPost

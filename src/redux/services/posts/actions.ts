@@ -1,14 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { customeAxios } from '../../axios';
-import { FullPostType, PostType } from './typedef';
-
-export const loadPost = createAsyncThunk<FullPostType, string>(
-	'posts/load-post',
-	async (id) => {
-		const response = await customeAxios.get(`/posts/${id}`);
-		return await response.data;
-	}
-);
+import { PostType } from './typedef';
 
 export const loadAllPosts = createAsyncThunk<PostType[]>(
 	'posts/load-all-posts',
