@@ -23,11 +23,14 @@ export const CreatePost = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 
-	const [loading, setLoading] = useState(false);
-	const [text, setText] = useState('');
-	const [imageUrl, setImageUrl] = useState('');
-	const [tags, setTags] = useState('');
-	const [title, setTitle] = useState('');
+	const [post, setPost] = useState({
+		title: '',
+		tags: '',
+		text: '',
+		imageUrl: '',
+	});
+
+	// const [loading, setLoading] = useState(false);
 
 	const fileRef = useRef<null | HTMLInputElement>(null);
 
@@ -40,16 +43,20 @@ export const CreatePost = () => {
 			customeAxios.get(`/posts/${id}`).then((res) => {
 				const data = res.data as PostType;
 
-				setImageUrl(data.imageUrl ? data.imageUrl : '');
-				setText(data.text);
-				setTags(data.tags.join(', '));
-				setTitle(data.title);
+				setPost({
+					imageUrl: data.imageUrl ? data.imageUrl : '',
+					text: data.text,
+					title: data.title,
+					tags: data.tags.join(', '),
+				});
 			});
 		} else {
-			setImageUrl('');
-			setText('');
-			setTags('');
-			setTitle('');
+			setPost({
+				title: '',
+				tags: '',
+				text: '',
+				imageUrl: '',
+			});
 		}
 	}, [id]);
 
@@ -62,7 +69,13 @@ export const CreatePost = () => {
 				const file = files[0];
 				formData.append('image', file);
 				const { data } = await customeAxios.post('/upload', formData);
-				setImageUrl(data.url);
+
+				setPost((post) => {
+					return {
+						...post,
+						imageUrl: data.url,
+					};
+				});
 			}
 		} catch (error) {
 			console.warn(error);
@@ -71,27 +84,48 @@ export const CreatePost = () => {
 	};
 
 	const onRemoveImage = () => {
-		setImageUrl('');
+		setPost((post) => {
+			return {
+				...post,
+				imageUrl: '',
+			};
+		});
 	};
 
-	const onChange = useCallback((value: string) => {
-		setText(value);
+	const onText = useCallback((text: string) => {
+		setPost((post) => {
+			return {
+				...post,
+				text,
+			};
+		});
 	}, []);
+
+	const onTitle = (event: ChangeEvent<HTMLInputElement>) => {
+		setPost((post) => {
+			return {
+				...post,
+				title: event.target.value,
+			};
+		});
+	};
+
+	const onTags = (event: ChangeEvent<HTMLInputElement>) => {
+		setPost((post) => {
+			return {
+				...post,
+				tags: event.target.value,
+			};
+		});
+	};
 
 	const onSubmit = async () => {
 		try {
-			setLoading(true);
-
-			const params = {
-				text,
-				imageUrl,
-				title,
-				tags,
-			};
+			// setLoading(true);
 
 			const { data } = isEditing
-				? await customeAxios.patch(`/posts/${id}`, params)
-				: await customeAxios.post('/posts', params);
+				? await customeAxios.patch(`/posts/${id}`, post)
+				: await customeAxios.post('/posts', post);
 
 			navigate(`/posts/${data}`);
 		} catch (error) {
@@ -130,34 +164,30 @@ export const CreatePost = () => {
 				Загрузить превью
 			</Button>
 			<input type='file' ref={fileRef} onChange={handleChangeFile} hidden />
-			{imageUrl && (
+			{post.imageUrl && (
 				<>
 					<Button variant='contained' color='error' onClick={onRemoveImage}>
 						Удалить
 					</Button>
 					<img
 						className={styles.image}
-						src={`http://localhost:4444${imageUrl}`}
+						src={`http://localhost:4444${post.imageUrl}`}
 						alt='Uploaded'
 					/>
 				</>
 			)}
 
 			<TextField
-				onChange={(event) => {
-					setTitle(event.target.value);
-				}}
-				value={title}
+				onChange={onTitle}
+				value={post.title}
 				classes={{ root: styles.title }}
 				variant='standard'
 				placeholder='Заголовок статьи...'
 				fullWidth
 			/>
 			<TextField
-				onChange={(event) => {
-					setTags(event.target.value);
-				}}
-				value={tags}
+				onChange={onTags}
+				value={post.tags}
 				classes={{ root: styles.tags }}
 				variant='standard'
 				placeholder='Тэги'
@@ -165,8 +195,8 @@ export const CreatePost = () => {
 			/>
 			<SimpleMDE
 				className={styles.editor}
-				value={text}
-				onChange={onChange}
+				value={post.text}
+				onChange={onText}
 				options={options}
 			/>
 			<div className={styles.buttons}>

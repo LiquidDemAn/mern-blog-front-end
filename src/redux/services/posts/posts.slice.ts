@@ -16,7 +16,6 @@ export const postsSlice = createSlice({
 		bulider
 			// load single post
 			.addCase(loadPost.pending, (state) => {
-				state.posts = [];
 				state.loading = true;
 			})
 			.addCase(loadPost.fulfilled, (state, { payload }) => {
