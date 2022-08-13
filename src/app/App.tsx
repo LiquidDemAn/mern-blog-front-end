@@ -8,6 +8,7 @@ import { Login } from '../pages/login';
 import { Registration } from '../pages/registration';
 import { checkUserAuth } from '../redux/services/auth/actions';
 import { useAppDispach } from '../redux/store/hooks';
+import { Tag } from '../pages/tag';
 
 export enum PathsEnum {
 	Host = 'http://localhost:4444',
@@ -34,6 +35,7 @@ function App() {
 				<Route path='/posts/:id/edit' element={<CreatePost />} />
 				<Route path={PathsEnum.Register} element={<Registration />} />
 				<Route path={PathsEnum.Login} element={<Login />} />
+				<Route path='/tags/:tag' element={<Tag />} />
 			</Route>
 		</Routes>
 	);
