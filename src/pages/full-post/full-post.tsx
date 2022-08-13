@@ -17,6 +17,7 @@ export const FullPost = () => {
 
 	useEffect(() => {
 		setIsLoading(true);
+
 		if (id) {
 			const loadPost = async () => {
 				const response = await customeAxios.get(`/posts/${id}`);
@@ -33,12 +34,7 @@ export const FullPost = () => {
 
 	return (
 		<>
-			<Post
-				isLoading={isLoading}
-				isEditable={user?._id === post?.author._id}
-				post={post}
-				isFullPost
-			>
+			<Post isEditable={user?._id === post?.author._id} post={post} isFullPost>
 				{post?.text ? <ReactMarkdown children={post?.text} /> : <></>}
 			</Post>
 			<Comments

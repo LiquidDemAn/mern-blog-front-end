@@ -1,6 +1,5 @@
 import { Tabs, Tab, Grid } from '@mui/material';
 import { TabPanel } from '../../components/tab-panel';
-import { Post } from '../../components/post';
 import { Tags } from '../../components/tags';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useEffect, useState } from 'react';
@@ -12,10 +11,12 @@ import {
 	getAllPosts,
 	getPopularPosts,
 	getPostsLoading,
+	getPostsError,
 } from '../../redux/services/posts/selectors';
 import { loadTags } from '../../redux/services/tags/actions';
 import { getTags, getTagsLoading } from '../../redux/services/tags/selectors';
 import { getUser } from '../../redux/services/auth/selectors';
+import { Posts } from '../../components/posts';
 
 export enum TabsEnum {
 	New = 'New',
@@ -29,7 +30,8 @@ export const Home = () => {
 
 	const posts = useAppSelector(getAllPosts);
 	const popularPosts = useAppSelector(getPopularPosts);
-	const postsLoading = useAppSelector(getPostsLoading);
+	const isLoading = useAppSelector(getPostsLoading);
+	const error = useAppSelector(getPostsError);
 
 	const tags = useAppSelector(getTags);
 	const tagsLoading = useAppSelector(getTagsLoading);
@@ -49,15 +51,16 @@ export const Home = () => {
 			<Tabs style={{ marginBottom: 15 }} value={value} onChange={handleChange}>
 				<Tab
 					aria-controls={`tabpanel-${TabsEnum.New}`}
+					onClick={() => {
+						dispatch(loadAllPosts());
+					}}
 					label={TabsEnum.New}
 					value={TabsEnum.New}
 				/>
 				<Tab
 					aria-controls={`tabpanel-${TabsEnum.Popular}`}
 					onClick={() => {
-						if (!popularPosts.length) {
-							dispatch(loadPopularPosts());
-						}
+						dispatch(loadPopularPosts());
 					}}
 					label={TabsEnum.Popular}
 					value={TabsEnum.Popular}
@@ -66,32 +69,20 @@ export const Home = () => {
 			<Grid container spacing={4}>
 				<Grid xs={8} item>
 					<TabPanel value={value} index={TabsEnum.New}>
-						{postsLoading
-							? [...Array(5)].map((_, index) => (
-									<Post key={index} isLoading={postsLoading} />
-							  ))
-							: posts.map((post) => (
-									<Post
-										key={post._id}
-										isLoading={postsLoading}
-										post={post}
-										isEditable={user?._id === post.author._id}
-									/>
-							  ))}
+						<Posts
+							isLoading={isLoading}
+							error={error}
+							userId={user?._id}
+							posts={posts}
+						/>
 					</TabPanel>
 					<TabPanel value={value} index={TabsEnum.Popular}>
-						{postsLoading
-							? [...Array(5)].map((_, index) => (
-									<Post key={index} isLoading={postsLoading} />
-							  ))
-							: popularPosts.map((post) => (
-									<Post
-										key={post._id}
-										isLoading={postsLoading}
-										post={post}
-										isEditable={user?._id === post.author._id}
-									/>
-							  ))}
+						<Posts
+							isLoading={isLoading}
+							error={error}
+							userId={user?._id}
+							posts={popularPosts}
+						/>
 					</TabPanel>
 				</Grid>
 				<Grid xs={4} item>
