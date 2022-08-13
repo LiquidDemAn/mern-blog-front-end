@@ -19,17 +19,10 @@ type Props = {
 	post?: PostType | FullPostType | null;
 	children?: ReactElement | ReactElement[];
 	isFullPost?: boolean;
-	isLoading?: boolean;
 	isEditable?: boolean;
 };
 
-export const Post = ({
-	post,
-	children,
-	isFullPost,
-	isLoading,
-	isEditable,
-}: Props) => {
+export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 	const dispatch = useAppDispach();
 	const navigate = useNavigate();
 
@@ -44,74 +37,72 @@ export const Post = ({
 		}
 	};
 
-	if (isLoading) {
+	if (!post) {
 		return <PostSkeleton />;
 	}
 
 	return (
 		<>
-			{post && (
-				<div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
-					{isEditable && (
-						<div className={styles.editButtons}>
-							<Link to={`/posts/${post._id}/edit`}>
-								<IconButton color='primary'>
-									<EditIcon />
-								</IconButton>
-							</Link>
-							<IconButton onClick={onClickRemove} color='secondary'>
-								<DeleteIcon />
+			<div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
+				{isEditable && (
+					<div className={styles.editButtons}>
+						<Link to={`/posts/${post._id}/edit`}>
+							<IconButton color='primary'>
+								<EditIcon />
 							</IconButton>
-						</div>
-					)}
+						</Link>
+						<IconButton onClick={onClickRemove} color='secondary'>
+							<DeleteIcon />
+						</IconButton>
+					</div>
+				)}
 
-					{post.imageUrl && (
-						<img
-							className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
-							src={PathsEnum.Host + post.imageUrl}
-							alt={post.title}
-						/>
-					)}
+				{post.imageUrl && (
+					<img
+						className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
+						src={PathsEnum.Host + post.imageUrl}
+						alt={post.title}
+					/>
+				)}
 
-					<div className={styles.wrapper}>
-						<UserInfo {...post.author} additionalText={post.createdAt} />
-						<div className={styles.indention}>
-							<h2
-								className={clsx(styles.title, {
-									[styles.titleFull]: isFullPost,
-								})}
-							>
-								{isFullPost ? (
-									post.title
-								) : (
-									<Link to={`/posts/${post._id}`}>{post.title}</Link>
-								)}
-							</h2>
+				<div className={styles.wrapper}>
+					<UserInfo {...post.author} additionalText={post.createdAt} />
+					<div className={styles.indention}>
+						<h2
+							className={clsx(styles.title, {
+								[styles.titleFull]: isFullPost,
+							})}
+						>
+							{isFullPost ? (
+								post.title
+							) : (
+								<Link to={`/posts/${post._id}`}>{post.title}</Link>
+							)}
+						</h2>
 
-							<ul className={styles.tags}>
-								{post.tags.map((name) => (
-									<li key={name}>
-										<Link to={`/tag/${name}`}>#{name}</Link>
-									</li>
-								))}
-							</ul>
-
-							{children && <div className={styles.content}>{children}</div>}
-
-							<ul className={styles.postDetails}>
-								<li>
-									<EyeIcon />
-									<span>{post.viewsCount}</span>
+						<ul className={styles.tags}>
+							{post.tags.map((name) => (
+								<li key={name}>
+									<Link to={`/tag/${name}`}>#{name}</Link>
 								</li>
-								<li>
-									<CommentIcon />
-									{/* <span>{post.commentsCount}</span> */}
-								</li>
-							</ul>
-						</div>
+							))}
+						</ul>
+
+						{children && <div className={styles.content}>{children}</div>}
+
+						<ul className={styles.postDetails}>
+							<li>
+								<EyeIcon />
+								<span>{post.viewsCount}</span>
+							</li>
+							<li>
+								<CommentIcon />
+								{/* <span>{post.commentsCount}</span> */}
+							</li>
+						</ul>
 					</div>
 				</div>
-			)}
+			</div>
 		</>
 	);
 };

@@ -18,6 +18,7 @@ export const postsSlice = createSlice({
 			// Load all posts
 			.addCase(loadAllPosts.pending, (state) => {
 				state.loading = true;
+				state.error = null;
 			})
 			.addCase(loadAllPosts.fulfilled, (state, { payload }) => {
 				state.loading = false;
@@ -27,10 +28,14 @@ export const postsSlice = createSlice({
 			// Load popular posts
 			.addCase(loadPopularPosts.pending, (state) => {
 				state.loading = true;
+				state.error = null;
 			})
 			.addCase(loadPopularPosts.fulfilled, (state, { payload }) => {
 				state.loading = false;
 				state.popularPosts = payload;
+			})
+			.addCase(loadPopularPosts.rejected, (state, { payload }) => {
+				state.loading = false;
 			})
 
 			// Delete post
