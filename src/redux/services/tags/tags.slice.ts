@@ -22,7 +22,7 @@ export const tagsSlice = createSlice({
 				state.loading = false;
 				state.tags = payload;
 			})
-			.addCase(loadTags.rejected, (state, { payload }: PayloadAction<any>) => {
+			.addCase(loadTags.rejected, (state, { payload }) => {
 				state.loading = false;
 				state.error = payload;
 			}),

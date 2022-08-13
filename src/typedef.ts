@@ -5,3 +5,8 @@ export type CommentType = {
 	};
 	text: string;
 };
+
+export type ErrorType = {
+	status: number;
+	message: string;
+};

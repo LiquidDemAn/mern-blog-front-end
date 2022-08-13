@@ -14,7 +14,11 @@ import {
 	getPostsError,
 } from '../../redux/services/posts/selectors';
 import { loadTags } from '../../redux/services/tags/actions';
-import { getTags, getTagsLoading } from '../../redux/services/tags/selectors';
+import {
+	getTags,
+	getTagsError,
+	getTagsLoading,
+} from '../../redux/services/tags/selectors';
 import { getUser } from '../../redux/services/auth/selectors';
 import { Posts } from '../../components/posts';
 
@@ -31,10 +35,11 @@ export const Home = () => {
 	const posts = useAppSelector(getAllPosts);
 	const popularPosts = useAppSelector(getPopularPosts);
 	const isLoading = useAppSelector(getPostsLoading);
-	const error = useAppSelector(getPostsError);
+	const postsError = useAppSelector(getPostsError);
 
 	const tags = useAppSelector(getTags);
 	const tagsLoading = useAppSelector(getTagsLoading);
+	const tagsError = useAppSelector(getTagsError);
 
 	useEffect(() => {
 		dispatch(loadAllPosts());
@@ -56,6 +61,7 @@ export const Home = () => {
 	return (
 		<>
 			<h2>Hello {user?.fullName}</h2>
+
 			<Tabs style={{ marginBottom: 15 }} value={value} onChange={handleChange}>
 				<Tab
 					aria-controls={`tabpanel-${TabsEnum.New}`}
@@ -70,12 +76,13 @@ export const Home = () => {
 					value={TabsEnum.Popular}
 				/>
 			</Tabs>
+
 			<Grid container spacing={4}>
 				<Grid xs={8} item>
 					<TabPanel value={value} index={TabsEnum.New}>
 						<Posts
 							isLoading={isLoading}
-							error={error}
+							error={postsError}
 							userId={user?._id}
 							posts={posts}
 						/>
@@ -83,14 +90,15 @@ export const Home = () => {
 					<TabPanel value={value} index={TabsEnum.Popular}>
 						<Posts
 							isLoading={isLoading}
-							error={error}
+							error={postsError}
 							userId={user?._id}
 							posts={popularPosts}
 						/>
 					</TabPanel>
 				</Grid>
+
 				<Grid xs={4} item>
-					<Tags tags={tags} isLoading={tagsLoading} />
+					<Tags error={tagsError} tags={tags} isLoading={tagsLoading} />
 				</Grid>
 			</Grid>
 		</>
