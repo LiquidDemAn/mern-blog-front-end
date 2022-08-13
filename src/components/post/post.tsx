@@ -9,7 +9,7 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import styles from './post.module.scss';
 import { UserInfo } from '../user-info';
 import { PostSkeleton } from './skeleton';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FullPostType, PostType } from '../../redux/services/posts/typedef';
 import { PathsEnum } from '../../app/App';
 import { useAppDispach } from '../../redux/store/hooks';
@@ -31,13 +31,16 @@ export const Post = ({
 	isEditable,
 }: Props) => {
 	const dispatch = useAppDispach();
+	const navigate = useNavigate();
 
 	const onClickRemove = () => {
 		if (
 			window.confirm('Are you sure you want to delete this post?') &&
 			post?._id
 		) {
-			dispatch(deletePost(post._id));
+			dispatch(deletePost(post._id)).then(() => {
+				navigate('/');
+			});
 		}
 	};
 

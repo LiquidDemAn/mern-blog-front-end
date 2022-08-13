@@ -112,9 +112,10 @@ export const CreatePost = () => {
 
 	const onTags = (event: ChangeEvent<HTMLInputElement>) => {
 		setPost((post) => {
+			
 			return {
 				...post,
-				tags: event.target.value,
+				tags: event.target.value.toLowerCase(),
 			};
 		});
 	};
