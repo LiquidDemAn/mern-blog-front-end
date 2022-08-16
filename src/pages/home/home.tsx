@@ -21,20 +21,17 @@ import {
 } from '../../redux/services/tags/selectors';
 import { getUser } from '../../redux/services/auth/selectors';
 import { Posts } from '../../components/posts';
-
-export enum TabsEnum {
-	New = 'New',
-	Popular = 'Popular',
-}
+import { TabsEnum } from '../../typedef';
 
 export const Home = () => {
 	const dispatch = useAppDispach();
-	const user = useAppSelector(getUser);
 	const [value, setValue] = useState<TabsEnum>(TabsEnum.New);
+
+	const user = useAppSelector(getUser);
 
 	const posts = useAppSelector(getAllPosts);
 	const popularPosts = useAppSelector(getPopularPosts);
-	const isLoading = useAppSelector(getPostsLoading);
+	const postsLoading = useAppSelector(getPostsLoading);
 	const postsError = useAppSelector(getPostsError);
 
 	const tags = useAppSelector(getTags);
@@ -52,8 +49,10 @@ export const Home = () => {
 	}, [dispatch, value]);
 
 	useEffect(() => {
-		dispatch(loadTags());
-	}, [dispatch]);
+		if (!tags.length) {
+			dispatch(loadTags());
+		}
+	}, [dispatch, tags]);
 
 	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
@@ -80,7 +79,7 @@ export const Home = () => {
 				<Grid xs={8} item>
 					<TabPanel value={value} index={TabsEnum.New}>
 						<Posts
-							isLoading={isLoading}
+							isLoading={postsLoading}
 							error={postsError}
 							userId={user?._id}
 							posts={posts}
@@ -88,7 +87,7 @@ export const Home = () => {
 					</TabPanel>
 					<TabPanel value={value} index={TabsEnum.Popular}>
 						<Posts
-							isLoading={isLoading}
+							isLoading={postsLoading}
 							error={postsError}
 							userId={user?._id}
 							posts={popularPosts}

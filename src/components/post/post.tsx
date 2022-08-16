@@ -83,7 +83,7 @@ export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 						<ul className={styles.tags}>
 							{post.tags.map((name) => (
 								<li key={name}>
-									<Link to={`/tag/${name}`}>#{name}</Link>
+									<Link to={`/tags/${name}`}>#{name}</Link>
 								</li>
 							))}
 						</ul>
