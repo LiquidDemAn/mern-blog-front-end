@@ -23,6 +23,7 @@ export const postsSlice = createSlice({
 		bulider
 			// Load all posts
 			.addCase(loadAllPosts.pending, (state) => {
+				state.posts = [];
 				state.loading = true;
 				state.error = null;
 			})
@@ -33,12 +34,13 @@ export const postsSlice = createSlice({
 
 			// Load popular posts
 			.addCase(loadPopularPosts.pending, (state) => {
+				state.posts = [];
 				state.loading = true;
 				state.error = null;
 			})
 			.addCase(loadPopularPosts.fulfilled, (state, { payload }) => {
 				state.loading = false;
-				state.popularPosts = payload;
+				state.posts = payload;
 			})
 			.addCase(loadPopularPosts.rejected, (state, { payload }) => {
 				state.loading = false;
@@ -46,12 +48,13 @@ export const postsSlice = createSlice({
 
 			// Load posts by tag
 			.addCase(loadPostsByTag.pending, (state) => {
+				state.posts = [];
 				state.loading = true;
 				state.error = null;
 			})
 			.addCase(loadPostsByTag.fulfilled, (state, { payload }) => {
 				state.loading = false;
-				state.postsByTag = payload;
+				state.posts = payload;
 			})
 			.addCase(loadPostsByTag.rejected, (state, { payload }) => {
 				state.loading = false;

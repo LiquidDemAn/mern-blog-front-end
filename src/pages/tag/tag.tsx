@@ -16,7 +16,7 @@ import { Tags } from '../../components/tags';
 import {
 	getPostsLoading,
 	getPostsError,
-	getPostsByTag,
+	getAllPosts,
 } from '../../redux/services/posts/selectors';
 import { getUser } from '../../redux/services/auth/selectors';
 
@@ -28,7 +28,7 @@ export const Tag = () => {
 
 	const user = useAppSelector(getUser);
 
-	const postsByTag = useAppSelector(getPostsByTag);
+	const posts = useAppSelector(getAllPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
 	const postsError = useAppSelector(getPostsError);
 
@@ -79,7 +79,7 @@ export const Tag = () => {
 							isLoading={postsLoading}
 							error={postsError}
 							userId={user?._id}
-							posts={postsByTag}
+							posts={posts}
 						/>
 					</TabPanel>
 					<TabPanel value={value} index={TabsEnum.Popular}>

@@ -9,7 +9,6 @@ import {
 } from '../../redux/services/posts/actions';
 import {
 	getAllPosts,
-	getPopularPosts,
 	getPostsLoading,
 	getPostsError,
 } from '../../redux/services/posts/selectors';
@@ -30,7 +29,6 @@ export const Home = () => {
 	const user = useAppSelector(getUser);
 
 	const posts = useAppSelector(getAllPosts);
-	const popularPosts = useAppSelector(getPopularPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
 	const postsError = useAppSelector(getPostsError);
 
@@ -90,7 +88,7 @@ export const Home = () => {
 							isLoading={postsLoading}
 							error={postsError}
 							userId={user?._id}
-							posts={popularPosts}
+							posts={posts}
 						/>
 					</TabPanel>
 				</Grid>
