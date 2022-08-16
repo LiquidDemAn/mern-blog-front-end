@@ -1,10 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loadAllPosts, deletePost, loadPopularPosts } from './actions';
+import {
+	loadAllPosts,
+	deletePost,
+	loadPopularPosts,
+	loadPostsByTag,
+} from './actions';
 import { PostsStateType } from './typedef';
 
 const initialState: PostsStateType = {
 	posts: [],
 	popularPosts: [],
+	postsByTag: [],
 	loading: false,
 	error: null,
 };
@@ -35,6 +41,19 @@ export const postsSlice = createSlice({
 				state.popularPosts = payload;
 			})
 			.addCase(loadPopularPosts.rejected, (state, { payload }) => {
+				state.loading = false;
+			})
+
+			// Load posts by tag
+			.addCase(loadPostsByTag.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(loadPostsByTag.fulfilled, (state, { payload }) => {
+				state.loading = false;
+				state.postsByTag = payload;
+			})
+			.addCase(loadPostsByTag.rejected, (state, { payload }) => {
 				state.loading = false;
 			})
 
