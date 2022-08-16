@@ -42,20 +42,21 @@ export const Home = () => {
 	const tagsError = useAppSelector(getTagsError);
 
 	useEffect(() => {
-		dispatch(loadAllPosts());
+		if (value === TabsEnum.New) {
+			dispatch(loadAllPosts());
+		}
+
+		if (value === TabsEnum.Popular) {
+			dispatch(loadPopularPosts());
+		}
+	}, [dispatch, value]);
+
+	useEffect(() => {
 		dispatch(loadTags());
 	}, [dispatch]);
 
 	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
-	};
-
-	const handleAllPosts = () => {
-		dispatch(loadAllPosts());
-	};
-
-	const handlePopularPosts = () => {
-		dispatch(loadPopularPosts());
 	};
 
 	return (
@@ -65,13 +66,11 @@ export const Home = () => {
 			<Tabs style={{ marginBottom: 15 }} value={value} onChange={handleChange}>
 				<Tab
 					aria-controls={`tabpanel-${TabsEnum.New}`}
-					onClick={handleAllPosts}
 					label={TabsEnum.New}
 					value={TabsEnum.New}
 				/>
 				<Tab
 					aria-controls={`tabpanel-${TabsEnum.Popular}`}
-					onClick={handlePopularPosts}
 					label={TabsEnum.Popular}
 					value={TabsEnum.Popular}
 				/>
