@@ -1,7 +1,10 @@
 import { Tab, Tabs, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { loadPostsByTag } from '../../redux/services/posts/actions';
+import {
+	loadPopularPostsByTag,
+	loadPostsByTag,
+} from '../../redux/services/posts/actions';
 import { loadTags } from '../../redux/services/tags/actions';
 import {
 	getTags,
@@ -40,6 +43,9 @@ export const Tag = () => {
 		if (tag) {
 			if (value === TabsEnum.New) {
 				dispatch(loadPostsByTag(tag));
+			}
+			if (value === TabsEnum.Popular) {
+				dispatch(loadPopularPostsByTag(tag));
 			}
 		}
 
@@ -83,12 +89,12 @@ export const Tag = () => {
 						/>
 					</TabPanel>
 					<TabPanel value={value} index={TabsEnum.Popular}>
-						{/* <Posts
+						<Posts
 							isLoading={postsLoading}
 							error={postsError}
 							userId={user?._id}
-							posts={popularPosts}
-						/> */}
+							posts={posts}
+						/>
 					</TabPanel>
 				</Grid>
 

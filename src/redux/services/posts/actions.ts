@@ -26,6 +26,14 @@ export const loadPostsByTag = createAsyncThunk<PostType[], string>(
 	}
 );
 
+export const loadPopularPostsByTag = createAsyncThunk<PostType[], string>(
+	'posts/load-popular-posts-by-tag',
+	async (tag) => {
+		const response = await customeAxios.get(`/posts/tags/${tag}/popular`);
+		return await response.data;
+	}
+);
+
 export const deletePost = createAsyncThunk(
 	'posts/delete-post',
 	async (id: string) => {

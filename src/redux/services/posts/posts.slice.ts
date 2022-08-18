@@ -4,6 +4,7 @@ import {
 	deletePost,
 	loadPopularPosts,
 	loadPostsByTag,
+	loadPopularPostsByTag,
 } from './actions';
 import { PostsStateType } from './typedef';
 
@@ -57,6 +58,20 @@ export const postsSlice = createSlice({
 				state.posts = payload;
 			})
 			.addCase(loadPostsByTag.rejected, (state, { payload }) => {
+				state.loading = false;
+			})
+
+			// Load popular posts by tag
+			.addCase(loadPopularPostsByTag.pending, (state) => {
+				state.posts = [];
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(loadPopularPostsByTag.fulfilled, (state, { payload }) => {
+				state.loading = false;
+				state.posts = payload;
+			})
+			.addCase(loadPopularPostsByTag.rejected, (state, { payload }) => {
 				state.loading = false;
 			})
 
