@@ -2,14 +2,19 @@ import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useForm } from 'react-hook-form';
 import { registerType } from '../../redux/services/auth/typedef';
 import { AuthForm } from '../../components/auth-form';
-import { Avatar, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { Navigate } from 'react-router-dom';
 import { getIsAuth } from '../../redux/services/auth/selectors';
 import { registerUser } from '../../redux/services/auth/actions';
+import { AvatarCreator } from '../../components/avatar-creator';
+import { useRef, useState } from 'react';
 
 export const Registration = () => {
 	const dispatch = useAppDispach();
 	const isAuth = useAppSelector(getIsAuth);
+	const [avatar, setAvatar] = useState('');
+
+	console.log(avatar);
 
 	const {
 		register,
@@ -40,7 +45,7 @@ export const Registration = () => {
 			title='Registration'
 			isValid={isValid}
 		>
-			<Avatar sx={{ width: 100, height: 100 }} />
+			<AvatarCreator avatar={avatar} setAvatar={setAvatar} />
 
 			<TextField
 				fullWidth

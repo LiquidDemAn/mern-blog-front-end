@@ -32,6 +32,7 @@ export const AuthForm = <T extends object>({
 					disabled={!isValid}
 					type='submit'
 					size='large'
+					color='success'
 					variant='contained'
 					fullWidth
 				>
