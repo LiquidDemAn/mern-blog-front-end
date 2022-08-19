@@ -1,7 +1,7 @@
 import AvatarEditor, { CroppedRect } from 'react-avatar-editor';
 import styles from './avatar-creator.module.scss';
 import { Avatar, Button } from '@mui/material';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 
 type Props = {
 	avatar?: string;
@@ -46,12 +46,17 @@ export const AvatarCreator = ({ setAvatar, avatar }: Props) => {
 
 	const fileRef = useRef<null | HTMLInputElement>(null);
 	const editorRef = useRef<AvatarEditor | null>(null);
+	const previewRef = useRef<null | HTMLButtonElement>(null);
 	const image = editorRef.current?.getImageScaledToCanvas().toDataURL();
 
 	const handleNewImage = (e: ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files;
 
 		if (files?.length) {
+			setTimeout(() => {
+				previewRef.current?.click();
+			}, 200);
+			setAvatar(image);
 			setPreview(false);
 			setConfigs({ ...configs, image: files[0] });
 			setFileLoaded(true);
@@ -111,7 +116,12 @@ export const AvatarCreator = ({ setAvatar, avatar }: Props) => {
 								defaultValue='1'
 							/>
 							<div className={styles.edit__buttons}>
-								<Button onClick={handlePreview} variant='outlined' size='small'>
+								<Button
+									ref={previewRef}
+									onClick={handlePreview}
+									variant='outlined'
+									size='small'
+								>
 									Show Preview
 								</Button>
 								<Button
