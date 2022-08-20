@@ -1,34 +1,24 @@
-import AvatarEditor, { CroppedRect } from 'react-avatar-editor';
+import AvatarEditor from 'react-avatar-editor';
 import styles from './avatar-creator.module.scss';
 import { Avatar, Button } from '@mui/material';
 import { ChangeEvent, useRef, useState } from 'react';
 
 type Props = {
-	avatar?: string;
 	setAvatar: (valuse: string) => void;
-};
-
-type PreviewType = {
-	image: string;
-	rect?: CroppedRect | undefined;
-	scale: number;
-	borderRadius: number;
-	width: number;
-	height: number;
 };
 
 type ConfigsType = {
 	image: string | File;
 	allowZoomOut: boolean;
 	scale: number;
-	preview: PreviewType | null;
 	rotate: number;
 	borderRadius: number;
 	width: number;
 	height: number;
+	position?: { x: number; y: number };
 };
 
-export const AvatarCreator = ({ setAvatar, avatar }: Props) => {
+export const AvatarCreator = ({ setAvatar }: Props) => {
 	const [fileLoaded, setFileLoaded] = useState(false);
 	const [preview, setPreview] = useState(false);
 	const [isEdit, setIsEdit] = useState(false);
@@ -37,7 +27,6 @@ export const AvatarCreator = ({ setAvatar, avatar }: Props) => {
 		image: '',
 		allowZoomOut: false,
 		scale: 1,
-		preview: null,
 		rotate: 0,
 		borderRadius: 0,
 		width: 200,
@@ -46,21 +35,31 @@ export const AvatarCreator = ({ setAvatar, avatar }: Props) => {
 
 	const fileRef = useRef<null | HTMLInputElement>(null);
 	const editorRef = useRef<AvatarEditor | null>(null);
-	const previewRef = useRef<null | HTMLButtonElement>(null);
+
 	const image = editorRef.current?.getImageScaledToCanvas().toDataURL();
+
+	const previewDelay = () => {
+		setTimeout(() => {
+			setPreview(true);
+		}, 500);
+	};
 
 	const handleNewImage = (e: ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files;
 
 		if (files?.length) {
-			setTimeout(() => {
-				previewRef.current?.click();
-			}, 200);
-			setAvatar(image);
 			setPreview(false);
-			setConfigs({ ...configs, image: files[0] });
 			setFileLoaded(true);
 			setIsEdit(true);
+
+			setConfigs({
+				...configs,
+				scale: 1,
+				position: { x: 0.5, y: 0.5 },
+				image: files[0],
+			});
+
+			previewDelay();
 		}
 	};
 
@@ -69,19 +68,26 @@ export const AvatarCreator = ({ setAvatar, avatar }: Props) => {
 		setConfigs({ ...configs, scale });
 	};
 
-	const handlePreview = () => {
-		setPreview(true);
-	};
-
 	const handleSave = () => {
 		setIsEdit(false);
-		setPreview(true);
-		console.log(image);
+
+		if (image) {
+			setAvatar(image);
+		}
+	};
+
+	const handlePositionChange = (position: { x: number; y: number }) => {
+		setConfigs({
+			...configs,
+			position,
+		});
 	};
 
 	const handleEdit = () => {
 		setIsEdit(true);
 		setPreview(false);
+
+		previewDelay();
 	};
 
 	return (
@@ -91,12 +97,7 @@ export const AvatarCreator = ({ setAvatar, avatar }: Props) => {
 					<div className={styles.images}>
 						{isEdit && (
 							<AvatarEditor
-								onImageChange={() =>
-									setAvatar(
-										editorRef.current?.getImageScaledToCanvas().toDataURL() ||
-											''
-									)
-								}
+								onPositionChange={handlePositionChange}
 								ref={editorRef}
 								{...configs}
 							/>
@@ -115,23 +116,14 @@ export const AvatarCreator = ({ setAvatar, avatar }: Props) => {
 								step='0.01'
 								defaultValue='1'
 							/>
-							<div className={styles.edit__buttons}>
-								<Button
-									ref={previewRef}
-									onClick={handlePreview}
-									variant='outlined'
-									size='small'
-								>
-									Show Preview
-								</Button>
-								<Button
-									onClick={() => fileRef.current?.click()}
-									variant='contained'
-									size='small'
-								>
-									Load another image
-								</Button>
-							</div>
+							<Button
+								onClick={() => fileRef.current?.click()}
+								variant='contained'
+								size='medium'
+								fullWidth
+							>
+								Load another image
+							</Button>
 						</>
 					)}
 				</>
@@ -144,7 +136,7 @@ export const AvatarCreator = ({ setAvatar, avatar }: Props) => {
 						size='large'
 						fullWidth
 					>
-						Load Avatar
+						Load avatar
 					</Button>
 				</>
 			)}
@@ -159,7 +151,7 @@ export const AvatarCreator = ({ setAvatar, avatar }: Props) => {
 							onClick={handleSave}
 							fullWidth
 						>
-							Save Avatar
+							Save avatar
 						</Button>
 					)}
 					{!isEdit && (

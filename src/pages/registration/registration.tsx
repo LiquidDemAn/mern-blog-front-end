@@ -7,7 +7,7 @@ import { Navigate } from 'react-router-dom';
 import { getIsAuth } from '../../redux/services/auth/selectors';
 import { registerUser } from '../../redux/services/auth/actions';
 import { AvatarCreator } from '../../components/avatar-creator';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 export const Registration = () => {
 	const dispatch = useAppDispach();
@@ -45,7 +45,7 @@ export const Registration = () => {
 			title='Registration'
 			isValid={isValid}
 		>
-			<AvatarCreator avatar={avatar} setAvatar={setAvatar} />
+			<AvatarCreator setAvatar={setAvatar} />
 
 			<TextField
 				fullWidth
