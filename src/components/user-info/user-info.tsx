@@ -12,7 +12,11 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText }: Props) => {
 		<div className={styles.root}>
 			<img
 				className={styles.avatar}
-				src={avatarUrl || `${PathsEnum.Host}/uploads/noavatar.png`}
+				src={
+					avatarUrl
+						? `${PathsEnum.Host}${avatarUrl}`
+						: `${PathsEnum.Host}/uploads/noavatar.png`
+				}
 				alt='avatar'
 			/>
 			<div className={styles.userDetails}>

@@ -26,12 +26,22 @@ export const Registration = () => {
 			email: '',
 			password: '',
 			fullName: '',
+			avatarUrl: avatar,
 		},
 		mode: 'onChange',
 	});
 
 	const onSubmit = (values: registerType) => {
-		dispatch(registerUser(values));
+		if (avatar) {
+			dispatch(
+				registerUser({
+					...values,
+					avatarUrl: avatar,
+				})
+			);
+		} else {
+			dispatch(registerUser(values));
+		}
 	};
 
 	if (isAuth) {

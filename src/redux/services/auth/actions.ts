@@ -2,6 +2,7 @@ import { customeAxios } from './../../axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { userDataType, loginType, registerType } from './typedef';
 import { setToken } from '../../../local-storage';
+import { fileName } from '../../../utils/file-name-generator';
 
 export const checkUserAuth = createAsyncThunk<userDataType>(
 	'auth/check-auth',
@@ -28,6 +29,23 @@ export const loginUser = createAsyncThunk<userDataType, loginType>(
 export const registerUser = createAsyncThunk<userDataType, registerType>(
 	'auth/register',
 	async (params) => {
+		const avatar = params.avatarUrl;
+
+		if (avatar) {
+			const name = `${fileName()}.jpg`;
+			const blob = await (await fetch(avatar)).blob();
+
+			const file = new File([blob], name, {
+				type: 'image/jpeg',
+			});
+
+			const formData = new FormData();
+			formData.append('image', file);
+
+			const { data } = await customeAxios.post('/upload/avatar', formData);
+			params.avatarUrl = data.url;
+		}
+
 		const response = await customeAxios.post('/auth/register', params);
 		const data = response.data as userDataType;
 
