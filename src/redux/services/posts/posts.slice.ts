@@ -10,8 +10,6 @@ import { PostsStateType } from './typedef';
 
 const initialState: PostsStateType = {
 	posts: [],
-	popularPosts: [],
-	postsByTag: [],
 	loading: false,
 	error: null,
 };

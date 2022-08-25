@@ -81,11 +81,12 @@ export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 						</h2>
 
 						<ul className={styles.tags}>
-							{post.tags.map((name) => (
-								<li key={name}>
-									<Link to={`/tags/${name}`}>#{name}</Link>
-								</li>
-							))}
+							{post.tags.length !== 0 &&
+								post.tags.map((name) => (
+									<li key={name}>
+										<Link to={`/tags/${name}`}>#{name}</Link>
+									</li>
+								))}
 						</ul>
 
 						{children && <div className={styles.content}>{children}</div>}

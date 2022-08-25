@@ -28,8 +28,6 @@ export type FullPostType = {
 
 export type PostsStateType = {
 	posts: PostType[];
-	popularPosts: PostType[];
-	postsByTag: PostType[];
 	loading: boolean;
 	error: null | string;
 };
