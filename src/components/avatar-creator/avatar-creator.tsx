@@ -70,6 +70,7 @@ export const AvatarCreator = ({ setAvatar }: Props) => {
 
 	const handleSave = () => {
 		setIsEdit(false);
+		setPreview(false);
 
 		if (image) {
 			setAvatar(image);

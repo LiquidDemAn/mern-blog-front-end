@@ -30,8 +30,6 @@ export const FullPost = () => {
 		});
 	}, [id]);
 
-	console.log(error?.response?.status);
-
 	if (error?.response?.status === 404) {
 		return (
 			<h2>
