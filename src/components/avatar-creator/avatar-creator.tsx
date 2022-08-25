@@ -141,7 +141,13 @@ export const AvatarCreator = ({ setAvatar }: Props) => {
 					</Button>
 				</>
 			)}
-			<input type='file' ref={fileRef} onChange={handleNewImage} hidden />
+			<input
+				type='file'
+				accept='.png, .jpg, .jpeg'
+				ref={fileRef}
+				onChange={handleNewImage}
+				hidden
+			/>
 
 			{fileLoaded && (
 				<>

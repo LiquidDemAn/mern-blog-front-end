@@ -163,7 +163,13 @@ export const CreatePost = () => {
 			>
 				Загрузить превью
 			</Button>
-			<input type='file' ref={fileRef} onChange={handleChangeFile} hidden />
+			<input
+				type='file'
+				accept='.png, .jpg, .jpeg'
+				ref={fileRef}
+				onChange={handleChangeFile}
+				hidden
+			/>
 			{post.imageUrl && (
 				<>
 					<Button variant='contained' color='error' onClick={onRemoveImage}>
