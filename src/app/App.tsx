@@ -11,6 +11,7 @@ import { useAppDispach } from '../redux/store/hooks';
 import { Tag } from '../pages/tag';
 
 export enum PathsEnum {
+	Server = 'http://localhost:4444',
 	Host = 'http://localhost:4444',
 	Home = '/',
 	Login = 'login',

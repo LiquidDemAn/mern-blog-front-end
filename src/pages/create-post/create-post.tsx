@@ -17,7 +17,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../local-storage';
 import { customeAxios } from '../../redux/axios';
 import { Link } from 'react-router-dom';
-import { FullPostType } from '../../redux/services/posts/typedef';
+import { PathsEnum } from '../../app/App';
 
 export const CreatePost = () => {
 	const { id } = useParams();
@@ -30,6 +30,8 @@ export const CreatePost = () => {
 		imageUrl: '',
 	});
 
+	const [link, setLink] = useState('');
+
 	// const [loading, setLoading] = useState(false);
 
 	const fileRef = useRef<null | HTMLInputElement>(null);
@@ -38,11 +40,11 @@ export const CreatePost = () => {
 	const isAuth = useAppSelector(getIsAuth);
 	const isEditing = Boolean(id);
 
+	const reader = new FileReader();
+
 	useEffect(() => {
 		if (id) {
-			customeAxios.get(`/posts/${id}`).then((res) => {
-				const data = res.data as FullPostType;
-
+			customeAxios.get(`/posts/${id}`).then(({ data }) => {
 				setPost({
 					imageUrl: data.imageUrl ? data.imageUrl : '',
 					text: data.text,
@@ -60,22 +62,21 @@ export const CreatePost = () => {
 		}
 	}, [id]);
 
-	const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
+	const handleChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
 		try {
-			const formData = new FormData();
 			const files = event.target.files;
 
 			if (files) {
 				const file = files[0];
-				formData.append('image', file);
-				const { data } = await customeAxios.post('/upload', formData);
 
-				setPost((post) => {
-					return {
-						...post,
-						imageUrl: data.url,
-					};
-				});
+				reader.readAsDataURL(file);
+
+				reader.onloadend = () => {
+					const result = reader.result;
+					if (typeof result === 'string') {
+						setLink(result);
+					}
+				};
 			}
 		} catch (error) {
 			console.warn(error);
@@ -84,12 +85,17 @@ export const CreatePost = () => {
 	};
 
 	const onRemoveImage = () => {
-		setPost((post) => {
-			return {
-				...post,
-				imageUrl: '',
-			};
-		});
+		if (isEditing) {
+			setLink('');
+			setPost((post) => {
+				return {
+					...post,
+					imageUrl: '',
+				};
+			});
+		} else {
+			setLink('');
+		}
 	};
 
 	const onText = useCallback((text: string) => {
@@ -123,11 +129,37 @@ export const CreatePost = () => {
 		try {
 			// setLoading(true);
 
-			const { data } = isEditing
-				? await customeAxios.patch(`/posts/${id}`, post)
-				: await customeAxios.post('/posts', post);
+			if (isEditing) {
+				if (link) {
+					await customeAxios
+						.post('/upload', { url: link })
+						.then(async ({ data }) => {
+							await customeAxios.patch(`/posts/${id}`, {
+								...post,
+								imageUrl: data.url,
+							});
+						});
+				} else {
+					await customeAxios.patch(`/posts/${id}`, post);
+				}
 
-			navigate(`/posts/${data}`);
+				navigate(`/posts/${id}`);
+			} else {
+				if (link) {
+					await customeAxios
+						.post('/upload', { url: link })
+						.then(async ({ data }) => {
+							const res = await customeAxios.post('/posts', {
+								...post,
+								imageUrl: data.url,
+							});
+							navigate(`/posts/${res.data}`);
+						});
+				}
+
+				const { data } = await customeAxios.post('/posts', post);
+				navigate(`/posts/${data}`);
+			}
 		} catch (error) {
 			console.warn(error);
 			alert('Error');
@@ -170,16 +202,21 @@ export const CreatePost = () => {
 				onChange={handleChangeFile}
 				hidden
 			/>
-			{post.imageUrl && (
+			{(link || post.imageUrl) && (
 				<>
 					<Button variant='contained' color='error' onClick={onRemoveImage}>
 						Удалить
 					</Button>
-					<img
-						className={styles.image}
-						src={`http://localhost:4444${post.imageUrl}`}
-						alt='Uploaded'
-					/>
+
+					{isEditing ? (
+						<img
+							className={styles.image}
+							src={link ? link : `${PathsEnum.Server}${post.imageUrl}`}
+							alt='Uploaded'
+						/>
+					) : (
+						<img className={styles.image} src={link} alt='Uploaded' />
+					)}
 				</>
 			)}
 
