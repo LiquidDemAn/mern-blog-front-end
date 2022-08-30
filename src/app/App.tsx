@@ -12,11 +12,13 @@ import { Tag } from '../pages/tag';
 
 export enum PathsEnum {
 	Server = 'http://localhost:4444/',
-	Host = 'http://localhost:4444',
 	Home = '/',
-	Login = 'login',
 	Register = 'register',
+	Login = 'login',
+	FullPost = 'posts/:id',
+	EditPost = 'posts/:id/edit',
 	CreatePost = 'create/post',
+	Tag = 'tags/:tag',
 }
 
 function App() {
@@ -30,12 +32,12 @@ function App() {
 		<Routes>
 			<Route path={PathsEnum.Home} element={<Layout />}>
 				<Route index element={<Home />} />
-				<Route path='posts/:id' element={<FullPost />} />
+				<Route path={PathsEnum.FullPost} element={<FullPost />} />
 				<Route path={PathsEnum.CreatePost} element={<CreatePost />} />
-				<Route path='/posts/:id/edit' element={<CreatePost />} />
+				<Route path={PathsEnum.EditPost} element={<CreatePost />} />
 				<Route path={PathsEnum.Register} element={<Registration />} />
 				<Route path={PathsEnum.Login} element={<Login />} />
-				<Route path='/tags/:tag' element={<Tag />} />
+				<Route path={PathsEnum.Tag} element={<Tag />} />
 			</Route>
 		</Routes>
 	);

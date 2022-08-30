@@ -32,7 +32,7 @@ export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 			post?._id
 		) {
 			dispatch(deletePost(post._id)).then(() => {
-				navigate('/');
+				navigate(PathsEnum.Home);
 			});
 		}
 	};
