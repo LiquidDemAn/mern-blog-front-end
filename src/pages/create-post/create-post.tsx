@@ -155,10 +155,10 @@ export const CreatePost = () => {
 							});
 							navigate(`/posts/${res.data}`);
 						});
+				} else {
+					const { data } = await customeAxios.post('/posts', post);
+					navigate(`/posts/${data}`);
 				}
-
-				const { data } = await customeAxios.post('/posts', post);
-				navigate(`/posts/${data}`);
 			}
 		} catch (error) {
 			console.warn(error);

@@ -60,7 +60,7 @@ export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 				{post.imageUrl && (
 					<img
 						className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
-						src={PathsEnum.Host + post.imageUrl}
+						src={PathsEnum.Server + post.imageUrl}
 						alt={post.title}
 					/>
 				)}

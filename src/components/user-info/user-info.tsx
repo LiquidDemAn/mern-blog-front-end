@@ -14,8 +14,8 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText }: Props) => {
 				className={styles.avatar}
 				src={
 					avatarUrl
-						? `${PathsEnum.Host}${avatarUrl}`
-						: `${PathsEnum.Host}/uploads/noavatar.png`
+						? `${PathsEnum.Server}${avatarUrl}`
+						: `${PathsEnum.Server}uploads/noavatar.png`
 				}
 				alt='avatar'
 			/>

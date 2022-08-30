@@ -47,10 +47,8 @@ export const Home = () => {
 	}, [dispatch, value]);
 
 	useEffect(() => {
-		if (!tags.length) {
-			dispatch(loadTags());
-		}
-	}, [dispatch, tags]);
+		dispatch(loadTags());
+	}, [dispatch]);
 
 	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
