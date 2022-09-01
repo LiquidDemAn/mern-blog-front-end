@@ -2,6 +2,7 @@ import { customeAxios } from './../../axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { userDataType, loginType, registerType } from './typedef';
 import { setToken } from '../../../local-storage';
+import { AxiosError } from 'axios';
 
 export const checkUserAuth = createAsyncThunk<userDataType>(
 	'auth/check-auth',
@@ -13,15 +14,26 @@ export const checkUserAuth = createAsyncThunk<userDataType>(
 
 export const loginUser = createAsyncThunk<userDataType, loginType>(
 	'auth/login',
-	async (params) => {
-		const response = await customeAxios.post('/auth/login', params);
-		const data = response.data as userDataType;
+	async (params, { rejectWithValue }) => {
+		try {
+			const response = await customeAxios.post('/auth/login', params);
+			const data = response.data;
 
-		if (data.token) {
-			setToken(data.token);
+			if (data.token) {
+				setToken(data.token);
+			}
+
+			return data;
+		} catch (err: unknown) {
+			const error = err as AxiosError;
+
+			console.log(error);
+
+			return rejectWithValue({
+				data: error.response?.data,
+				status: error.response?.status,
+			});
 		}
-
-		return data;
 	}
 );
 

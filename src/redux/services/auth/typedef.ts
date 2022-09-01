@@ -22,5 +22,30 @@ export type userDataType = {
 export type authStateType = {
 	userData: null | userDataType;
 	loading: boolean;
-	error: null;
+	error: null | unknown;
+	validationError: null | unknown;
+};
+
+export enum ParamsEnum {
+	Password = 'password',
+	Email = 'email',
+	FullName = 'fullName',
+	AvatarUrl = 'avatarUrl',
+}
+
+export type AuthValidtionErrorType = {
+	status: number;
+	data: {
+		param?: ParamsEnum;
+	}[];
+};
+
+export type AuthErrorType = {
+	status: number;
+	message: string;
+};
+
+export type AuthRequestErrorType = {
+	status: number;
+	data: unknown;
 };
