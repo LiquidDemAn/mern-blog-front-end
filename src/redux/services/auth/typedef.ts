@@ -7,6 +7,7 @@ export type registerType = {
 	email: string;
 	password: string;
 	fullName: string;
+	nickName: string;
 	avatarUrl?: string;
 };
 

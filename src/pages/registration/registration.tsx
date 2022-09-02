@@ -26,6 +26,7 @@ export const Registration = () => {
 			email: '',
 			password: '',
 			fullName: '',
+			nickName: '',
 			avatarUrl: avatar,
 		},
 		mode: 'onChange',
@@ -61,9 +62,24 @@ export const Registration = () => {
 				fullWidth
 				label='Full Name'
 				error={Boolean(errors.fullName?.message)}
-				helperText={errors.fullName?.message}
+				helperText={
+					errors.fullName?.message ||
+					'Full name must be at least 3 characters long and not contain special characters!'
+				}
 				id='full-name'
 				{...register('fullName', { required: 'Enter full name' })}
+			/>
+
+			<TextField
+				fullWidth
+				label='Nick Name'
+				error={Boolean(errors.nickName?.message)}
+				helperText={
+					errors.nickName?.message ||
+					'Nickname must be at least 3 characters long, not contain spaces and special characters!'
+				}
+				id='nick-name'
+				{...register('nickName', { required: 'Enter nickname' })}
 			/>
 
 			<TextField
@@ -80,7 +96,10 @@ export const Registration = () => {
 				fullWidth
 				label='Password'
 				error={Boolean(errors.password?.message)}
-				helperText={errors.password?.message}
+				helperText={
+					errors.password?.message ||
+					'Password must be at least 5 characters long!'
+				}
 				type='password'
 				id='password'
 				{...register('password', { required: 'Enter password' })}
