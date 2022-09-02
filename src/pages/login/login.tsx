@@ -24,6 +24,7 @@ export const Login = () => {
 			return item.param === ParamsEnum.Password;
 		})
 	);
+
 	const emailError = Boolean(
 		validationError?.data.find((item) => {
 			return item.param === ParamsEnum.Email;
@@ -76,7 +77,7 @@ export const Login = () => {
 			onSubmit={onSubmit}
 			title='Login'
 		>
-			{error && error.status === 500 ? (
+			{error?.status === 500 ? (
 				<Alert severity='error' style={{ width: '100%' }}>
 					Something went wrong! Failed to login!
 				</Alert>
@@ -84,7 +85,7 @@ export const Login = () => {
 				<></>
 			)}
 
-			{error && error.status !== 500 ? (
+			{error?.status !== 500 ? (
 				<Alert severity='error' style={{ width: '100%' }}>
 					Login or password do not match
 				</Alert>

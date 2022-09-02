@@ -44,11 +44,8 @@ export type AuthValidtionErrorType = {
 
 export type AuthErrorType = {
 	status: number;
-	message: string;
-	param?: string;
-};
-
-export type AuthRequestErrorType = {
-	status: number;
-	data: unknown;
+	data: {
+		message: string;
+		param?: string;
+	};
 };
