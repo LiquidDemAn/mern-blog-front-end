@@ -1,6 +1,6 @@
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { registerType } from '../../redux/services/auth/typedef';
+import { RegisterType } from '../../redux/services/auth/typedef';
 import { AuthForm } from '../../components/auth-form';
 import { TextField } from '@mui/material';
 import { Navigate } from 'react-router-dom';
@@ -13,8 +13,6 @@ export const Registration = () => {
 	const dispatch = useAppDispach();
 	const isAuth = useAppSelector(getIsAuth);
 	const [avatar, setAvatar] = useState('');
-
-	console.log(avatar);
 
 	const {
 		register,
@@ -32,7 +30,7 @@ export const Registration = () => {
 		mode: 'onChange',
 	});
 
-	const onSubmit = (values: registerType) => {
+	const onSubmit = (values: RegisterType) => {
 		if (avatar) {
 			dispatch(
 				registerUser({

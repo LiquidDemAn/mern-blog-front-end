@@ -1,9 +1,9 @@
-export type loginType = {
+export type LoginType = {
 	email: string;
 	password: string;
 };
 
-export type registerType = {
+export type RegisterType = {
 	email: string;
 	password: string;
 	fullName: string;
@@ -11,7 +11,7 @@ export type registerType = {
 	avatarUrl?: string;
 };
 
-export type userDataType = {
+export type UserDataType = {
 	_id: string;
 	fullName: string;
 	email: string;
@@ -20,8 +20,8 @@ export type userDataType = {
 	token: string;
 };
 
-export type authStateType = {
-	userData: null | userDataType;
+export type AuthStateType = {
+	userData: null | UserDataType;
 	loading: boolean;
 	error: null | unknown;
 	validationError: null | unknown;
@@ -31,6 +31,7 @@ export enum ParamsEnum {
 	Password = 'password',
 	Email = 'email',
 	FullName = 'fullName',
+	NickName = 'nickName',
 	AvatarUrl = 'avatarUrl',
 }
 
@@ -44,6 +45,7 @@ export type AuthValidtionErrorType = {
 export type AuthErrorType = {
 	status: number;
 	message: string;
+	param?: string;
 };
 
 export type AuthRequestErrorType = {

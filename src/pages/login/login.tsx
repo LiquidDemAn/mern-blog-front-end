@@ -2,7 +2,7 @@ import { Alert, TextField } from '@mui/material';
 import { loginUser } from '../../redux/services/auth/actions';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { loginType, ParamsEnum } from '../../redux/services/auth/typedef';
+import { LoginType, ParamsEnum } from '../../redux/services/auth/typedef';
 import { AuthForm } from '../../components/auth-form';
 import {
 	getAuthError,
@@ -43,7 +43,7 @@ export const Login = () => {
 		mode: 'onChange',
 	});
 
-	const onSubmit = (values: loginType) => {
+	const onSubmit = (values: LoginType) => {
 		dispatch(loginUser(values));
 	};
 

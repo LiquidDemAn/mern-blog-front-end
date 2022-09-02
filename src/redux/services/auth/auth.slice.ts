@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AuthErrorType, authStateType } from './typedef';
+import { AuthErrorType, AuthStateType } from './typedef';
 import { loginUser, checkUserAuth, registerUser } from './actions';
 import { removeToken } from '../../../local-storage';
 import { PathsEnum } from '../../../app/App';
 
-const initialState: authStateType = {
+const initialState: AuthStateType = {
 	userData: null,
 	loading: false,
 	error: null,
@@ -66,15 +66,20 @@ export const authSlice = createSlice({
 			.addCase(registerUser.pending, (state) => {
 				state.loading = true;
 				state.error = null;
+				state.validationError = null;
 			})
 			.addCase(registerUser.fulfilled, (state, { payload }) => {
 				state.loading = false;
 				state.error = null;
+				state.validationError = null;
 				state.userData = payload;
 			})
-			.addCase(registerUser.rejected, (state) => {
-				state.loading = true;
-				state.error = null;
+			.addCase(registerUser.rejected, (state, { payload }) => {
+				const value = payload as AuthErrorType;
+
+				state.loading = false;
+				state.validationError = value.status === 403 ? value : null;
+				state.error = value.status !== 403 ? value : null;
 			}),
 });
 
