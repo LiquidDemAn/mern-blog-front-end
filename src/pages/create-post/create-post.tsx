@@ -171,7 +171,7 @@ export const CreatePost = () => {
 			spellChecker: false,
 			maxHeight: '260px',
 			autofocus: true,
-			placeholder: 'Введите текст...',
+			placeholder: 'Enter text...',
 			status: false,
 			autosave: {
 				uniqueId: 'save',
@@ -183,31 +183,40 @@ export const CreatePost = () => {
 	);
 
 	if (!token && !isAuth) {
-		return <Navigate to='/login' />;
+		return <Navigate to={PathsEnum.Login} />;
 	}
 
 	return (
 		<Paper style={{ padding: 30 }}>
-			<Button
-				onClick={() => fileRef.current?.click()}
-				variant='outlined'
-				size='large'
-			>
-				Загрузить превью
-			</Button>
-			<input
-				type='file'
-				accept='.png, .jpg, .jpeg'
-				ref={fileRef}
-				onChange={handleChangeFile}
-				hidden
-			/>
+			<div className={styles.preview_buttons}>
+				<Button
+					onClick={() => fileRef.current?.click()}
+					variant='outlined'
+					size='large'
+				>
+					Download preview
+				</Button>
+				<input
+					type='file'
+					accept='.png, .jpg, .jpeg'
+					ref={fileRef}
+					onChange={handleChangeFile}
+					hidden
+				/>
+				{(link || post.imageUrl) && (
+					<Button
+						variant='contained'
+						size='large'
+						color='error'
+						onClick={onRemoveImage}
+					>
+						Delete preview
+					</Button>
+				)}
+			</div>
+
 			{(link || post.imageUrl) && (
 				<>
-					<Button variant='contained' color='error' onClick={onRemoveImage}>
-						Удалить
-					</Button>
-
 					{isEditing ? (
 						<img
 							className={styles.image}
@@ -225,7 +234,7 @@ export const CreatePost = () => {
 				value={post.title}
 				classes={{ root: styles.title }}
 				variant='standard'
-				placeholder='Заголовок статьи...'
+				placeholder='Article title...'
 				fullWidth
 			/>
 			<TextField
@@ -233,7 +242,7 @@ export const CreatePost = () => {
 				value={post.tags}
 				classes={{ root: styles.tags }}
 				variant='standard'
-				placeholder='Тэги'
+				placeholder='Tags'
 				fullWidth
 			/>
 			<SimpleMDE

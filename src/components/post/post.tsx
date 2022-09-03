@@ -66,7 +66,7 @@ export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 				)}
 
 				<div className={styles.wrapper}>
-					<UserInfo {...post.author} additionalText={post.createdAt} />
+					<UserInfo {...post.author} date={post.createdAt} />
 					<div className={styles.indention}>
 						<h2
 							className={clsx(styles.title, {

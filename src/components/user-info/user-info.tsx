@@ -4,10 +4,10 @@ import styles from './user-info.module.scss';
 type Props = {
 	avatarUrl?: string;
 	fullName: string;
-	additionalText: string;
+	date: string;
 };
 
-export const UserInfo = ({ avatarUrl, fullName, additionalText }: Props) => {
+export const UserInfo = ({ avatarUrl, fullName, date }: Props) => {
 	return (
 		<div className={styles.root}>
 			<img
@@ -21,7 +21,10 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText }: Props) => {
 			/>
 			<div className={styles.userDetails}>
 				<span className={styles.userName}>{fullName}</span>
-				<span className={styles.additional}>{additionalText}</span>
+
+				<span className={styles.additional}>
+					{new Date(date).toDateString()}
+				</span>
 			</div>
 		</div>
 	);

@@ -14,7 +14,7 @@ export enum PathsEnum {
 	Server = 'http://localhost:4444/',
 	Home = '/',
 	Register = 'register',
-	Login = 'login',
+	Login = '/login',
 	FullPost = 'posts/:id',
 	EditPost = 'posts/:id/edit',
 	CreatePost = 'create/post',

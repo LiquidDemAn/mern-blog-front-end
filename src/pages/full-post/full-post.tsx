@@ -55,7 +55,7 @@ export const FullPost = () => {
 			<Post isEditable={user?._id === post?.author._id} post={post} isFullPost>
 				{post?.text ? <ReactMarkdown children={post?.text} /> : <></>}
 			</Post>
-			<Comments
+			{/* <Comments
 				items={[
 					{
 						user: {
@@ -75,7 +75,7 @@ export const FullPost = () => {
 				isLoading={false}
 			>
 				<AddComment />
-			</Comments>
+			</Comments> */}
 		</>
 	);
 };

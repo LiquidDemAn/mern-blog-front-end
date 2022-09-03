@@ -1,7 +1,8 @@
 .title {
 	input {
-		font-size: 42px;
+		font-size: 38px;
 		font-weight: 900;
+		margin-bottom: 10px;
 	}
 
 	div {
@@ -12,8 +13,16 @@
 	}
 }
 
+.preview_buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 15px;
+}
+
 .image {
 	width: 100%;
+	min-height: 400px;
+	max-height: 400px;
 }
 
 .tags {
@@ -21,7 +30,7 @@
 }
 
 .editor {
-	margin: 30px -30px;
+	margin: 20px -15px;
 
 	:global {
 		.cm-s-easymde {
