@@ -6,16 +6,20 @@ import { LoginType, ParamsEnum } from '../../redux/services/auth/typedef';
 import { AuthForm } from '../../components/auth-form';
 import {
 	getAuthError,
+	getAuthLoading,
 	getAuthValidationError,
 	getIsAuth,
 } from '../../redux/services/auth/selectors';
 import { Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { resetErrors } from '../../redux/services/auth/auth.slice';
+import { Loader } from '../../components/loader';
 
 export const Login = () => {
 	const dispatch = useAppDispach();
 	const isAuth = useAppSelector(getIsAuth);
+
+	const loading = useAppSelector(getAuthLoading);
 
 	const error = useAppSelector(getAuthError);
 	const validationError = useAppSelector(getAuthValidationError);
@@ -119,6 +123,8 @@ export const Login = () => {
 				id='password'
 				{...register('password', { required: 'Enter password' })}
 			/>
+
+			<Loader open={loading} />
 		</AuthForm>
 	);
 };

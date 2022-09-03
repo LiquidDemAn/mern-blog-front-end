@@ -34,16 +34,16 @@ export const Header = () => {
 									variant='contained'
 									color='error'
 								>
-									Выйти
+									Log out
 								</Button>
 							</>
 						) : (
 							<>
 								<Link to={PathsEnum.Login}>
-									<Button variant='outlined'>Войти</Button>
+									<Button variant='outlined'>Log in</Button>
 								</Link>
 								<Link to={PathsEnum.Register}>
-									<Button variant='contained'>Создать аккаунт</Button>
+									<Button variant='contained'>Create account</Button>
 								</Link>
 							</>
 						)}
