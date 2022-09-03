@@ -11,6 +11,7 @@ import {
 } from '../../redux/services/auth/selectors';
 import { Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { resetErrors } from '../../redux/services/auth/auth.slice';
 
 export const Login = () => {
 	const dispatch = useAppDispach();
@@ -66,6 +67,12 @@ export const Login = () => {
 		}
 	}, [setError, emailError]);
 
+	useEffect(() => {
+		return () => {
+			dispatch(resetErrors());
+		};
+	}, [dispatch]);
+
 	if (isAuth) {
 		return <Navigate to='/' />;
 	}
@@ -85,7 +92,7 @@ export const Login = () => {
 				<></>
 			)}
 
-			{error?.status !== 500 ? (
+			{error?.status === 400 ? (
 				<Alert severity='error' style={{ width: '100%' }}>
 					Login or password do not match
 				</Alert>

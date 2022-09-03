@@ -12,6 +12,7 @@ import {
 import { registerUser } from '../../redux/services/auth/actions';
 import { AvatarCreator } from '../../components/avatar-creator';
 import { useState, useEffect } from 'react';
+import { resetErrors } from '../../redux/services/auth/auth.slice';
 
 export const Registration = () => {
 	const [avatar, setAvatar] = useState('');
@@ -105,6 +106,11 @@ export const Registration = () => {
 		}
 	}, [setError, emailError]);
 
+	useEffect(() => {
+		return () => {
+			dispatch(resetErrors());
+		};
+	}, [dispatch]);
 	const onSubmit = (values: RegisterType) => {
 		if (avatar) {
 			dispatch(

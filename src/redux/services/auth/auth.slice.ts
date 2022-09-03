@@ -22,6 +22,10 @@ export const authSlice = createSlice({
 			removeToken();
 			window.location.replace(PathsEnum.Login);
 		},
+		resetErrors(state) {
+			state.error = null;
+			state.validationError = null;
+		},
 	},
 	extraReducers: (bulider) =>
 		bulider
@@ -83,4 +87,4 @@ export const authSlice = createSlice({
 			}),
 });
 
-export const { logOut } = authSlice.actions;
+export const { logOut, resetErrors } = authSlice.actions;
