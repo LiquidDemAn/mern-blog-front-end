@@ -6,6 +6,7 @@ import { Alert, TextField } from '@mui/material';
 import { Navigate } from 'react-router-dom';
 import {
 	getAuthError,
+	getAuthLoading,
 	getAuthValidationError,
 	getIsAuth,
 } from '../../redux/services/auth/selectors';
@@ -13,6 +14,7 @@ import { registerUser } from '../../redux/services/auth/actions';
 import { AvatarCreator } from '../../components/avatar-creator';
 import { useState, useEffect } from 'react';
 import { resetErrors } from '../../redux/services/auth/auth.slice';
+import { Loader } from '../../components/loader';
 
 export const Registration = () => {
 	const [avatar, setAvatar] = useState('');
@@ -40,9 +42,8 @@ export const Registration = () => {
 	});
 
 	const dispatch = useAppDispach();
-
 	const isAuth = useAppSelector(getIsAuth);
-
+	const loading = useAppSelector(getAuthLoading);
 	const error = useAppSelector(getAuthError);
 	const validationError = useAppSelector(getAuthValidationError);
 
@@ -199,6 +200,8 @@ export const Registration = () => {
 				id='password'
 				{...register('password', { required: 'Enter password' })}
 			/>
+
+			<Loader open={loading} />
 		</AuthForm>
 	);
 };
