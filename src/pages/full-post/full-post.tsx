@@ -4,9 +4,11 @@ import ReactMarkdown from 'react-markdown';
 import { Link, useParams } from 'react-router-dom';
 import { AddComment } from '../../components/add-comment';
 import { Comments } from '../../components/comments';
+import { Loader } from '../../components/loader';
 import { Post } from '../../components/post';
 import { customeAxios } from '../../redux/axios';
 import { getUser } from '../../redux/services/auth/selectors';
+import { getDeletePostLoading } from '../../redux/services/posts/selectors';
 import { FullPostType } from '../../redux/services/posts/typedef';
 import { useAppSelector } from '../../redux/store/hooks';
 
@@ -15,6 +17,8 @@ export const FullPost = () => {
 	const user = useAppSelector(getUser);
 	const [error, setError] = useState<AxiosError | null>(null);
 	const [post, setPost] = useState<FullPostType | null>(null);
+
+	const deleteLoading = useAppSelector(getDeletePostLoading);
 
 	useEffect(() => {
 		const loadPost = async () => {
@@ -76,6 +80,8 @@ export const FullPost = () => {
 			>
 				<AddComment />
 			</Comments> */}
+
+			<Loader open={deleteLoading} />
 		</>
 	);
 };
