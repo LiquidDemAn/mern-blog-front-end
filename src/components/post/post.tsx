@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
@@ -14,6 +14,7 @@ import { FullPostType, PostType } from '../../redux/services/posts/typedef';
 import { PathsEnum } from '../../app/App';
 import { useAppDispach } from '../../redux/store/hooks';
 import { deletePost } from '../../redux/services/posts/actions';
+import { DeletePost } from '../dialogs/delete-post';
 
 type Props = {
 	post?: PostType | FullPostType | null;
@@ -26,12 +27,21 @@ export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 	const dispatch = useAppDispach();
 	const navigate = useNavigate();
 
-	const onClickRemove = () => {
-		if (
-			window.confirm('Are you sure you want to delete this post?') &&
-			post?._id
-		) {
-			dispatch(deletePost(post._id)).then(() => {
+	const [open, setOpen] = useState(false);
+
+	const handleOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const handleDelete = () => {
+		if (post?._id) {
+			handleClose();
+
+			dispatch(deletePost('post._id')).then(() => {
 				navigate(PathsEnum.Home);
 			});
 		}
@@ -51,7 +61,7 @@ export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 								<EditIcon />
 							</IconButton>
 						</Link>
-						<IconButton onClick={onClickRemove} color='secondary'>
+						<IconButton onClick={handleOpen} color='secondary'>
 							<DeleteIcon />
 						</IconButton>
 					</div>
@@ -104,6 +114,13 @@ export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 					</div>
 				</div>
 			</div>
+
+			{/* Dialogs */}
+			<DeletePost
+				open={open}
+				handleClose={handleClose}
+				handleDelete={handleDelete}
+			/>
 		</>
 	);
 };
