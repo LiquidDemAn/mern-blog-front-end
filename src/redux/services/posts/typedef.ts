@@ -30,4 +30,6 @@ export type PostsStateType = {
 	posts: PostType[];
 	loading: boolean;
 	error: null | string;
+	deleteError: null | unknown;
+	deleteLoading: boolean;
 };

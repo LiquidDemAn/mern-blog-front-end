@@ -11,7 +11,9 @@ import { PostsStateType } from './typedef';
 const initialState: PostsStateType = {
 	posts: [],
 	loading: false,
+	deleteLoading: false,
 	error: null,
+	deleteError: null,
 };
 
 export const postsSlice = createSlice({
@@ -75,13 +77,17 @@ export const postsSlice = createSlice({
 
 			// Delete post
 			.addCase(deletePost.pending, (state) => {
-				state.loading = true;
-				state.error = null;
+				state.deleteLoading = true;
+				state.deleteError = null;
 			})
 			.addCase(deletePost.fulfilled, (state, { meta }) => {
 				state.posts = state.posts.filter((item) => item._id !== meta.arg);
-				state.loading = false;
-				state.error = null;
+				state.deleteLoading = false;
+				state.deleteError = null;
+			})
+			.addCase(deletePost.rejected, (state, { payload }) => {
+				state.deleteLoading = false;
+				state.deleteError = payload;
 			}),
 });
 

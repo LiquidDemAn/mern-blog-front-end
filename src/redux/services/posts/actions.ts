@@ -36,7 +36,11 @@ export const loadPopularPostsByTag = createAsyncThunk<PostType[], string>(
 
 export const deletePost = createAsyncThunk(
 	'posts/delete-post',
-	async (id: string) => {
-		await customeAxios.delete(`/posts/${id}`);
+	async (id: string, { rejectWithValue }) => {
+		try {
+			await customeAxios.delete(`/posts/${id}`);
+		} catch (err) {
+			return rejectWithValue(err);
+		}
 	}
 );
