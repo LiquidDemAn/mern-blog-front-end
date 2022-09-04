@@ -11,6 +11,7 @@ import {
 	getAllPosts,
 	getPostsLoading,
 	getPostsError,
+	getDeletePostLoading,
 } from '../../redux/services/posts/selectors';
 import { loadTags } from '../../redux/services/tags/actions';
 import {
@@ -21,6 +22,8 @@ import {
 import { getUser } from '../../redux/services/auth/selectors';
 import { Posts } from '../../components/posts';
 import { TabsEnum } from '../../typedef';
+import { Loader } from '../../components/loader';
+import { DeletePostError } from '../../components/dialogs/delete-post-error';
 
 export const Home = () => {
 	const dispatch = useAppDispach();
@@ -32,9 +35,15 @@ export const Home = () => {
 	const postsLoading = useAppSelector(getPostsLoading);
 	const postsError = useAppSelector(getPostsError);
 
+	const deleteLoading = useAppSelector(getDeletePostLoading);
+
 	const tags = useAppSelector(getTags);
 	const tagsLoading = useAppSelector(getTagsLoading);
 	const tagsError = useAppSelector(getTagsError);
+
+	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
+		setValue(newValue);
+	};
 
 	useEffect(() => {
 		if (value === TabsEnum.New) {
@@ -49,10 +58,6 @@ export const Home = () => {
 	useEffect(() => {
 		dispatch(loadTags());
 	}, [dispatch]);
-
-	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
-		setValue(newValue);
-	};
 
 	return (
 		<>
@@ -95,6 +100,11 @@ export const Home = () => {
 					<Tags error={tagsError} tags={tags} isLoading={tagsLoading} />
 				</Grid>
 			</Grid>
+
+			<Loader open={deleteLoading} />
+
+			{/* Dialogs */}
+			<DeletePostError />
 		</>
 	);
 };
