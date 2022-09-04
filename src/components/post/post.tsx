@@ -41,7 +41,7 @@ export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 		if (post?._id) {
 			handleClose();
 
-			dispatch(deletePost('post._id')).then(() => {
+			dispatch(deletePost(post._id)).then(() => {
 				navigate(PathsEnum.Home);
 			});
 		}

@@ -32,8 +32,6 @@ export const DeletePostError = () => {
 		}
 	}, [error]);
 
-	useEffect(() => {}, []);
-
 	return (
 		<Dialog
 			open={open}
@@ -41,11 +39,21 @@ export const DeletePostError = () => {
 			aria-labelledby='delete-post-error-title'
 			aria-describedby='delete-post-error-description'
 		>
-			<DialogTitle id='delete-post-error-title'>Deletion error!</DialogTitle>
+			<DialogTitle id='delete-post-error-title'>Deletion ERROR!</DialogTitle>
 			<DialogContent>
-				<DialogContentText id='delete-post-error-description'>
-					Something went wrong! Try again later...
-				</DialogContentText>
+				<>
+					{error?.status === 500 && (
+						<DialogContentText id='delete-post-error-description'>
+							Something went wrong! Try again later...
+						</DialogContentText>
+					)}
+
+					{error?.status === 404 && (
+						<DialogContentText id='delete-post-error-description'>
+							Post not found!
+						</DialogContentText>
+					)}
+				</>
 			</DialogContent>
 			<DialogActions>
 				<Button variant='contained' onClick={handleClose}>

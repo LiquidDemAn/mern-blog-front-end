@@ -77,10 +77,8 @@ export const registerUser = createAsyncThunk<UserDataType, RegisterType>(
 			}
 
 			return data;
-		} catch (err: unknown) {
+		} catch (err) {
 			const error = err as AxiosError;
-
-			console.log(error);
 
 			return rejectWithValue({
 				data: error.response?.data,

@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
 import { customeAxios } from '../../axios';
 import { PostType } from './typedef';
 
@@ -40,7 +41,12 @@ export const deletePost = createAsyncThunk(
 		try {
 			await customeAxios.delete(`/posts/${id}`);
 		} catch (err) {
-			return rejectWithValue(err);
+			const error = err as AxiosError;
+
+			return rejectWithValue({
+				status: error.response?.status,
+				message: error.message,
+			});
 		}
 	}
 );

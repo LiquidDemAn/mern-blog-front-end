@@ -8,7 +8,7 @@ export type CommentType = {
 
 export type ErrorType = {
 	status: number;
-	message: string;
+	message?: string;
 };
 
 export enum TabsEnum {
