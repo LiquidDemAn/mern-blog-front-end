@@ -19,7 +19,11 @@ const initialState: PostsStateType = {
 export const postsSlice = createSlice({
 	name: 'posts',
 	initialState,
-	reducers: {},
+	reducers: {
+		removeDeletePostError(state) {
+			state.deleteError = null;
+		},
+	},
 	extraReducers: (bulider) =>
 		bulider
 			// Load all posts
@@ -91,4 +95,4 @@ export const postsSlice = createSlice({
 			}),
 });
 
-// export const {} = postsSlice.reducer;
+export const { removeDeletePostError } = postsSlice.actions;

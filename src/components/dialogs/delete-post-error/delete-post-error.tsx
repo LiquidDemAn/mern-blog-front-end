@@ -7,10 +7,12 @@ import {
 	DialogActions,
 	Button,
 } from '@mui/material';
-import { useAppSelector } from '../../../redux/store/hooks';
+import { useAppDispach, useAppSelector } from '../../../redux/store/hooks';
 import { getDeletePostError } from '../../../redux/services/posts/selectors';
+import { removeDeletePostError } from '../../../redux/services/posts/posts.slice';
 
 export const DeletePostError = () => {
+	const dispatch = useAppDispach();
 	const error = useAppSelector(getDeletePostError);
 
 	const [open, setOpen] = useState(false);
@@ -21,6 +23,7 @@ export const DeletePostError = () => {
 
 	const handleClose = () => {
 		setOpen(false);
+		dispatch(removeDeletePostError());
 	};
 
 	useEffect(() => {
