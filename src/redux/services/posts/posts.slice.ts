@@ -10,9 +10,9 @@ import { PostsStateType } from './typedef';
 
 const initialState: PostsStateType = {
 	posts: [],
-	loading: false,
+	postsLoading: false,
+	postsError: null,
 	deleteLoading: false,
-	error: null,
 	deleteError: null,
 };
 
@@ -29,54 +29,54 @@ export const postsSlice = createSlice({
 			// Load all posts
 			.addCase(loadAllPosts.pending, (state) => {
 				state.posts = [];
-				state.loading = true;
-				state.error = null;
+				state.postsLoading = true;
+				state.postsError = null;
 			})
 			.addCase(loadAllPosts.fulfilled, (state, { payload }) => {
-				state.loading = false;
+				state.postsLoading = false;
 				state.posts = payload;
 			})
 
 			// Load popular posts
 			.addCase(loadPopularPosts.pending, (state) => {
 				state.posts = [];
-				state.loading = true;
-				state.error = null;
+				state.postsLoading = true;
+				state.postsError = null;
 			})
 			.addCase(loadPopularPosts.fulfilled, (state, { payload }) => {
-				state.loading = false;
+				state.postsLoading = false;
 				state.posts = payload;
 			})
 			.addCase(loadPopularPosts.rejected, (state, { payload }) => {
-				state.loading = false;
+				state.postsLoading = false;
 			})
 
 			// Load posts by tag
 			.addCase(loadPostsByTag.pending, (state) => {
 				state.posts = [];
-				state.loading = true;
-				state.error = null;
+				state.postsLoading = true;
+				state.postsError = null;
 			})
 			.addCase(loadPostsByTag.fulfilled, (state, { payload }) => {
-				state.loading = false;
+				state.postsLoading = false;
 				state.posts = payload;
 			})
 			.addCase(loadPostsByTag.rejected, (state, { payload }) => {
-				state.loading = false;
+				state.postsLoading = false;
 			})
 
 			// Load popular posts by tag
 			.addCase(loadPopularPostsByTag.pending, (state) => {
 				state.posts = [];
-				state.loading = true;
-				state.error = null;
+				state.postsLoading = true;
+				state.postsError = null;
 			})
 			.addCase(loadPopularPostsByTag.fulfilled, (state, { payload }) => {
-				state.loading = false;
+				state.postsLoading = false;
 				state.posts = payload;
 			})
 			.addCase(loadPopularPostsByTag.rejected, (state, { payload }) => {
-				state.loading = false;
+				state.postsLoading = false;
 			})
 
 			// Delete post

@@ -28,8 +28,8 @@ export type FullPostType = {
 
 export type PostsStateType = {
 	posts: PostType[];
-	loading: boolean;
-	error: null | string;
+	postsLoading: boolean;
+	postsError: null | string;
 	deleteError: null | unknown;
 	deleteLoading: boolean;
 };
