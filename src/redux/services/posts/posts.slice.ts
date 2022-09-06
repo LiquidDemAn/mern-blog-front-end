@@ -53,6 +53,7 @@ export const postsSlice = createSlice({
 			})
 			.addCase(loadPopularPosts.rejected, (state, { payload }) => {
 				state.postsLoading = false;
+				state.postsError = payload;
 			})
 
 			// Load posts by tag

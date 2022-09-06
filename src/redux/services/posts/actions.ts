@@ -22,9 +22,18 @@ export const loadAllPosts = createAsyncThunk<PostType[]>(
 
 export const loadPopularPosts = createAsyncThunk<PostType[]>(
 	'posts/load-popular-posts',
-	async () => {
-		const response = await customeAxios.get('/posts/popular');
-		return await response.data;
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await customeAxios.get('/posts/popular');
+			return await response.data;
+		} catch (err) {
+			const error = err as AxiosError;
+
+			return rejectWithValue({
+				status: error.response?.status,
+				message: error.message,
+			});
+		}
 	}
 );
 
