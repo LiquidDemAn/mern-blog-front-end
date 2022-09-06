@@ -1,10 +1,10 @@
 import styles from './header.module.scss';
 import { Button, Container } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { PathsEnum } from '../../app/App';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { getIsAuth } from '../../redux/services/auth/selectors';
 import { logOut } from '../../redux/services/auth/auth.slice';
+import { PathsEnum } from '../../typedef';
 
 export const Header = () => {
 	const dispatch = useAppDispach();

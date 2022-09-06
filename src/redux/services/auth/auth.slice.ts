@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AuthErrorType, AuthStateType } from './typedef';
 import { loginUser, checkUserAuth, registerUser } from './actions';
 import { removeToken } from '../../../local-storage';
-import { PathsEnum } from '../../../app/App';
+import { PathsEnum } from '../../../typedef';
 
 const initialState: AuthStateType = {
 	userData: null,

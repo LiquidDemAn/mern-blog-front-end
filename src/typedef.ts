@@ -11,6 +11,17 @@ export type ErrorType = {
 	message?: string;
 };
 
+export enum PathsEnum {
+	Server = 'http://localhost:4444/',
+	Home = '/',
+	Register = 'register',
+	Login = '/login',
+	FullPost = 'posts/:id',
+	EditPost = 'posts/:id/edit',
+	CreatePost = 'create/post',
+	Tag = 'tags/:tag',
+}
+
 export enum TabsEnum {
 	New = 'New',
 	Popular = 'Popular',

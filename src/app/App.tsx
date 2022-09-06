@@ -9,17 +9,18 @@ import { Registration } from '../pages/registration';
 import { checkUserAuth } from '../redux/services/auth/actions';
 import { useAppDispach } from '../redux/store/hooks';
 import { Tag } from '../pages/tag';
+import { PathsEnum } from '../typedef';
 
-export enum PathsEnum {
-	Server = 'http://localhost:4444/',
-	Home = '/',
-	Register = 'register',
-	Login = '/login',
-	FullPost = 'posts/:id',
-	EditPost = 'posts/:id/edit',
-	CreatePost = 'create/post',
-	Tag = 'tags/:tag',
-}
+// export enum PathsEnum {
+// 	Server = 'http://localhost:4444/',
+// 	Home = '/',
+// 	Register = 'register',
+// 	Login = '/login',
+// 	FullPost = 'posts/:id',
+// 	EditPost = 'posts/:id/edit',
+// 	CreatePost = 'create/post',
+// 	Tag = 'tags/:tag',
+// }
 
 function App() {
 	const dispatch = useAppDispach();

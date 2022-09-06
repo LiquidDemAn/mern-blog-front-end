@@ -17,7 +17,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../local-storage';
 import { customeAxios } from '../../redux/axios';
 import { Link } from 'react-router-dom';
-import { PathsEnum } from '../../app/App';
+import { PathsEnum } from '../../typedef';
 
 export const CreatePost = () => {
 	const { id } = useParams();

@@ -1,4 +1,4 @@
-import { PathsEnum } from '../../app/App';
+import { PathsEnum } from '../../typedef';
 import styles from './user-info.module.scss';
 
 type Props = {
