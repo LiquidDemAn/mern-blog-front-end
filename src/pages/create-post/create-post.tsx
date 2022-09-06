@@ -18,10 +18,11 @@ import { getToken } from '../../local-storage';
 import { customeAxios } from '../../redux/axios';
 import { Link } from 'react-router-dom';
 import { PathsEnum } from '../../typedef';
+import { Loader } from '../../components/loader';
 
 export const CreatePost = () => {
-	const { id } = useParams();
 	const navigate = useNavigate();
+	const { id } = useParams();
 
 	const [post, setPost] = useState({
 		title: '',
@@ -32,7 +33,7 @@ export const CreatePost = () => {
 
 	const [link, setLink] = useState('');
 
-	// const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const fileRef = useRef<null | HTMLInputElement>(null);
 
@@ -44,14 +45,24 @@ export const CreatePost = () => {
 
 	useEffect(() => {
 		if (id) {
-			customeAxios.get(`/posts/${id}`).then(({ data }) => {
-				setPost({
-					imageUrl: data.imageUrl ? data.imageUrl : '',
-					text: data.text,
-					title: data.title,
-					tags: data.tags.join(', '),
+			setLoading(true);
+
+			customeAxios
+				.get(`/posts/${id}`)
+				.then(({ data }) => {
+					setLoading(false);
+
+					setPost({
+						imageUrl: data.imageUrl ? data.imageUrl : '',
+						text: data.text,
+						title: data.title,
+						tags: data.tags.join(', '),
+					});
+				})
+				.catch((err) => {
+					// setLoading(false)
+					console.log(err);
 				});
-			});
 		} else {
 			setPost({
 				title: '',
@@ -127,20 +138,26 @@ export const CreatePost = () => {
 
 	const onSubmit = async () => {
 		try {
-			// setLoading(true);
+			setLoading(true);
 
 			if (isEditing) {
 				if (link) {
 					await customeAxios
 						.post('/upload', { url: link })
 						.then(async ({ data }) => {
-							await customeAxios.patch(`/posts/${id}`, {
-								...post,
-								imageUrl: data.url,
-							});
+							await customeAxios
+								.patch(`/posts/${id}`, {
+									...post,
+									imageUrl: data.url,
+								})
+								.then(() => {
+									setLoading(false);
+								});
 						});
 				} else {
-					await customeAxios.patch(`/posts/${id}`, post);
+					await customeAxios.patch(`/posts/${id}`, post).then(() => {
+						setLoading(false);
+					});
 				}
 
 				navigate(`/posts/${id}`);
@@ -161,6 +178,7 @@ export const CreatePost = () => {
 				}
 			}
 		} catch (error) {
+			setLoading(false);
 			console.warn(error);
 			alert('Error');
 		}
@@ -187,78 +205,82 @@ export const CreatePost = () => {
 	}
 
 	return (
-		<Paper style={{ padding: 30 }}>
-			<div className={styles.preview_buttons}>
-				<Button
-					onClick={() => fileRef.current?.click()}
-					variant='outlined'
-					size='large'
-				>
-					Download preview
-				</Button>
-				<input
-					type='file'
-					accept='.png, .jpg, .jpeg'
-					ref={fileRef}
-					onChange={handleChangeFile}
-					hidden
-				/>
-				{(link || post.imageUrl) && (
+		<>
+			<Paper style={{ padding: 30 }}>
+				<div className={styles.preview_buttons}>
 					<Button
-						variant='contained'
+						onClick={() => fileRef.current?.click()}
+						variant='outlined'
 						size='large'
-						color='error'
-						onClick={onRemoveImage}
 					>
-						Delete preview
+						Download preview
 					</Button>
-				)}
-			</div>
-
-			{(link || post.imageUrl) && (
-				<>
-					{isEditing ? (
-						<img
-							className={styles.image}
-							src={link ? link : `${PathsEnum.Server}${post.imageUrl}`}
-							alt='Uploaded'
-						/>
-					) : (
-						<img className={styles.image} src={link} alt='Uploaded' />
+					<input
+						type='file'
+						accept='.png, .jpg, .jpeg'
+						ref={fileRef}
+						onChange={handleChangeFile}
+						hidden
+					/>
+					{(link || post.imageUrl) && (
+						<Button
+							variant='contained'
+							size='large'
+							color='error'
+							onClick={onRemoveImage}
+						>
+							Delete preview
+						</Button>
 					)}
-				</>
-			)}
+				</div>
 
-			<TextField
-				onChange={onTitle}
-				value={post.title}
-				classes={{ root: styles.title }}
-				variant='standard'
-				placeholder='Article title...'
-				fullWidth
-			/>
-			<TextField
-				onChange={onTags}
-				value={post.tags}
-				classes={{ root: styles.tags }}
-				variant='standard'
-				placeholder='Tags'
-				fullWidth
-			/>
-			<SimpleMDE
-				className={styles.editor}
-				value={post.text}
-				onChange={onText}
-				options={options}
-			/>
-			<div className={styles.buttons}>
-				<Button onClick={onSubmit} size='large' variant='contained'>
-					{isEditing ? 'Save' : 'Publish'}
-				</Button>
-				<Link to='/'>
-					<Button size='large'>Cancel</Button>
-				</Link>
-			</div>
-		</Paper>
+				{(link || post.imageUrl) && (
+					<>
+						{isEditing ? (
+							<img
+								className={styles.image}
+								src={link ? link : `${PathsEnum.Server}${post.imageUrl}`}
+								alt='Uploaded'
+							/>
+						) : (
+							<img className={styles.image} src={link} alt='Uploaded' />
+						)}
+					</>
+				)}
+
+				<TextField
+					onChange={onTitle}
+					value={post.title}
+					classes={{ root: styles.title }}
+					variant='standard'
+					placeholder='Article title...'
+					fullWidth
+				/>
+				<TextField
+					onChange={onTags}
+					value={post.tags}
+					classes={{ root: styles.tags }}
+					variant='standard'
+					placeholder='Tags'
+					fullWidth
+				/>
+				<SimpleMDE
+					className={styles.editor}
+					value={post.text}
+					onChange={onText}
+					options={options}
+				/>
+				<div className={styles.buttons}>
+					<Button onClick={onSubmit} size='large' variant='contained'>
+						{isEditing ? 'Save' : 'Publish'}
+					</Button>
+					<Link to='/'>
+						<Button size='large'>Cancel</Button>
+					</Link>
+				</div>
+			</Paper>
+
+			<Loader open={loading} />
+		</>
 	);
 };

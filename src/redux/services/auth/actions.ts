@@ -37,27 +37,6 @@ export const loginUser = createAsyncThunk<UserDataType, LoginType>(
 	}
 );
 
-// export const registerUser = createAsyncThunk<UserDataType, RegisterType>(
-// 	'auth/register',
-// 	async (params) => {
-// 		const avatar = params.avatarUrl;
-
-// 		if (avatar) {
-// 			const { data } = await customeAxios.post('/upload/avatar', { avatar });
-// 			params.avatarUrl = data.url;
-// 		}
-
-// 		const response = await customeAxios.post('/auth/register', params);
-// 		const data = response.data as UserDataType;
-
-// 		if (data.token) {
-// 			setToken(data.token);
-// 		}
-
-// 		return data;
-// 	}
-// );
-
 export const registerUser = createAsyncThunk<UserDataType, RegisterType>(
 	'auth/register',
 	async (params, { rejectWithValue }) => {

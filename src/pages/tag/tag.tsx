@@ -45,8 +45,6 @@ export const Tag = () => {
 				dispatch(loadPosts(`/posts/tags/${tag}/popular`));
 			}
 		}
-
-		console.log(tag);
 	}, [dispatch, value, tag]);
 
 	useEffect(() => {
