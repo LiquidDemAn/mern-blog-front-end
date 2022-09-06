@@ -1,7 +1,7 @@
 import { ErrorType } from './../../../typedef';
 import { AppState } from '../../store/typedef';
 
-export const getAllPosts = (state: AppState) => state.posts.posts;
+export const getPosts = (state: AppState) => state.posts.posts;
 export const getPostsLoading = (state: AppState) => state.posts.postsLoading;
 
 export const getPostsError = (state: AppState) => {

@@ -3,12 +3,9 @@ import { TabPanel } from '../../components/tab-panel';
 import { Tags } from '../../components/tags';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useEffect, useState } from 'react';
+import { loadPosts } from '../../redux/services/posts/actions';
 import {
-	loadAllPosts,
-	loadPopularPosts,
-} from '../../redux/services/posts/actions';
-import {
-	getAllPosts,
+	getPosts,
 	getPostsLoading,
 	getPostsError,
 	getDeletePostLoading,
@@ -31,7 +28,7 @@ export const Home = () => {
 
 	const user = useAppSelector(getUser);
 
-	const posts = useAppSelector(getAllPosts);
+	const posts = useAppSelector(getPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
 	const postsError = useAppSelector(getPostsError);
 
@@ -47,11 +44,11 @@ export const Home = () => {
 
 	useEffect(() => {
 		if (value === TabsEnum.New) {
-			dispatch(loadAllPosts());
+			dispatch(loadPosts('/posts'));
 		}
 
 		if (value === TabsEnum.Popular) {
-			dispatch(loadPopularPosts());
+			dispatch(loadPosts('/posts/popular'));
 		}
 	}, [dispatch, value]);
 

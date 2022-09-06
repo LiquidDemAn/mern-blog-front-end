@@ -1,10 +1,7 @@
 import { Tab, Tabs, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-	loadPopularPostsByTag,
-	loadPostsByTag,
-} from '../../redux/services/posts/actions';
+import { loadPosts } from '../../redux/services/posts/actions';
 import { loadTags } from '../../redux/services/tags/actions';
 import {
 	getTags,
@@ -19,7 +16,7 @@ import { Tags } from '../../components/tags';
 import {
 	getPostsLoading,
 	getPostsError,
-	getAllPosts,
+	getPosts,
 } from '../../redux/services/posts/selectors';
 import { getUser } from '../../redux/services/auth/selectors';
 
@@ -31,7 +28,7 @@ export const Tag = () => {
 
 	const user = useAppSelector(getUser);
 
-	const posts = useAppSelector(getAllPosts);
+	const posts = useAppSelector(getPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
 	const postsError = useAppSelector(getPostsError);
 
@@ -42,10 +39,10 @@ export const Tag = () => {
 	useEffect(() => {
 		if (tag) {
 			if (value === TabsEnum.New) {
-				dispatch(loadPostsByTag(tag));
+				dispatch(loadPosts(`/posts/tags/${tag}`));
 			}
 			if (value === TabsEnum.Popular) {
-				dispatch(loadPopularPostsByTag(tag));
+				dispatch(loadPosts(`/posts/tags/${tag}/popular`));
 			}
 		}
 

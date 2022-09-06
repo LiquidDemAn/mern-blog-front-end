@@ -1,11 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-	loadAllPosts,
-	deletePost,
-	loadPopularPosts,
-	loadPostsByTag,
-	loadPopularPostsByTag,
-} from './actions';
+import { loadPosts, deletePost } from './actions';
 import { PostsStateType } from './typedef';
 
 const initialState: PostsStateType = {
@@ -27,61 +21,19 @@ export const postsSlice = createSlice({
 	extraReducers: (bulider) =>
 		bulider
 			// Load all posts
-			.addCase(loadAllPosts.pending, (state) => {
+			.addCase(loadPosts.pending, (state) => {
 				state.posts = [];
 				state.postsLoading = true;
 				state.postsError = null;
 			})
-			.addCase(loadAllPosts.fulfilled, (state, { payload }) => {
-				state.postsLoading = false;
+			.addCase(loadPosts.fulfilled, (state, { payload }) => {
 				state.posts = payload;
+				state.postsLoading = false;
+				state.postsError = null;
 			})
-			.addCase(loadAllPosts.rejected, (state, { payload }) => {
+			.addCase(loadPosts.rejected, (state, { payload }) => {
 				state.postsLoading = false;
 				state.postsError = payload;
-			})
-
-			// Load popular posts
-			.addCase(loadPopularPosts.pending, (state) => {
-				state.posts = [];
-				state.postsLoading = true;
-				state.postsError = null;
-			})
-			.addCase(loadPopularPosts.fulfilled, (state, { payload }) => {
-				state.postsLoading = false;
-				state.posts = payload;
-			})
-			.addCase(loadPopularPosts.rejected, (state, { payload }) => {
-				state.postsLoading = false;
-				state.postsError = payload;
-			})
-
-			// Load posts by tag
-			.addCase(loadPostsByTag.pending, (state) => {
-				state.posts = [];
-				state.postsLoading = true;
-				state.postsError = null;
-			})
-			.addCase(loadPostsByTag.fulfilled, (state, { payload }) => {
-				state.postsLoading = false;
-				state.posts = payload;
-			})
-			.addCase(loadPostsByTag.rejected, (state, { payload }) => {
-				state.postsLoading = false;
-			})
-
-			// Load popular posts by tag
-			.addCase(loadPopularPostsByTag.pending, (state) => {
-				state.posts = [];
-				state.postsLoading = true;
-				state.postsError = null;
-			})
-			.addCase(loadPopularPostsByTag.fulfilled, (state, { payload }) => {
-				state.postsLoading = false;
-				state.posts = payload;
-			})
-			.addCase(loadPopularPostsByTag.rejected, (state, { payload }) => {
-				state.postsLoading = false;
 			})
 
 			// Delete post
