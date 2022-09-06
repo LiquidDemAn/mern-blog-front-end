@@ -5,9 +5,18 @@ import { PostType } from './typedef';
 
 export const loadAllPosts = createAsyncThunk<PostType[]>(
 	'posts/load-all-posts',
-	async () => {
-		const response = await customeAxios.get('/posts');
-		return await response.data;
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await customeAxios.get('/posts');
+			return await response.data;
+		} catch (err) {
+			const error = err as AxiosError;
+
+			return rejectWithValue({
+				status: error.response?.status,
+				message: error.message,
+			});
+		}
 	}
 );
 

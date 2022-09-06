@@ -36,6 +36,10 @@ export const postsSlice = createSlice({
 				state.postsLoading = false;
 				state.posts = payload;
 			})
+			.addCase(loadAllPosts.rejected, (state, { payload }) => {
+				state.postsLoading = false;
+				state.postsError = payload;
+			})
 
 			// Load popular posts
 			.addCase(loadPopularPosts.pending, (state) => {

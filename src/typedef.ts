@@ -7,7 +7,7 @@ export type CommentType = {
 };
 
 export type ErrorType = {
-	status: number;
+	status?: number;
 	message?: string;
 };
 

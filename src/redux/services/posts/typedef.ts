@@ -29,7 +29,7 @@ export type FullPostType = {
 export type PostsStateType = {
 	posts: PostType[];
 	postsLoading: boolean;
-	postsError: null | string;
+	postsError: null | unknown;
 	deleteError: null | unknown;
 	deleteLoading: boolean;
 };

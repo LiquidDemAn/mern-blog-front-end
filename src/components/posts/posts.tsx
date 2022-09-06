@@ -1,11 +1,12 @@
 import { PostType } from '../../redux/services/posts/typedef';
+import { ErrorType } from '../../typedef';
 import { Post } from '../post/post';
 
 type Props = {
 	isLoading: boolean;
 	posts: PostType[];
 	userId?: string;
-	error?: null | string | number;
+	error?: ErrorType | null;
 };
 
 export const Posts = ({ isLoading, posts, userId, error }: Props) => {
