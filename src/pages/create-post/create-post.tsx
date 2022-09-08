@@ -20,11 +20,18 @@ import { Link } from 'react-router-dom';
 import { PathsEnum } from '../../typedef';
 import { Loader } from '../../components/loader';
 
+export type CreatePostType = {
+	title: string;
+	tags: string;
+	text: string;
+	imageUrl: string;
+};
+
 export const CreatePost = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
 
-	const [post, setPost] = useState({
+	const [post, setPost] = useState<CreatePostType>({
 		title: '',
 		tags: '',
 		text: '',
@@ -84,6 +91,7 @@ export const CreatePost = () => {
 
 				reader.onloadend = () => {
 					const result = reader.result;
+
 					if (typeof result === 'string') {
 						setLink(result);
 					}
