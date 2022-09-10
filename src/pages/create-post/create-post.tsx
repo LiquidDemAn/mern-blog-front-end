@@ -56,25 +56,20 @@ export const CreatePost = () => {
 	};
 
 	const handleChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
-		try {
-			const files = event.target.files;
+		const files = event.target.files;
 
-			if (files) {
-				const file = files[0];
+		if (files) {
+			const file = files[0];
 
-				reader.readAsDataURL(file);
+			reader.readAsDataURL(file);
 
-				reader.onloadend = () => {
-					const result = reader.result;
+			reader.onloadend = () => {
+				const result = reader.result;
 
-					if (typeof result === 'string') {
-						setLink(result);
-					}
-				};
-			}
-		} catch (error) {
-			console.warn(error);
-			alert('Error uploading the file');
+				if (typeof result === 'string') {
+					setLink(result);
+				}
+			};
 		}
 	};
 
@@ -160,10 +155,16 @@ export const CreatePost = () => {
 					navigate(`/posts/${data}`);
 				}
 			}
-		} catch (error) {
+		} catch (err) {
+			const error = err as AxiosError;
+
+			setError({
+				status: error.response?.status,
+				message: error.message,
+			});
+
+			handleOpen();
 			setLoading(false);
-			console.warn(error);
-			alert('Error');
 		}
 	};
 
@@ -241,6 +242,12 @@ export const CreatePost = () => {
 						{error?.status === 404 && (
 							<DialogContentText id='create-post-error-description'>
 								Post Not Found! Please, check id of the post.
+							</DialogContentText>
+						)}
+
+						{error?.status === 500 && (
+							<DialogContentText id='create-post-error-description'>
+								Something went wrong! Try again later...
 							</DialogContentText>
 						)}
 					</>
