@@ -5,12 +5,13 @@ import { Paper, Button, TextField } from '@mui/material';
 import SimpleMDE from 'react-simplemde-editor';
 import { Link } from 'react-router-dom';
 import { CreatePostType } from '../create-post';
-import { PathsEnum } from '../../../typedef';
+import { ErrorType, PathsEnum } from '../../../typedef';
 
 type Props = {
 	post: CreatePostType;
 	link: string;
 	isEditing: boolean;
+	error: null | ErrorType;
 	handleChangeFile: (event: ChangeEvent<HTMLInputElement>) => void;
 	onTags: (event: ChangeEvent<HTMLInputElement>) => void;
 	onTitle: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -23,6 +24,7 @@ export const CreatePostView = ({
 	post,
 	link,
 	isEditing,
+	error,
 	handleChangeFile,
 	onRemoveImage,
 	onTitle,

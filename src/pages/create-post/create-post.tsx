@@ -4,9 +4,18 @@ import { getIsAuth } from '../../redux/services/auth/selectors';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../local-storage';
 import { customeAxios } from '../../redux/axios';
-import { PathsEnum } from '../../typedef';
+import { ErrorType, PathsEnum } from '../../typedef';
 import { Loader } from '../../components/loader';
 import { CreatePostView } from './view';
+import { AxiosError } from 'axios';
+import {
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+} from '@mui/material';
 
 export type CreatePostType = {
 	title: string;
@@ -19,6 +28,8 @@ export const CreatePost = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
 
+	const [open, setOpen] = useState(false);
+
 	const [post, setPost] = useState<CreatePostType>({
 		title: '',
 		tags: '',
@@ -27,8 +38,8 @@ export const CreatePost = () => {
 	});
 
 	const [link, setLink] = useState('');
-
 	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<ErrorType | null>(null);
 
 	const token = getToken();
 	const isAuth = useAppSelector(getIsAuth);
@@ -36,35 +47,13 @@ export const CreatePost = () => {
 
 	const reader = new FileReader();
 
-	useEffect(() => {
-		if (id) {
-			setLoading(true);
+	const handleClose = () => {
+		setOpen(false);
+	};
 
-			customeAxios
-				.get(`/posts/${id}`)
-				.then(({ data }) => {
-					setLoading(false);
-
-					setPost({
-						imageUrl: data.imageUrl ? data.imageUrl : '',
-						text: data.text,
-						title: data.title,
-						tags: data.tags.join(', '),
-					});
-				})
-				.catch((err) => {
-					// setLoading(false)
-					console.log(err);
-				});
-		} else {
-			setPost({
-				title: '',
-				tags: '',
-				text: '',
-				imageUrl: '',
-			});
-		}
-	}, [id]);
+	const handleOpen = () => {
+		setOpen(true);
+	};
 
 	const handleChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
 		try {
@@ -178,9 +167,49 @@ export const CreatePost = () => {
 		}
 	};
 
+	useEffect(() => {
+		if (id) {
+			setLoading(true);
+
+			customeAxios
+				.get(`/posts/${id}`)
+				.then(({ data }) => {
+					setPost({
+						imageUrl: data.imageUrl ? data.imageUrl : '',
+						text: data.text,
+						title: data.title,
+						tags: data.tags.join(', '),
+					});
+
+					setLoading(false);
+				})
+				.catch((err) => {
+					const error = err as AxiosError;
+					console.log(error);
+
+					setError({
+						status: error.response?.status,
+						message: error.message,
+					});
+
+					setLoading(false);
+					handleOpen();
+				});
+		} else {
+			setPost({
+				title: '',
+				tags: '',
+				text: '',
+				imageUrl: '',
+			});
+		}
+	}, [id]);
+
 	if (!token && !isAuth) {
 		return <Navigate to={PathsEnum.Login} />;
 	}
+
+	console.log(error);
 
 	return (
 		<>
@@ -188,6 +217,7 @@ export const CreatePost = () => {
 				post={post}
 				link={link}
 				isEditing={isEditing}
+				error={error}
 				handleChangeFile={handleChangeFile}
 				onTags={onTags}
 				onText={onText}
@@ -195,6 +225,33 @@ export const CreatePost = () => {
 				onRemoveImage={onRemoveImage}
 				onTitle={onTitle}
 			/>
+
+			<Dialog
+				open={open}
+				onClose={handleClose}
+				aria-labelledby='create-post-error-title'
+				aria-describedby='create-post-error-description'
+			>
+				<DialogTitle id='create-post-error-title'>
+					{isEditing ? 'Edit' : 'Create'} post ERROR
+				</DialogTitle>
+
+				<DialogContent>
+					<>
+						{error?.status === 404 && (
+							<DialogContentText id='create-post-error-description'>
+								Post Not Found! Please, check id of the post.
+							</DialogContentText>
+						)}
+					</>
+				</DialogContent>
+
+				<DialogActions>
+					<Button variant='contained' onClick={handleClose}>
+						Close
+					</Button>
+				</DialogActions>
+			</Dialog>
 
 			<Loader open={loading} />
 		</>
