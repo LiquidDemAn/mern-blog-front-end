@@ -1,36 +1,51 @@
 import styles from './create-post.module.scss';
 import 'easymde/dist/easymde.min.css';
 import { ChangeEvent, useMemo, useRef } from 'react';
-import { Paper, Button, TextField } from '@mui/material';
+import {
+	Paper,
+	Button,
+	TextField,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogContentText,
+	DialogActions,
+} from '@mui/material';
 import SimpleMDE from 'react-simplemde-editor';
 import { Link } from 'react-router-dom';
-import { CreatePostType } from '../create-post';
+import { CreatePostType, CreatPostValidErrorType } from '../create-post';
 import { ErrorType, PathsEnum } from '../../../typedef';
 
 type Props = {
 	post: CreatePostType;
 	link: string;
 	isEditing: boolean;
+	open: boolean;
 	error: null | ErrorType;
+	validError: null | CreatPostValidErrorType[];
 	handleChangeFile: (event: ChangeEvent<HTMLInputElement>) => void;
 	onTags: (event: ChangeEvent<HTMLInputElement>) => void;
 	onTitle: (event: ChangeEvent<HTMLInputElement>) => void;
 	onText: (text: string) => void;
 	onSubmit: () => Promise<void>;
 	onRemoveImage: () => void;
+	handleClose: () => void;
 };
 
 export const CreatePostView = ({
 	post,
 	link,
 	isEditing,
+	open,
 	error,
+	validError,
 	handleChangeFile,
 	onRemoveImage,
 	onTitle,
 	onText,
 	onTags,
 	onSubmit,
+	handleClose,
 }: Props) => {
 	const fileRef = useRef<null | HTMLInputElement>(null);
 
@@ -125,6 +140,55 @@ export const CreatePostView = ({
 					</Link>
 				</div>
 			</Paper>
+
+			<Dialog
+				open={open}
+				onClose={handleClose}
+				aria-labelledby='create-post-error-title'
+				aria-describedby='create-post-error-description'
+			>
+				<DialogTitle id='create-post-error-title'>
+					{isEditing ? 'Edit' : 'Create'} post ERROR
+				</DialogTitle>
+
+				<DialogContent>
+					<>
+						{error?.status === 404 && (
+							<DialogContentText id='create-post-error-description'>
+								Post Not Found! Please, check id of the post.
+							</DialogContentText>
+						)}
+
+						{error?.status === 500 && (
+							<DialogContentText id='create-post-error-description'>
+								Something went wrong! Try again later...
+							</DialogContentText>
+						)}
+
+						{validError?.length &&
+							validError.map((item) => {
+								return (
+									<DialogContentText
+										key={item.param}
+										id='create-post-error-description'
+									>
+										{item.param === 'text' &&
+											'Text: text must be more than 3 characters long'}
+										{item.param === 'title' &&
+											'Title: title must be more than 3 characters long'}
+										{item.param === 'tags' && 'Tags: tags entered incorrectly'}
+									</DialogContentText>
+								);
+							})}
+					</>
+				</DialogContent>
+
+				<DialogActions>
+					<Button variant='contained' onClick={handleClose}>
+						Close
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</>
 	);
 };

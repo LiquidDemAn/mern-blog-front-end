@@ -8,14 +8,6 @@ import { ErrorType, PathsEnum } from '../../typedef';
 import { Loader } from '../../components/loader';
 import { CreatePostView } from './view';
 import { AxiosError } from 'axios';
-import {
-	Button,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogContentText,
-	DialogTitle,
-} from '@mui/material';
 
 export type CreatePostType = {
 	title: string;
@@ -24,7 +16,7 @@ export type CreatePostType = {
 	imageUrl: string;
 };
 
-export type CreatPostValidDataType = {
+export type CreatPostValidErrorType = {
 	param: 'title' | 'text' | 'tags';
 	msg?: string;
 	value?: string;
@@ -47,9 +39,9 @@ export const CreatePost = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<ErrorType | null>(null);
 
-	const [validError, setValidError] = useState<CreatPostValidDataType[] | null>(
-		null
-	);
+	const [validError, setValidError] = useState<
+		CreatPostValidErrorType[] | null
+	>(null);
 
 	const token = getToken();
 	const isAuth = useAppSelector(getIsAuth);
@@ -59,10 +51,6 @@ export const CreatePost = () => {
 
 	const handleClose = () => {
 		setOpen(false);
-	};
-
-	const handleOpen = () => {
-		setOpen(true);
 	};
 
 	const handleChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +74,7 @@ export const CreatePost = () => {
 	const onRemoveImage = () => {
 		if (isEditing) {
 			setLink('');
+
 			setPost((post) => {
 				return {
 					...post,
@@ -171,7 +160,7 @@ export const CreatePost = () => {
 			console.log(error);
 
 			if (error.response?.status === 403) {
-				setValidError(error.response.data as CreatPostValidDataType[]);
+				setValidError(error.response.data as CreatPostValidErrorType[]);
 			} else {
 				setError({
 					status: error.response?.status,
@@ -179,7 +168,7 @@ export const CreatePost = () => {
 				});
 			}
 
-			handleOpen();
+			setOpen(true);
 			setLoading(false);
 		}
 	};
@@ -210,7 +199,7 @@ export const CreatePost = () => {
 					});
 
 					setLoading(false);
-					handleOpen();
+					setOpen(true);
 				});
 		} else {
 			setPost({
@@ -232,6 +221,9 @@ export const CreatePost = () => {
 		<>
 			<CreatePostView
 				post={post}
+				open={open}
+				validError={validError}
+				handleClose={handleClose}
 				link={link}
 				isEditing={isEditing}
 				error={error}
@@ -242,55 +234,6 @@ export const CreatePost = () => {
 				onRemoveImage={onRemoveImage}
 				onTitle={onTitle}
 			/>
-
-			<Dialog
-				open={open}
-				onClose={handleClose}
-				aria-labelledby='create-post-error-title'
-				aria-describedby='create-post-error-description'
-			>
-				<DialogTitle id='create-post-error-title'>
-					{isEditing ? 'Edit' : 'Create'} post ERROR
-				</DialogTitle>
-
-				<DialogContent>
-					<>
-						{error?.status === 404 && (
-							<DialogContentText id='create-post-error-description'>
-								Post Not Found! Please, check id of the post.
-							</DialogContentText>
-						)}
-
-						{error?.status === 500 && (
-							<DialogContentText id='create-post-error-description'>
-								Something went wrong! Try again later...
-							</DialogContentText>
-						)}
-
-						{validError?.length &&
-							validError.map((item) => {
-								return (
-									<DialogContentText
-										key={item.param}
-										id='create-post-error-description'
-									>
-										{item.param === 'text' &&
-											'Text: text must be more than 3 characters long'}
-										{item.param === 'title' &&
-											'Title: title must be more than 3 characters long'}
-										{item.param === 'tags' && 'Tags: tags entered incorrectly'}
-									</DialogContentText>
-								);
-							})}
-					</>
-				</DialogContent>
-
-				<DialogActions>
-					<Button variant='contained' onClick={handleClose}>
-						Close
-					</Button>
-				</DialogActions>
-			</Dialog>
 
 			<Loader open={loading} />
 		</>
