@@ -1,24 +1,12 @@
-import {
-	useRef,
-	useEffect,
-	useCallback,
-	useMemo,
-	useState,
-	ChangeEvent,
-} from 'react';
-import { TextField, Paper, Button } from '@mui/material';
-import SimpleMDE from 'react-simplemde-editor';
-
-import 'easymde/dist/easymde.min.css';
-import styles from './create-post.module.scss';
+import { useEffect, useCallback, useState, ChangeEvent } from 'react';
 import { useAppSelector } from '../../redux/store/hooks';
 import { getIsAuth } from '../../redux/services/auth/selectors';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../local-storage';
 import { customeAxios } from '../../redux/axios';
-import { Link } from 'react-router-dom';
 import { PathsEnum } from '../../typedef';
 import { Loader } from '../../components/loader';
+import { CreatePostView } from './view';
 
 export type CreatePostType = {
 	title: string;
@@ -41,8 +29,6 @@ export const CreatePost = () => {
 	const [link, setLink] = useState('');
 
 	const [loading, setLoading] = useState(false);
-
-	const fileRef = useRef<null | HTMLInputElement>(null);
 
 	const token = getToken();
 	const isAuth = useAppSelector(getIsAuth);
@@ -192,101 +178,23 @@ export const CreatePost = () => {
 		}
 	};
 
-	const options = useMemo(
-		() => ({
-			spellChecker: false,
-			maxHeight: '260px',
-			autofocus: true,
-			placeholder: 'Enter text...',
-			status: false,
-			autosave: {
-				uniqueId: 'save',
-				enabled: true,
-				delay: 1000,
-			},
-		}),
-		[]
-	);
-
 	if (!token && !isAuth) {
 		return <Navigate to={PathsEnum.Login} />;
 	}
 
 	return (
 		<>
-			<Paper style={{ padding: 30 }}>
-				<div className={styles.preview_buttons}>
-					<Button
-						onClick={() => fileRef.current?.click()}
-						variant='outlined'
-						size='large'
-					>
-						Download preview
-					</Button>
-					<input
-						type='file'
-						accept='.png, .jpg, .jpeg'
-						ref={fileRef}
-						onChange={handleChangeFile}
-						hidden
-					/>
-					{(link || post.imageUrl) && (
-						<Button
-							variant='contained'
-							size='large'
-							color='error'
-							onClick={onRemoveImage}
-						>
-							Delete preview
-						</Button>
-					)}
-				</div>
-
-				{(link || post.imageUrl) && (
-					<>
-						{isEditing ? (
-							<img
-								className={styles.image}
-								src={link ? link : `${PathsEnum.Server}${post.imageUrl}`}
-								alt='Uploaded'
-							/>
-						) : (
-							<img className={styles.image} src={link} alt='Uploaded' />
-						)}
-					</>
-				)}
-
-				<TextField
-					onChange={onTitle}
-					value={post.title}
-					classes={{ root: styles.title }}
-					variant='standard'
-					placeholder='Article title...'
-					fullWidth
-				/>
-				<TextField
-					onChange={onTags}
-					value={post.tags}
-					classes={{ root: styles.tags }}
-					variant='standard'
-					placeholder='Tags'
-					fullWidth
-				/>
-				<SimpleMDE
-					className={styles.editor}
-					value={post.text}
-					onChange={onText}
-					options={options}
-				/>
-				<div className={styles.buttons}>
-					<Button onClick={onSubmit} size='large' variant='contained'>
-						{isEditing ? 'Save' : 'Publish'}
-					</Button>
-					<Link to='/'>
-						<Button size='large'>Cancel</Button>
-					</Link>
-				</div>
-			</Paper>
+			<CreatePostView
+				post={post}
+				link={link}
+				isEditing={isEditing}
+				handleChangeFile={handleChangeFile}
+				onTags={onTags}
+				onText={onText}
+				onSubmit={onSubmit}
+				onRemoveImage={onRemoveImage}
+				onTitle={onTitle}
+			/>
 
 			<Loader open={loading} />
 		</>

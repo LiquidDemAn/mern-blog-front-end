@@ -1,4 +1,5 @@
 import styles from './create-post.module.scss';
+import 'easymde/dist/easymde.min.css';
 import { ChangeEvent, useMemo, useRef } from 'react';
 import { Paper, Button, TextField } from '@mui/material';
 import SimpleMDE from 'react-simplemde-editor';
@@ -12,10 +13,10 @@ type Props = {
 	isEditing: boolean;
 	handleChangeFile: (event: ChangeEvent<HTMLInputElement>) => void;
 	onTags: (event: ChangeEvent<HTMLInputElement>) => void;
+	onTitle: (event: ChangeEvent<HTMLInputElement>) => void;
 	onText: (text: string) => void;
 	onSubmit: () => Promise<void>;
 	onRemoveImage: () => void;
-	onTitle: () => void;
 };
 
 export const CreatePostView = ({
