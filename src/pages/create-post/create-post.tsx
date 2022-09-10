@@ -24,6 +24,12 @@ export type CreatePostType = {
 	imageUrl: string;
 };
 
+export type CreatPostValidDataType = {
+	param: 'title' | 'text' | 'tags';
+	msg?: string;
+	value?: string;
+};
+
 export const CreatePost = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
@@ -40,6 +46,10 @@ export const CreatePost = () => {
 	const [link, setLink] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<ErrorType | null>(null);
+
+	const [validError, setValidError] = useState<CreatPostValidDataType[] | null>(
+		null
+	);
 
 	const token = getToken();
 	const isAuth = useAppSelector(getIsAuth);
@@ -158,10 +168,16 @@ export const CreatePost = () => {
 		} catch (err) {
 			const error = err as AxiosError;
 
-			setError({
-				status: error.response?.status,
-				message: error.message,
-			});
+			console.log(error);
+
+			if (error.response?.status === 403) {
+				setValidError(error.response.data as CreatPostValidDataType[]);
+			} else {
+				setError({
+					status: error.response?.status,
+					message: error.message,
+				});
+			}
 
 			handleOpen();
 			setLoading(false);
@@ -210,7 +226,7 @@ export const CreatePost = () => {
 		return <Navigate to={PathsEnum.Login} />;
 	}
 
-	console.log(error);
+	console.log(validError);
 
 	return (
 		<>
@@ -250,6 +266,22 @@ export const CreatePost = () => {
 								Something went wrong! Try again later...
 							</DialogContentText>
 						)}
+
+						{validError?.length &&
+							validError.map((item) => {
+								return (
+									<DialogContentText
+										key={item.param}
+										id='create-post-error-description'
+									>
+										{item.param === 'text' &&
+											'Text: text must be more than 3 characters long'}
+										{item.param === 'title' &&
+											'Title: title must be more than 3 characters long'}
+										{item.param === 'tags' && 'Tags: tags entered incorrectly'}
+									</DialogContentText>
+								);
+							})}
 					</>
 				</DialogContent>
 
