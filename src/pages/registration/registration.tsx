@@ -7,7 +7,7 @@ import { Navigate } from 'react-router-dom';
 import {
 	getAuthError,
 	getAuthLoading,
-	getAuthValidationError,
+	getAuthValidationParams,
 	getIsAuth,
 } from '../../redux/services/auth/selectors';
 import { registerUser } from '../../redux/services/auth/actions';
@@ -45,32 +45,12 @@ export const Registration = () => {
 	const isAuth = useAppSelector(getIsAuth);
 	const loading = useAppSelector(getAuthLoading);
 	const error = useAppSelector(getAuthError);
-	const validationError = useAppSelector(getAuthValidationError);
+	const params = useAppSelector(getAuthValidationParams);
 
-	const fullNameError = Boolean(
-		validationError?.data.find((item) => {
-			return item.param === ParamsEnum.FullName;
-		})
-	);
-
-	const nickNameError = Boolean(
-		validationError?.data.find((item) => {
-			return item.param === ParamsEnum.NickName;
-		})
-	);
-
-	const emailError = Boolean(
-		validationError?.data.find((item) => {
-			return item.param === ParamsEnum.Email;
-		})
-	);
-
-	const passwordError = Boolean(
-		validationError?.data.find((item) => {
-			return item.param === ParamsEnum.Password;
-		})
-	);
-
+	const fullNameError = params?.includes(ParamsEnum.FullName);
+	const nickNameError = params?.includes(ParamsEnum.NickName);
+	const emailError = params?.includes(ParamsEnum.Email);
+	const passwordError = params?.includes(ParamsEnum.Password);
 
 	useEffect(() => {
 		if (fullNameError) {
@@ -113,6 +93,7 @@ export const Registration = () => {
 			dispatch(resetErrors());
 		};
 	}, [dispatch]);
+	
 	const onSubmit = (values: RegisterType) => {
 		if (avatar) {
 			dispatch(
