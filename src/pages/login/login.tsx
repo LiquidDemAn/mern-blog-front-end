@@ -7,7 +7,7 @@ import { AuthForm } from '../../components/auth-form';
 import {
 	getAuthError,
 	getAuthLoading,
-	getAuthValidationError,
+	getAuthValidationParams,
 	getIsAuth,
 } from '../../redux/services/auth/selectors';
 import { Navigate } from 'react-router-dom';
@@ -22,19 +22,10 @@ export const Login = () => {
 	const loading = useAppSelector(getAuthLoading);
 
 	const error = useAppSelector(getAuthError);
-	const validationError = useAppSelector(getAuthValidationError);
+	const params = useAppSelector(getAuthValidationParams);
 
-	const passwordError = Boolean(
-		validationError?.data.find((item) => {
-			return item.param === ParamsEnum.Password;
-		})
-	);
-
-	const emailError = Boolean(
-		validationError?.data.find((item) => {
-			return item.param === ParamsEnum.Email;
-		})
-	);
+	const emailError = params?.includes(ParamsEnum.Email);
+	const passwordError = params?.includes(ParamsEnum.Password);
 
 	const {
 		register,
