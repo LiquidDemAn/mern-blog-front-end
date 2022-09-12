@@ -71,6 +71,7 @@ export const Registration = () => {
 		})
 	);
 
+
 	useEffect(() => {
 		if (fullNameError) {
 			setError('fullName', {

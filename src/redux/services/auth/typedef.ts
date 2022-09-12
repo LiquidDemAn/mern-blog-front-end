@@ -38,7 +38,7 @@ export enum ParamsEnum {
 export type AuthValidtionErrorType = {
 	status: number;
 	data: {
-		param?: ParamsEnum;
+		param: ParamsEnum;
 	}[];
 };
 

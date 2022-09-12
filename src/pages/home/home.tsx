@@ -58,7 +58,7 @@ export const Home = () => {
 
 	return (
 		<>
-			<h2 style={{ marginBottom: 15 }}>Hello {user?.fullName}</h2>
+			<h2 style={{ marginBottom: 15 }}>Hello, {user?.fullName}</h2>
 
 			<Tabs style={{ marginBottom: 15 }} value={value} onChange={handleChange}>
 				<Tab
