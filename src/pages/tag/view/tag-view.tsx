@@ -19,7 +19,7 @@ type Props = {
 	handleChange: (event: SyntheticEvent, newValue: TabsEnum) => void;
 };
 
-export const HomeView = ({
+export const TagView = ({
 	userId,
 	userName,
 	value,
@@ -33,8 +33,6 @@ export const HomeView = ({
 }: Props) => {
 	return (
 		<>
-			<h2 style={{ marginBottom: 15 }}>Hello{userName && `, ${userName}`}</h2>
-			
 			<Tabs style={{ marginBottom: 15 }} value={value} onChange={handleChange}>
 				<Tab
 					aria-controls={`tabpanel-${TabsEnum.New}`}
