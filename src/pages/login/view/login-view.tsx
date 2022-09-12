@@ -12,8 +12,6 @@ type Props = {
 	isValid: boolean;
 	errors: FieldErrorsImpl<DeepRequired<LoginType>>;
 	error: AuthErrorType | null;
-	emailError?: boolean;
-	passwordError?: boolean;
 	handleSubmit: UseFormHandleSubmit<LoginType>;
 	register: UseFormRegister<LoginType>;
 	onSubmit: (values: LoginType) => void;
@@ -23,8 +21,6 @@ export const LoginView = ({
 	isValid,
 	errors,
 	error,
-	emailError,
-	passwordError,
 	handleSubmit,
 	register,
 	onSubmit,
@@ -55,7 +51,7 @@ export const LoginView = ({
 			<TextField
 				fullWidth
 				label='Email'
-				error={Boolean(error) || emailError}
+				error={Boolean(errors.password?.message)}
 				helperText={errors.email?.message}
 				type='email'
 				id='email'
@@ -65,7 +61,7 @@ export const LoginView = ({
 			<TextField
 				fullWidth
 				label='Password'
-				error={Boolean(error) || passwordError}
+				error={Boolean(errors.password?.message)}
 				helperText={errors.password?.message}
 				type='password'
 				id='password'

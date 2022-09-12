@@ -1,8 +1,6 @@
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useForm } from 'react-hook-form';
 import { ParamsEnum, RegisterType } from '../../redux/services/auth/typedef';
-import { AuthForm } from '../../components/auth-form';
-import { Alert, TextField } from '@mui/material';
 import { Navigate } from 'react-router-dom';
 import {
 	getAuthError,
@@ -11,10 +9,10 @@ import {
 	getIsAuth,
 } from '../../redux/services/auth/selectors';
 import { registerUser } from '../../redux/services/auth/actions';
-import { AvatarCreator } from '../../components/avatar-creator';
 import { useState, useEffect } from 'react';
 import { resetErrors } from '../../redux/services/auth/auth.slice';
 import { Loader } from '../../components/loader';
+import { RegistrationView } from './view';
 
 export const Registration = () => {
 	const [avatar, setAvatar] = useState('');
@@ -26,17 +24,11 @@ export const Registration = () => {
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
-			email: 'demon@gmail.com',
+			email: '',
 			password: '',
-			fullName: 'Dexter Morgan',
-			nickName: 'ND_Dexter',
+			fullName: '',
+			nickName: '',
 			avatarUrl: avatar,
-
-			// email: '',
-			// password: '',
-			// fullName: '',
-			// nickName: '',
-			// avatarUrl: avatar,
 		},
 		mode: 'onChange',
 	});
@@ -93,7 +85,7 @@ export const Registration = () => {
 			dispatch(resetErrors());
 		};
 	}, [dispatch]);
-	
+
 	const onSubmit = (values: RegisterType) => {
 		if (avatar) {
 			dispatch(
@@ -112,78 +104,18 @@ export const Registration = () => {
 	}
 
 	return (
-		<AuthForm
-			handleSubmit={handleSubmit}
-			onSubmit={onSubmit}
-			title='Registration'
-			isValid={isValid}
-		>
-			{error?.status === 420 && error?.data.param === ParamsEnum.Email ? (
-				<Alert severity='error' style={{ width: '100%' }}>
-					Email already in use!
-				</Alert>
-			) : (
-				<></>
-			)}
-
-			{error?.status === 420 && error?.data.param === ParamsEnum.NickName ? (
-				<Alert severity='error' style={{ width: '100%' }}>
-					Nick name already in use!
-				</Alert>
-			) : (
-				<></>
-			)}
-
-			<AvatarCreator setAvatar={setAvatar} />
-
-			<TextField
-				fullWidth
-				label='Full Name'
-				error={Boolean(errors.fullName?.message)}
-				helperText={
-					errors.fullName?.message ||
-					'Full name must be at least 3 characters long and not contain special characters!'
-				}
-				id='full-name'
-				{...register('fullName', { required: 'Enter full name' })}
-			/>
-
-			<TextField
-				fullWidth
-				label='Nick Name'
-				error={Boolean(errors.nickName?.message)}
-				helperText={
-					errors.nickName?.message ||
-					'Nick name must be at least 3 characters long, not contain spaces and special characters!'
-				}
-				id='nick-name'
-				{...register('nickName', { required: 'Enter nickname' })}
-			/>
-
-			<TextField
-				fullWidth
-				label='Email'
-				error={Boolean(errors.email?.message)}
-				helperText={errors.email?.message}
-				type='email'
-				id='email'
-				{...register('email', { required: 'Enter email' })}
-			/>
-
-			<TextField
-				fullWidth
-				label='Password'
-				error={Boolean(errors.password?.message)}
-				helperText={
-					errors.password?.message ||
-					'Password must be at least 5 characters long!'
-				}
-				type='password'
-				id='password'
-				{...register('password', { required: 'Enter password' })}
+		<>
+			<RegistrationView
+				isValid={isValid}
+				errors={errors}
+				error={error}
+				handleSubmit={handleSubmit}
+				register={register}
+				onSubmit={onSubmit}
+				setAvatar={setAvatar}
 			/>
 
 			<Loader open={loading} />
-		</AuthForm>
+		</>
 	);
 };

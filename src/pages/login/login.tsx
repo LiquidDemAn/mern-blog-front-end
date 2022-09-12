@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import { resetErrors } from '../../redux/services/auth/auth.slice';
 import { Loader } from '../../components/loader';
 import { LoginView } from './view';
+import { PathsEnum } from '../../typedef';
 
 export const Login = () => {
 	const dispatch = useAppDispach();
@@ -68,7 +69,7 @@ export const Login = () => {
 	}, [dispatch]);
 
 	if (isAuth) {
-		return <Navigate to='/' />;
+		return <Navigate to={PathsEnum.Home} />;
 	}
 
 	return (
@@ -77,8 +78,6 @@ export const Login = () => {
 				isValid={isValid}
 				errors={errors}
 				error={error}
-				emailError={emailError}
-				passwordError={passwordError}
 				handleSubmit={handleSubmit}
 				register={register}
 				onSubmit={onSubmit}

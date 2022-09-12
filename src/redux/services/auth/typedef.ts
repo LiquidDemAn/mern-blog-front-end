@@ -8,7 +8,7 @@ export type RegisterType = {
 	password: string;
 	fullName: string;
 	nickName: string;
-	avatarUrl?: string;
+	avatarUrl: string;
 };
 
 export type UserDataType = {
