@@ -58,7 +58,7 @@ export const Tag = () => {
 	};
 	return (
 		<div>
-			<h2>#{tag}</h2>
+			<h2>Tag: #{tag}</h2>
 
 			<Tabs style={{ marginBottom: 15 }} value={value} onChange={handleChange}>
 				<Tab

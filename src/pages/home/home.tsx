@@ -1,8 +1,5 @@
-import { Tabs, Tab, Grid } from '@mui/material';
-import { TabPanel } from '../../components/tab-panel';
-import { Tags } from '../../components/tags';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, SyntheticEvent } from 'react';
 import { loadPosts } from '../../redux/services/posts/actions';
 import {
 	getPosts,
@@ -16,17 +13,18 @@ import {
 	getTagsError,
 	getTagsLoading,
 } from '../../redux/services/tags/selectors';
-import { getUser } from '../../redux/services/auth/selectors';
-import { Posts } from '../../components/posts';
+import { getUserId, getUserName } from '../../redux/services/auth/selectors';
 import { TabsEnum } from '../../typedef';
 import { Loader } from '../../components/loader';
 import { DeletePostError } from '../../components/dialogs/delete-post-error';
+import { HomeView } from './view';
 
 export const Home = () => {
 	const dispatch = useAppDispach();
 	const [value, setValue] = useState<TabsEnum>(TabsEnum.New);
 
-	const user = useAppSelector(getUser);
+	const userId = useAppSelector(getUserId);
+	const userName = useAppSelector(getUserName);
 
 	const posts = useAppSelector(getPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
@@ -38,7 +36,7 @@ export const Home = () => {
 	const tagsLoading = useAppSelector(getTagsLoading);
 	const tagsError = useAppSelector(getTagsError);
 
-	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
+	const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
 	};
 
@@ -58,50 +56,23 @@ export const Home = () => {
 
 	return (
 		<>
-			<h2 style={{ marginBottom: 15 }}>Hello, {user?.fullName}</h2>
-
-			<Tabs style={{ marginBottom: 15 }} value={value} onChange={handleChange}>
-				<Tab
-					aria-controls={`tabpanel-${TabsEnum.New}`}
-					label={TabsEnum.New}
-					value={TabsEnum.New}
-				/>
-				<Tab
-					aria-controls={`tabpanel-${TabsEnum.Popular}`}
-					label={TabsEnum.Popular}
-					value={TabsEnum.Popular}
-				/>
-			</Tabs>
-
-			<Grid container spacing={4}>
-				<Grid xs={8} item>
-					<TabPanel value={value} index={TabsEnum.New}>
-						<Posts
-							isLoading={postsLoading}
-							error={postsError}
-							userId={user?._id}
-							posts={posts}
-						/>
-					</TabPanel>
-					<TabPanel value={value} index={TabsEnum.Popular}>
-						<Posts
-							isLoading={postsLoading}
-							error={postsError}
-							userId={user?._id}
-							posts={posts}
-						/>
-					</TabPanel>
-				</Grid>
-
-				<Grid xs={4} item>
-					<Tags error={tagsError} tags={tags} isLoading={tagsLoading} />
-				</Grid>
-			</Grid>
-
-			<Loader open={deleteLoading} />
+			<HomeView
+				userId={userId}
+				userName={userName}
+				value={value}
+				postsLoading={postsLoading}
+				tagsLoading={tagsLoading}
+				postsError={postsError}
+				tagsError={tagsError}
+				posts={posts}
+				tags={tags}
+				handleChange={handleChange}
+			/>
 
 			{/* Dialogs */}
 			<DeletePostError />
+
+			<Loader open={deleteLoading} />
 		</>
 	);
 };
