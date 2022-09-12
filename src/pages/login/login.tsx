@@ -1,9 +1,7 @@
-import { Alert, TextField } from '@mui/material';
 import { loginUser } from '../../redux/services/auth/actions';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useForm } from 'react-hook-form';
 import { LoginType, ParamsEnum } from '../../redux/services/auth/typedef';
-import { AuthForm } from '../../components/auth-form';
 import {
 	getAuthError,
 	getAuthLoading,
@@ -14,6 +12,7 @@ import { Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { resetErrors } from '../../redux/services/auth/auth.slice';
 import { Loader } from '../../components/loader';
+import { LoginView } from './view';
 
 export const Login = () => {
 	const dispatch = useAppDispach();
@@ -73,49 +72,19 @@ export const Login = () => {
 	}
 
 	return (
-		<AuthForm
-			isValid={isValid}
-			handleSubmit={handleSubmit}
-			onSubmit={onSubmit}
-			title='Login'
-		>
-			{error?.status === 500 ? (
-				<Alert severity='error' style={{ width: '100%' }}>
-					Something went wrong! Failed to login!
-				</Alert>
-			) : (
-				<></>
-			)}
-
-			{error?.status === 400 ? (
-				<Alert severity='error' style={{ width: '100%' }}>
-					Login or password do not match
-				</Alert>
-			) : (
-				<></>
-			)}
-
-			<TextField
-				fullWidth
-				label='Email'
-				error={Boolean(error) || emailError}
-				helperText={errors.email?.message}
-				type='email'
-				id='email'
-				{...register('email', { required: 'Enter email' })}
-			/>
-
-			<TextField
-				fullWidth
-				label='Password'
-				error={Boolean(error) || passwordError}
-				helperText={errors.password?.message}
-				type='password'
-				id='password'
-				{...register('password', { required: 'Enter password' })}
+		<>
+			<LoginView
+				isValid={isValid}
+				errors={errors}
+				error={error}
+				emailError={emailError}
+				passwordError={passwordError}
+				handleSubmit={handleSubmit}
+				register={register}
+				onSubmit={onSubmit}
 			/>
 
 			<Loader open={loading} />
-		</AuthForm>
+		</>
 	);
 };
