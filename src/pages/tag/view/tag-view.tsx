@@ -21,7 +21,6 @@ type Props = {
 
 export const TagView = ({
 	userId,
-	userName,
 	value,
 	postsLoading,
 	tagsLoading,

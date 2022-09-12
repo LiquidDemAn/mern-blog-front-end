@@ -14,7 +14,7 @@ import {
 	getPostsError,
 	getPosts,
 } from '../../redux/services/posts/selectors';
-import { getUserId, getUserName } from '../../redux/services/auth/selectors';
+import { getUserId } from '../../redux/services/auth/selectors';
 import { TagView } from './view';
 
 export const Tag = () => {
@@ -24,7 +24,6 @@ export const Tag = () => {
 	const [value, setValue] = useState(TabsEnum.New);
 
 	const userId = useAppSelector(getUserId);
-	const userName = useAppSelector(getUserName);
 
 	const posts = useAppSelector(getPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
@@ -60,7 +59,6 @@ export const Tag = () => {
 
 			<TagView
 				userId={userId}
-				userName={userName}
 				value={value}
 				postsLoading={postsLoading}
 				tagsLoading={tagsLoading}
