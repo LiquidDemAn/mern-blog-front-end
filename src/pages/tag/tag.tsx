@@ -2,36 +2,15 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { loadPosts } from '../../redux/services/posts/actions';
 import { loadTags } from '../../redux/services/tags/actions';
-import {
-	getTags,
-	getTagsLoading,
-	getTagsError,
-} from '../../redux/services/tags/selectors';
-import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
+import { useAppDispach } from '../../redux/store/hooks';
 import { TabsEnum } from '../../typedef';
-import {
-	getPostsLoading,
-	getPostsError,
-	getPosts,
-} from '../../redux/services/posts/selectors';
-import { getUserId } from '../../redux/services/auth/selectors';
-import { TagView } from './view';
+import { PostsTagsContent } from '../../components/posts-tags-content';
 
 export const Tag = () => {
 	const { tag } = useParams();
 	const dispatch = useAppDispach();
 
 	const [value, setValue] = useState(TabsEnum.New);
-
-	const userId = useAppSelector(getUserId);
-
-	const posts = useAppSelector(getPosts);
-	const postsLoading = useAppSelector(getPostsLoading);
-	const postsError = useAppSelector(getPostsError);
-
-	const tags = useAppSelector(getTags);
-	const tagsLoading = useAppSelector(getTagsLoading);
-	const tagsError = useAppSelector(getTagsError);
 
 	useEffect(() => {
 		if (tag) {
@@ -45,10 +24,8 @@ export const Tag = () => {
 	}, [dispatch, value, tag]);
 
 	useEffect(() => {
-		if (!tags.length) {
-			dispatch(loadTags());
-		}
-	}, [dispatch, tags]);
+		dispatch(loadTags());
+	}, [dispatch]);
 
 	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
@@ -56,18 +33,7 @@ export const Tag = () => {
 	return (
 		<div>
 			<h2>Tag: #{tag}</h2>
-
-			<TagView
-				userId={userId}
-				value={value}
-				postsLoading={postsLoading}
-				tagsLoading={tagsLoading}
-				postsError={postsError}
-				tagsError={tagsError}
-				posts={posts}
-				tags={tags}
-				handleChange={handleChange}
-			/>
+			<PostsTagsContent value={value} handleChange={handleChange} />
 		</div>
 	);
 };
