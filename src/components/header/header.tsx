@@ -5,15 +5,14 @@ import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { getIsAuth } from '../../redux/services/auth/selectors';
 import { logOut } from '../../redux/services/auth/auth.slice';
 import { PathsEnum } from '../../typedef';
+import { MobileMenu } from '../mobile-menu';
 
 export const Header = () => {
 	const dispatch = useAppDispach();
 	const isAuth = useAppSelector(getIsAuth);
 
-	const onClickLogout = () => {
-		if (window.confirm('Are you sure you want to log out?')) {
-			dispatch(logOut());
-		}
+	const onLogOut = () => {
+		dispatch(logOut());
 	};
 
 	return (
@@ -23,17 +22,18 @@ export const Header = () => {
 					<Link to={PathsEnum.Home} className={styles.logo}>
 						MERN BLOG
 					</Link>
+
+					<div className={styles.menu}>
+						<MobileMenu isAuth={isAuth} onLogOut={onLogOut} />
+					</div>
+
 					<div className={styles.buttons}>
 						{isAuth ? (
 							<>
 								<Link to={PathsEnum.CreatePost}>
-									<Button variant='contained'>Написать статью</Button>
+									<Button variant='contained'>Write a post</Button>
 								</Link>
-								<Button
-									onClick={onClickLogout}
-									variant='contained'
-									color='error'
-								>
+								<Button onClick={onLogOut} variant='contained' color='error'>
 									Log out
 								</Button>
 							</>
