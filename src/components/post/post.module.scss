@@ -32,13 +32,19 @@ $blue: #4361ee;
 	object-fit: cover;
 
 	&Full {
-		min-height: 300px;
-		max-height: 400px;
+		min-height: 200px;
+		max-height: 250px;
 		height: 100%;
 	}
 
 	@media (min-width: 576px) {
 		height: 300px;
+
+		&Full {
+			min-height: 300px;
+			max-height: 400px;
+			height: 100%;
+		}
 	}
 }
 
@@ -51,11 +57,15 @@ $blue: #4361ee;
 }
 
 .content {
-	margin: 15px 0 30px;
+	margin: 10px 0 15px;
 
 	p {
 		font-size: 22px;
 		line-height: 36px;
+	}
+
+	@media (min-width: 576px) {
+		margin: 15px 0 30px;
 	}
 }
 
@@ -77,14 +87,19 @@ $blue: #4361ee;
 	}
 
 	&Full {
-		font-size: 42px;
+		font-size: 32px;
 		font-weight: 900;
-		margin-bottom: 15px;
+		margin-bottom: 10px;
 	}
 
 	@media (min-width: 576px) {
 		font-size: 28px;
 		margin-bottom: 10px;
+
+		&Full {
+			font-size: 42px;
+			margin-bottom: 15px;
+		}
 	}
 }
 
