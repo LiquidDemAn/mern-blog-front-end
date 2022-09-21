@@ -34,6 +34,8 @@ export const PostsTagsContent = ({ value, handleChange }: Props) => {
 	const tagsLoading = useAppSelector(getTagsLoading);
 	const tagsError = useAppSelector(getTagsError);
 
+	const isMedium = window.innerWidth >= 768;
+
 	return (
 		<>
 			<Tabs style={{ marginBottom: 15 }} value={value} onChange={handleChange}>
@@ -48,7 +50,7 @@ export const PostsTagsContent = ({ value, handleChange }: Props) => {
 					value={TabsEnum.Popular}
 				/>
 			</Tabs>
-			<Grid container spacing={4}>
+			<Grid container={isMedium} spacing={4}>
 				<Grid xs={8} item>
 					<TabPanel value={value} index={TabsEnum.New}>
 						<Posts
@@ -68,9 +70,15 @@ export const PostsTagsContent = ({ value, handleChange }: Props) => {
 					</TabPanel>
 				</Grid>
 
-				<Grid xs={4} item>
+				{isMedium && (
+					<Grid xs={4} item>
+						<Tags error={tagsError} tags={tags} isLoading={tagsLoading} />
+					</Grid>
+				)}
+
+				{/* <Grid xs={4} item>
 					<Tags error={tagsError} tags={tags} isLoading={tagsLoading} />
-				</Grid>
+				</Grid> */}
 			</Grid>
 		</>
 	);
