@@ -1,8 +1,12 @@
 .root {
-	width: 400px;
-	padding: 50px;
+	max-width: 400px;
+	padding: 50px 25px;
 	border: 1px solid #dedede;
 	margin: 50px auto;
+
+	@media (min-width: 576px) {
+		padding: 50px;
+	}
 }
 
 .form {

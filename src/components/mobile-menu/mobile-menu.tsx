@@ -47,7 +47,7 @@ export const MobileMenu = ({ isAuth, onLogOut }: Props) => {
 				aria-expanded={open ? 'true' : undefined}
 				onClick={handleClick}
 			>
-				<MenuIcon color='action' />
+				<MenuIcon color='action' fontSize='large' />
 			</Button>
 
 			<Menu
