@@ -1,6 +1,6 @@
 import { SyntheticEvent } from 'react';
 import { Tabs, Tab, Grid } from '@mui/material';
-import { TabsEnum } from '../../typedef';
+import { BreakpointsEnum, TabsEnum } from '../../typedef';
 import { TabPanel } from '../tab-panel';
 import { Posts } from '../posts/posts';
 import { useAppSelector } from '../../redux/store/hooks';
@@ -34,7 +34,7 @@ export const PostsTagsContent = ({ value, handleChange }: Props) => {
 	const tagsLoading = useAppSelector(getTagsLoading);
 	const tagsError = useAppSelector(getTagsError);
 
-	const isMedium = window.innerWidth >= 768;
+	const isMedium = window.innerWidth >= BreakpointsEnum.Md;
 
 	return (
 		<>
@@ -75,10 +75,6 @@ export const PostsTagsContent = ({ value, handleChange }: Props) => {
 						<Tags error={tagsError} tags={tags} isLoading={tagsLoading} />
 					</Grid>
 				)}
-
-				{/* <Grid xs={4} item>
-					<Tags error={tagsError} tags={tags} isLoading={tagsLoading} />
-				</Grid> */}
 			</Grid>
 		</>
 	);

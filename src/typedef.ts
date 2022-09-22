@@ -26,3 +26,10 @@ export enum TabsEnum {
 	New = 'New',
 	Popular = 'Popular',
 }
+
+export enum BreakpointsEnum {
+	Sm = 576,
+	Md = 768,
+	Lg = 992,
+	Xl = 1200,
+}
