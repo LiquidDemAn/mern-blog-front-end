@@ -10,9 +10,17 @@ type Props = {
 	error: AxiosError | null;
 	post: FullPostType | null;
 	userId?: string;
+	likeHandle: () => Promise<void>;
+	isLiked: boolean;
 };
 
-export const FullPostView = ({ error, post, userId }: Props) => {
+export const FullPostView = ({
+	error,
+	post,
+	userId,
+	likeHandle,
+	isLiked,
+}: Props) => {
 	if (error?.response?.status === 404) {
 		return (
 			<h2>
@@ -35,7 +43,13 @@ export const FullPostView = ({ error, post, userId }: Props) => {
 
 	return (
 		<>
-			<Post isEditable={userId === post?.author._id} post={post} isFullPost>
+			<Post
+				likeHandle={likeHandle}
+				isLiked={isLiked}
+				isEditable={userId === post?.author._id}
+				post={post}
+				isFullPost
+			>
 				{post?.text ? <ReactMarkdown children={post?.text} /> : <></>}
 			</Post>
 

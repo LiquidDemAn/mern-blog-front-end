@@ -17,6 +17,29 @@ export const FullPost = () => {
 
 	const deleteLoading = useAppSelector(getDeletePostLoading);
 
+	const isLiked = post?.likesIds.includes(userId ? userId : '') || false;
+
+	console.log(isLiked);
+
+	const likeHandle = async () => {
+		setError(null);
+
+		if (post && userId) {
+			await customeAxios
+				.patch(`/posts/${id}/like`)
+				.then(() => {
+					setPost({
+						...post,
+						likesIds: [...post.likesIds, userId],
+						likesCount: post.likesCount + 1,
+					});
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	};
+
 	useEffect(() => {
 		const loadPost = async () => {
 			setError(null);
@@ -33,7 +56,13 @@ export const FullPost = () => {
 
 	return (
 		<>
-			<FullPostView userId={userId} error={error} post={post} />
+			<FullPostView
+				userId={userId}
+				likeHandle={likeHandle}
+				isLiked={isLiked}
+				error={error}
+				post={post}
+			/>
 			<Loader open={deleteLoading} />
 		</>
 	);
