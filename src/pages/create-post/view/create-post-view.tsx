@@ -14,7 +14,7 @@ import {
 import SimpleMDE from 'react-simplemde-editor';
 import { Link } from 'react-router-dom';
 import { CreatePostType, CreatPostValidErrorType } from '../create-post';
-import { ErrorType, PathsEnum } from '../../../typedef';
+import { BreakpointsEnum, ErrorType, PathsEnum } from '../../../typedef';
 
 type Props = {
 	post: CreatePostType;
@@ -48,6 +48,7 @@ export const CreatePostView = ({
 	handleClose,
 }: Props) => {
 	const fileRef = useRef<null | HTMLInputElement>(null);
+	const isSmall = window.innerWidth <= BreakpointsEnum.Small;
 
 	const options = useMemo(
 		() => ({
@@ -72,7 +73,7 @@ export const CreatePostView = ({
 					<Button
 						onClick={() => fileRef.current?.click()}
 						variant='outlined'
-						size='large'
+						size={isSmall ? 'small' : 'large'}
 					>
 						Download preview
 					</Button>
@@ -86,7 +87,7 @@ export const CreatePostView = ({
 					{(link || post.imageUrl) && (
 						<Button
 							variant='contained'
-							size='large'
+							size={isSmall ? 'small' : 'large'}
 							color='error'
 							onClick={onRemoveImage}
 						>

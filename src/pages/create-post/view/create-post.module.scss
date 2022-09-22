@@ -1,6 +1,6 @@
 .title {
 	input {
-		font-size: 38px;
+		font-size: 28px;
 		font-weight: 900;
 		margin-bottom: 10px;
 	}
@@ -9,6 +9,14 @@
 		&:before,
 		&:after {
 			display: none;
+		}
+	}
+
+	@media (min-width: 576px) {
+		input {
+			font-size: 38px;
+			font-weight: 900;
+			margin-bottom: 10px;
 		}
 	}
 }
@@ -21,8 +29,13 @@
 
 .image {
 	width: 100%;
-	min-height: 400px;
-	max-height: 400px;
+	min-height: 200px;
+	max-height: 250px;
+
+	@media (min-width: 576px) {
+		min-height: 400px;
+		max-height: 400px;
+	}
 }
 
 .tags {

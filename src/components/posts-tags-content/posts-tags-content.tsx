@@ -34,7 +34,7 @@ export const PostsTagsContent = ({ value, handleChange }: Props) => {
 	const tagsLoading = useAppSelector(getTagsLoading);
 	const tagsError = useAppSelector(getTagsError);
 
-	const isMedium = window.innerWidth >= BreakpointsEnum.Md;
+	const isMedium = window.innerWidth >= BreakpointsEnum.Medium;
 
 	return (
 		<>

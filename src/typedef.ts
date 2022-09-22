@@ -28,8 +28,8 @@ export enum TabsEnum {
 }
 
 export enum BreakpointsEnum {
-	Sm = 576,
-	Md = 768,
-	Lg = 992,
-	Xl = 1200,
+	Small = 576,
+	Medium = 768,
+	Large = 992,
+	Extra = 1200,
 }
