@@ -11,6 +11,7 @@ type Props = {
 	post: FullPostType | null;
 	userId?: string;
 	likeHandle: () => Promise<void>;
+	unlikeHandle: () => Promise<void>;
 	isLiked: boolean;
 };
 
@@ -19,6 +20,7 @@ export const FullPostView = ({
 	post,
 	userId,
 	likeHandle,
+	unlikeHandle,
 	isLiked,
 }: Props) => {
 	if (error?.response?.status === 404) {
@@ -44,7 +46,8 @@ export const FullPostView = ({
 	return (
 		<>
 			<Post
-				likeHandle={likeHandle}
+				fullPostLikeHandle={likeHandle}
+				fullPostUnlikeHandle={unlikeHandle}
 				isLiked={isLiked}
 				isEditable={userId === post?.author._id}
 				post={post}

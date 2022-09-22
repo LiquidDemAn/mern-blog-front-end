@@ -24,8 +24,9 @@ type Props = {
 	children?: ReactElement | ReactElement[];
 	isFullPost?: boolean;
 	isEditable?: boolean;
-	likeHandle?: () => Promise<void>;
 	isLiked?: boolean;
+	fullPostLikeHandle?: () => Promise<void>;
+	fullPostUnlikeHandle?: () => Promise<void>;
 };
 
 export const Post = ({
@@ -33,8 +34,9 @@ export const Post = ({
 	children,
 	isFullPost,
 	isEditable,
-	likeHandle,
 	isLiked,
+	fullPostLikeHandle,
+	fullPostUnlikeHandle,
 }: Props) => {
 	const dispatch = useAppDispach();
 	const navigate = useNavigate();
@@ -118,7 +120,7 @@ export const Post = ({
 								<EyeIcon />
 								<span>{post.viewsCount}</span>
 							</li>
-							<li onClick={likeHandle}>
+							<li onClick={isLiked ? fullPostUnlikeHandle : fullPostLikeHandle}>
 								{isLiked ? (
 									<SvgIcon htmlColor='red'>
 										<FavoriteIcon />

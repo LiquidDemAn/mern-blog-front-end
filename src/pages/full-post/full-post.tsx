@@ -40,6 +40,25 @@ export const FullPost = () => {
 		}
 	};
 
+	const unlikeHandle = async () => {
+		setError(null);
+
+		if (post && userId) {
+			await customeAxios
+				.patch(`/posts/${id}/unlike`)
+				.then(() => {
+					setPost({
+						...post,
+						likesIds: post.likesIds.filter((item) => item !== userId),
+						likesCount: post.likesCount - 1,
+					});
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	};
+
 	useEffect(() => {
 		const loadPost = async () => {
 			setError(null);
@@ -59,6 +78,7 @@ export const FullPost = () => {
 			<FullPostView
 				userId={userId}
 				likeHandle={likeHandle}
+				unlikeHandle={unlikeHandle}
 				isLiked={isLiked}
 				error={error}
 				post={post}
