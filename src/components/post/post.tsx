@@ -5,6 +5,9 @@ import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { SvgIcon } from '@mui/material';
 
 import styles from './post.module.scss';
 import { UserInfo } from '../user-info';
@@ -105,6 +108,11 @@ export const Post = ({ post, children, isFullPost, isEditable }: Props) => {
 							<li>
 								<EyeIcon />
 								<span>{post.viewsCount}</span>
+							</li>
+							<li>
+								<SvgIcon htmlColor='red'>
+									<FavoriteIcon />
+								</SvgIcon>
 							</li>
 							<li>
 								<CommentIcon />
