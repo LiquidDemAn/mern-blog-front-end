@@ -19,13 +19,7 @@ export const Posts = ({ isLoading, posts, userId, error }: Props) => {
 			{isLoading ? (
 				[...Array(5)].map((_, index) => <Post key={index} />)
 			) : posts.length ? (
-				posts.map((post) => (
-					<Post
-						key={post._id}
-						post={post}
-						isEditable={userId === post.author._id}
-					/>
-				))
+				posts.map((post) => <Post key={post._id} post={post} />)
 			) : (
 				<h3>List of posts is Empty</h3>
 			)}

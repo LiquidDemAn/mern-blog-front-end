@@ -48,8 +48,6 @@ export const FullPostView = ({
 			<Post
 				fullPostLikeHandle={likeHandle}
 				fullPostUnlikeHandle={unlikeHandle}
-				isLiked={isLiked}
-				isEditable={userId === post?.author._id}
 				post={post}
 				isFullPost
 			>

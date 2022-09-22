@@ -3,7 +3,7 @@ import { AuthErrorType, AuthValidtionErrorType } from './typedef';
 
 export const getIsAuth = (state: AppState) => Boolean(state.auth.userData);
 export const getUser = (state: AppState) => state.auth.userData;
-export const getUserId = (state: AppState) => state.auth.userData?._id;
+export const getUserId = (state: AppState) => state.auth.userData?._id || '';
 export const getUserName = (state: AppState) => state.auth.userData?.fullName;
 export const getAuthLoading = (state: AppState) => state.auth.loading;
 

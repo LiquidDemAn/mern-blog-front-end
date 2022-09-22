@@ -15,16 +15,15 @@ import { PostSkeleton } from './skeleton';
 import { Link, useNavigate } from 'react-router-dom';
 import { FullPostType, PostType } from '../../redux/services/posts/typedef';
 import { PathsEnum } from '../../typedef';
-import { useAppDispach } from '../../redux/store/hooks';
+import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { deletePost } from '../../redux/services/posts/actions';
 import { DeletePost } from '../dialogs/delete-post';
+import { getUserId } from '../../redux/services/auth/selectors';
 
 type Props = {
 	post?: PostType | FullPostType | null;
 	children?: ReactElement | ReactElement[];
 	isFullPost?: boolean;
-	isEditable?: boolean;
-	isLiked?: boolean;
 	fullPostLikeHandle?: () => Promise<void>;
 	fullPostUnlikeHandle?: () => Promise<void>;
 };
@@ -33,8 +32,6 @@ export const Post = ({
 	post,
 	children,
 	isFullPost,
-	isEditable,
-	isLiked,
 	fullPostLikeHandle,
 	fullPostUnlikeHandle,
 }: Props) => {
@@ -42,6 +39,10 @@ export const Post = ({
 	const navigate = useNavigate();
 
 	const [open, setOpen] = useState(false);
+
+	const userId = useAppSelector(getUserId);
+	const isLiked = post?.likesIds.includes(userId);
+	const isEditable = userId === post?.author._id;
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -120,16 +121,31 @@ export const Post = ({
 								<EyeIcon />
 								<span>{post.viewsCount}</span>
 							</li>
-							<li onClick={isLiked ? fullPostUnlikeHandle : fullPostLikeHandle}>
-								{isLiked ? (
-									<SvgIcon htmlColor='red'>
-										<FavoriteIcon />
-									</SvgIcon>
-								) : (
-									<FavoriteBorderIcon />
-								)}
-								<span>{post.likesCount}</span>
-							</li>
+							{isFullPost ? (
+								<li
+									onClick={isLiked ? fullPostUnlikeHandle : fullPostLikeHandle}
+								>
+									{isLiked ? (
+										<SvgIcon htmlColor='red'>
+											<FavoriteIcon />
+										</SvgIcon>
+									) : (
+										<FavoriteBorderIcon />
+									)}
+									<span>{post.likesCount}</span>
+								</li>
+							) : (
+								<li>
+									{isLiked ? (
+										<SvgIcon htmlColor='red'>
+											<FavoriteIcon />
+										</SvgIcon>
+									) : (
+										<FavoriteBorderIcon />
+									)}
+									<span>{post.likesCount}</span>
+								</li>
+							)}
 							<li>
 								<CommentIcon />
 								{/* <span>{post.commentsCount}</span> */}
