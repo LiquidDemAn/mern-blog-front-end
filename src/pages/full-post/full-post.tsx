@@ -74,10 +74,8 @@ export const FullPost = () => {
 	return (
 		<>
 			<FullPostView
-				userId={userId}
 				likeHandle={likeHandle}
 				unlikeHandle={unlikeHandle}
-				isLiked={isLiked}
 				error={error}
 				post={post}
 			/>

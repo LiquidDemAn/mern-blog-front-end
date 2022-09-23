@@ -3,25 +3,21 @@ import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
 import { Post } from '../../../components/post';
 import { FullPostType } from '../../../redux/services/posts/typedef';
-// import { Comments } from '../../../components/comments';
-// import { AddComment } from '../../../components/add-comment';
+import { Comments } from '../../../components/comments';
+import { AddComment } from '../../../components/add-comment';
 
 type Props = {
 	error: AxiosError | null;
 	post: FullPostType | null;
-	userId?: string;
 	likeHandle: () => Promise<void>;
 	unlikeHandle: () => Promise<void>;
-	isLiked: boolean;
 };
 
 export const FullPostView = ({
 	error,
 	post,
-	userId,
 	likeHandle,
 	unlikeHandle,
-	isLiked,
 }: Props) => {
 	if (error?.response?.status === 404) {
 		return (
@@ -54,7 +50,7 @@ export const FullPostView = ({
 				{post?.text ? <ReactMarkdown children={post?.text} /> : <></>}
 			</Post>
 
-			{/* <Comments
+			<Comments
 				items={[
 					{
 						user: {
@@ -74,7 +70,7 @@ export const FullPostView = ({
 				isLoading={false}
 			>
 				<AddComment />
-			</Comments> */}
+			</Comments>
 		</>
 	);
 };
