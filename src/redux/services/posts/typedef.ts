@@ -10,6 +10,7 @@ export type PostType = {
 	imageUrl?: string;
 	tags: string[];
 	viewsCount: number;
+	viewersIds: string[];
 	likesCount: number;
 	likesIds: string[];
 	author: PostAuthorType;
@@ -23,7 +24,7 @@ export type FullPostType = {
 	imageUrl?: string;
 	tags: string[];
 	viewsCount: number;
-	viewersId: string[];
+	viewersIds: string[];
 	likesCount: number;
 	likesIds: string[];
 	author: PostAuthorType;

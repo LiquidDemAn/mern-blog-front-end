@@ -19,8 +19,6 @@ export const FullPost = () => {
 
 	const isLiked = post?.likesIds.includes(userId ? userId : '') || false;
 
-	console.log(isLiked);
-
 	const likeHandle = async () => {
 		setError(null);
 

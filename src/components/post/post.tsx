@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ReactElement, useState, useEffect } from 'react';
+import { ReactElement, useState } from 'react';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
@@ -46,6 +46,7 @@ export const Post = ({
 
 	const userId = useAppSelector(getUserId);
 	const postId = post?._id;
+	const isViewed = post?.viewersIds.includes(userId);
 	const isLiked = post?.likesIds.includes(userId);
 	const isEditable = userId === post?.author._id;
 
@@ -135,7 +136,14 @@ export const Post = ({
 
 						<ul className={styles.postDetails}>
 							<li>
-								<EyeIcon />
+								{isViewed ? (
+									<SvgIcon htmlColor='red'>
+										<EyeIcon />
+									</SvgIcon>
+								) : (
+									<EyeIcon />
+								)}
+
 								<span>{post.viewsCount}</span>
 							</li>
 							{isFullPost ? (
@@ -154,6 +162,8 @@ export const Post = ({
 								</li>
 							) : (
 								<li
+									// onMouseOver={() => setQq(5)}
+									// onMouseOut={() => setQq(1)}
 									onClick={isLiked ? unlikeHandle : likeHandle}
 									className={styles.like}
 								>
