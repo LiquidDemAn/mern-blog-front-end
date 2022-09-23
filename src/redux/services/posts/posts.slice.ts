@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loadPosts, deletePost } from './actions';
+import { loadPosts, deletePost, likePost, unlikePost } from './actions';
 import { PostsStateType } from './typedef';
 
 const initialState: PostsStateType = {
@@ -49,6 +49,32 @@ export const postsSlice = createSlice({
 			.addCase(deletePost.rejected, (state, { payload }) => {
 				state.deleteLoading = false;
 				state.deleteError = payload;
+			})
+
+			// Like post
+			.addCase(likePost.fulfilled, (state, { meta, payload }) => {
+				if (payload) {
+					const postId = meta.arg;
+					const post = state.posts.find((item) => item._id === postId);
+
+					if (post) {
+						post.likesCount = post.likesCount + 1;
+						post.likesIds.push(payload);
+					}
+				}
+			})
+
+			// Unlike post
+			.addCase(unlikePost.fulfilled, (state, { meta, payload }) => {
+				if (payload) {
+					const postId = meta.arg;
+					const post = state.posts.find((item) => item._id === postId);
+
+					if (post) {
+						post.likesCount = post.likesCount - 1;
+						post.likesIds = post.likesIds.filter((item) => item !== payload);
+					}
+				}
 			}),
 });
 

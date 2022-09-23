@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
@@ -16,7 +16,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FullPostType, PostType } from '../../redux/services/posts/typedef';
 import { PathsEnum } from '../../typedef';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
-import { deletePost } from '../../redux/services/posts/actions';
+import {
+	deletePost,
+	likePost,
+	unlikePost,
+} from '../../redux/services/posts/actions';
 import { DeletePost } from '../dialogs/delete-post';
 import { getUserId } from '../../redux/services/auth/selectors';
 
@@ -41,6 +45,7 @@ export const Post = ({
 	const [open, setOpen] = useState(false);
 
 	const userId = useAppSelector(getUserId);
+	const postId = post?._id;
 	const isLiked = post?.likesIds.includes(userId);
 	const isEditable = userId === post?.author._id;
 
@@ -53,12 +58,24 @@ export const Post = ({
 	};
 
 	const handleDelete = () => {
-		if (post?._id) {
+		if (postId) {
 			handleClose();
 
 			dispatch(deletePost(post._id)).then(() => {
 				navigate(PathsEnum.Home);
 			});
+		}
+	};
+
+	const likeHandle = () => {
+		if (postId) {
+			dispatch(likePost(postId));
+		}
+	};
+
+	const unlikeHandle = () => {
+		if (postId) {
+			dispatch(unlikePost(postId));
 		}
 	};
 
@@ -123,6 +140,7 @@ export const Post = ({
 							</li>
 							{isFullPost ? (
 								<li
+									className={styles.like}
 									onClick={isLiked ? fullPostUnlikeHandle : fullPostLikeHandle}
 								>
 									{isLiked ? (
@@ -135,7 +153,10 @@ export const Post = ({
 									<span>{post.likesCount}</span>
 								</li>
 							) : (
-								<li>
+								<li
+									onClick={isLiked ? unlikeHandle : likeHandle}
+									className={styles.like}
+								>
 									{isLiked ? (
 										<SvgIcon htmlColor='red'>
 											<FavoriteIcon />
