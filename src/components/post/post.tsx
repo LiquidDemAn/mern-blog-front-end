@@ -46,6 +46,7 @@ export const Post = ({
 
 	const userId = useAppSelector(getUserId);
 	const postId = post?._id;
+	const commentsCount = post?.comments.length;
 	const isViewed = post?.viewersIds.includes(userId);
 	const isLiked = post?.likesIds.includes(userId);
 	const isEditable = userId === post?.author._id;
@@ -179,7 +180,7 @@ export const Post = ({
 							)}
 							<li>
 								<CommentIcon />
-								{/* <span>{post.commentsCount}</span> */}
+								<span>{commentsCount}</span>
 							</li>
 						</ul>
 					</div>

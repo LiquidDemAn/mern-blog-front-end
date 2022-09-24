@@ -4,6 +4,18 @@ export type PostAuthorType = {
 	avatarUrl?: string;
 };
 
+export type PostCommentType = {
+	_id: string;
+	likesCount: number;
+	likesIds: string[];
+	author: {
+		fullName: string;
+		nickName: string;
+		avatarUrl: string;
+		createdAt: string;
+	};
+};
+
 export type PostType = {
 	_id: string;
 	title: string;
@@ -13,6 +25,7 @@ export type PostType = {
 	viewersIds: string[];
 	likesCount: number;
 	likesIds: string[];
+	comments: PostCommentType[];
 	author: PostAuthorType;
 	createdAt: string;
 };
@@ -27,6 +40,7 @@ export type FullPostType = {
 	viewersIds: string[];
 	likesCount: number;
 	likesIds: string[];
+	comments: PostCommentType[];
 	author: PostAuthorType;
 	createdAt: string;
 };
