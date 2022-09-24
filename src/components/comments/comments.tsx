@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement, Fragment } from 'react';
 import {
 	ListItem,
 	ListItemAvatar,
@@ -7,10 +7,13 @@ import {
 	Divider,
 	List,
 	Skeleton,
+	SvgIcon,
 } from '@mui/material';
 import { SideBlock } from '../side-block';
 import { PostCommentType } from '../../redux/services/posts/typedef';
 import { PathsEnum } from '../../typedef';
+import { CommentsSkeleton } from './skeleton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 type Props = {
 	items?: PostCommentType[];
@@ -19,12 +22,16 @@ type Props = {
 };
 
 export const Comments = ({ items = [], children, isLoading = true }: Props) => {
+	if (isLoading) {
+		return <CommentsSkeleton />;
+	}
+
 	return (
 		<SideBlock title='Comments'>
 			<List>
 				{items.map((item, index) => (
-					<React.Fragment key={index}>
-						<ListItem alignItems='flex-start'>
+					<Fragment key={index}>
+						<ListItem>
 							<ListItemAvatar>
 								{isLoading ? (
 									<Skeleton variant='circular' width={40} height={40} />
@@ -41,14 +48,18 @@ export const Comments = ({ items = [], children, isLoading = true }: Props) => {
 									<Skeleton variant='text' height={18} width={230} />
 								</div>
 							) : (
-								<ListItemText
-									primary={item.author.fullName}
-									secondary={item.text}
-								/>
+								<div>
+									<ListItemText
+										primary={item.author.fullName}
+										secondary={item.text}
+									/>
+
+									<FavoriteIcon />
+								</div>
 							)}
 						</ListItem>
 						<Divider variant='inset' component='li' />
-					</React.Fragment>
+					</Fragment>
 				))}
 			</List>
 			{children ? <>{children}</> : <></>}
