@@ -17,8 +17,6 @@ export const FullPost = () => {
 
 	const deleteLoading = useAppSelector(getDeletePostLoading);
 
-	const isLiked = post?.likesIds.includes(userId ? userId : '') || false;
-
 	const likeHandle = async () => {
 		setError(null);
 

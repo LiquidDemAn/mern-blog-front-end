@@ -9,26 +9,30 @@ import {
 	Skeleton,
 } from '@mui/material';
 import { SideBlock } from '../side-block';
-import { CommentType } from '../../typedef';
+import { PostCommentType } from '../../redux/services/posts/typedef';
+import { PathsEnum } from '../../typedef';
 
 type Props = {
-	items: CommentType[];
+	items?: PostCommentType[];
 	isLoading?: boolean;
 	children?: ReactElement | ReactElement[];
 };
 
-export const Comments = ({ items, children, isLoading = true }: Props) => {
+export const Comments = ({ items = [], children, isLoading = true }: Props) => {
 	return (
-		<SideBlock title='Комментарии'>
+		<SideBlock title='Comments'>
 			<List>
-				{(isLoading ? [...Array(5)] : items).map((obj, index) => (
+				{items.map((item, index) => (
 					<React.Fragment key={index}>
 						<ListItem alignItems='flex-start'>
 							<ListItemAvatar>
 								{isLoading ? (
 									<Skeleton variant='circular' width={40} height={40} />
 								) : (
-									<Avatar alt={obj.user.fullName} src={obj.user.avatarUrl} />
+									<Avatar
+										alt={item.author.nickName}
+										src={`${PathsEnum.Server}${item.author.avatarUrl}`}
+									/>
 								)}
 							</ListItemAvatar>
 							{isLoading ? (
@@ -38,8 +42,8 @@ export const Comments = ({ items, children, isLoading = true }: Props) => {
 								</div>
 							) : (
 								<ListItemText
-									primary={obj.user.fullName}
-									secondary={obj.text}
+									primary={item.author.fullName}
+									secondary={item.text}
 								/>
 							)}
 						</ListItem>

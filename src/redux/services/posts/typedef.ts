@@ -8,6 +8,7 @@ export type PostCommentType = {
 	_id: string;
 	likesCount: number;
 	likesIds: string[];
+	text: string;
 	author: {
 		fullName: string;
 		nickName: string;
