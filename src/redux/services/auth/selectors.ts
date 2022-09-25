@@ -7,6 +7,10 @@ export const getUserId = (state: AppState) => state.auth.userData?._id || '';
 export const getUserName = (state: AppState) => state.auth.userData?.fullName;
 export const getAuthLoading = (state: AppState) => state.auth.loading;
 
+export const getUserAvatar = (state: AppState) => {
+	return state.auth.userData?.avatarUrl;
+};
+
 export const getAuthError = (state: AppState) => {
 	return state.auth.error as AuthErrorType | null;
 };

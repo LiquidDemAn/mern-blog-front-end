@@ -55,6 +55,19 @@ export const FullPost = () => {
 		}
 	};
 
+	const createComment = async (text: string) => {
+		await customeAxios
+			.post(`/posts/${id}/create-comment`, { text })
+			.then((response) => {
+				if (post) {
+					setPost({
+						...post,
+						comments: [...post?.comments, response.data],
+					});
+				}
+			});
+	};
+
 	useEffect(() => {
 		const loadPost = async () => {
 			setError(null);
@@ -72,10 +85,11 @@ export const FullPost = () => {
 	return (
 		<>
 			<FullPostView
-				likeHandle={likeHandle}
-				unlikeHandle={unlikeHandle}
 				error={error}
 				post={post}
+				likeHandle={likeHandle}
+				unlikeHandle={unlikeHandle}
+				createComment={createComment}
 			/>
 			<Loader open={deleteLoading} />
 		</>

@@ -6,8 +6,6 @@ import {
 	ListItemText,
 	Divider,
 	List,
-	Skeleton,
-	SvgIcon,
 } from '@mui/material';
 import { SideBlock } from '../side-block';
 import { PostCommentType } from '../../redux/services/posts/typedef';
@@ -31,32 +29,24 @@ export const Comments = ({ items = [], children, isLoading = true }: Props) => {
 			<List>
 				{items.map((item, index) => (
 					<Fragment key={index}>
-						<ListItem>
+						<ListItem style={{ display: 'flex', alignItems: 'flex-start' }}>
 							<ListItemAvatar>
-								{isLoading ? (
-									<Skeleton variant='circular' width={40} height={40} />
-								) : (
-									<Avatar
-										alt={item.author.nickName}
-										src={`${PathsEnum.Server}${item.author.avatarUrl}`}
-									/>
-								)}
+								<Avatar
+									alt={item.author.nickName}
+									src={`${PathsEnum.Server}${item.author.avatarUrl}`}
+								/>
 							</ListItemAvatar>
-							{isLoading ? (
-								<div style={{ display: 'flex', flexDirection: 'column' }}>
-									<Skeleton variant='text' height={25} width={120} />
-									<Skeleton variant='text' height={18} width={230} />
-								</div>
-							) : (
-								<div>
-									<ListItemText
-										primary={item.author.fullName}
-										secondary={item.text}
-									/>
 
-									<FavoriteIcon />
-								</div>
-							)}
+							<div>
+								<ListItemText
+									style={{ marginTop: '0' }}
+									primary={item.author.fullName}
+									secondary={item.text}
+								/>
+
+								<FavoriteIcon />
+								<span>{item.likesCount}</span>
+							</div>
 						</ListItem>
 						<Divider variant='inset' component='li' />
 					</Fragment>

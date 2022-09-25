@@ -11,6 +11,7 @@ type Props = {
 	post: FullPostType | null;
 	likeHandle: () => Promise<void>;
 	unlikeHandle: () => Promise<void>;
+	createComment: (text: string) => Promise<void>;
 };
 
 export const FullPostView = ({
@@ -18,6 +19,7 @@ export const FullPostView = ({
 	post,
 	likeHandle,
 	unlikeHandle,
+	createComment,
 }: Props) => {
 	if (error?.response?.status === 404) {
 		return (
@@ -51,7 +53,7 @@ export const FullPostView = ({
 			</Post>
 
 			<Comments items={post?.comments} isLoading={false}>
-				<AddComment />
+				<AddComment createComment={createComment} />
 			</Comments>
 		</>
 	);
