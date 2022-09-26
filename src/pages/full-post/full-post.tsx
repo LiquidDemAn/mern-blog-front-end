@@ -4,7 +4,10 @@ import { useParams } from 'react-router-dom';
 import { Loader } from '../../components/loader';
 import { customeAxios } from '../../redux/axios';
 import { getUserId } from '../../redux/services/auth/selectors';
-import { getDeletePostLoading } from '../../redux/services/posts/selectors';
+import {
+	getDeletePostLoading,
+	getPostsLoading,
+} from '../../redux/services/posts/selectors';
 import { FullPostType } from '../../redux/services/posts/typedef';
 import { useAppSelector } from '../../redux/store/hooks';
 import { FullPostView } from './view';
@@ -12,11 +15,12 @@ import { FullPostView } from './view';
 export const FullPost = () => {
 	const { id } = useParams();
 	const userId = useAppSelector(getUserId);
+	const postLoading = useAppSelector(getPostsLoading);
+	const deleteLoading = useAppSelector(getDeletePostLoading);
+
 	const [error, setError] = useState<AxiosError | null>(null);
 	const [post, setPost] = useState<FullPostType | null>(null);
-	const [commentLoading, setCommentLoading] = useState(false);
-
-	const deleteLoading = useAppSelector(getDeletePostLoading);
+	const [createCommentLoading, setCreateCommentLoading] = useState(false);
 
 	const likeHandle = async () => {
 		setError(null);
@@ -57,7 +61,7 @@ export const FullPost = () => {
 	};
 
 	const createComment = async (text: string) => {
-		setCommentLoading(true);
+		setCreateCommentLoading(true);
 
 		await customeAxios
 			.post(`/posts/${id}/create-comment`, { text })
@@ -69,12 +73,12 @@ export const FullPost = () => {
 					});
 				}
 
-				setCommentLoading(false);
+				setCreateCommentLoading(false);
 			})
 			.catch((err) => {
 				console.log(err);
 
-				setCommentLoading(false);
+				setCreateCommentLoading(false);
 			});
 	};
 
@@ -97,7 +101,8 @@ export const FullPost = () => {
 			<FullPostView
 				error={error}
 				post={post}
-				commentLoading={commentLoading}
+				postLoading={postLoading}
+				createCommentLoading={createCommentLoading}
 				likeHandle={likeHandle}
 				unlikeHandle={unlikeHandle}
 				createComment={createComment}

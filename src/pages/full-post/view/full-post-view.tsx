@@ -9,7 +9,8 @@ import { AddComment } from '../../../components/add-comment';
 type Props = {
 	error: AxiosError | null;
 	post: FullPostType | null;
-	commentLoading: boolean;
+	postLoading?: boolean;
+	createCommentLoading: boolean;
 	likeHandle: () => Promise<void>;
 	unlikeHandle: () => Promise<void>;
 	createComment: (text: string) => Promise<void>;
@@ -19,7 +20,8 @@ export const FullPostView = ({
 	error,
 	post,
 	likeHandle,
-	commentLoading,
+	postLoading,
+	createCommentLoading,
 	unlikeHandle,
 	createComment,
 }: Props) => {
@@ -54,9 +56,9 @@ export const FullPostView = ({
 				{post?.text ? <ReactMarkdown children={post?.text} /> : <></>}
 			</Post>
 
-			<Comments items={post?.comments} isLoading={false}>
+			<Comments items={post?.comments} isLoading={postLoading}>
 				<AddComment
-					commentLoading={commentLoading}
+					isLoading={createCommentLoading}
 					createComment={createComment}
 				/>
 			</Comments>

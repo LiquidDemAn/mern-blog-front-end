@@ -6,11 +6,11 @@ import { getUserAvatar } from '../../redux/services/auth/selectors';
 import { PathsEnum } from '../../typedef';
 
 type Props = {
-	commentLoading?: boolean;
+	isLoading?: boolean;
 	createComment: (text: string) => Promise<void>;
 };
 
-export const AddComment = ({ commentLoading, createComment }: Props) => {
+export const AddComment = ({ isLoading, createComment }: Props) => {
 	const userAvatar = useAppSelector(getUserAvatar);
 	const [value, setValue] = useState('');
 
@@ -36,12 +36,11 @@ export const AddComment = ({ commentLoading, createComment }: Props) => {
 						label='Write a comment'
 						variant='outlined'
 						maxRows={10}
-						multiline
 						fullWidth
-						disabled={commentLoading}
+						disabled={isLoading}
 					/>
 					<Button
-						disabled={commentLoading}
+						disabled={isLoading}
 						onClick={handleSubmit}
 						variant='contained'
 					>

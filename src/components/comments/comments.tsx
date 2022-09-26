@@ -1,3 +1,4 @@
+import styles from './comments.module.scss';
 import { ReactElement, Fragment } from 'react';
 import {
 	ListItem,
@@ -6,12 +7,14 @@ import {
 	ListItemText,
 	Divider,
 	List,
+	SvgIcon,
 } from '@mui/material';
 import { SideBlock } from '../side-block';
 import { PostCommentType } from '../../redux/services/posts/typedef';
 import { PathsEnum } from '../../typedef';
 import { CommentsSkeleton } from './skeleton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 type Props = {
 	items?: PostCommentType[];
@@ -19,7 +22,7 @@ type Props = {
 	children?: ReactElement | ReactElement[];
 };
 
-export const Comments = ({ items = [], children, isLoading = true }: Props) => {
+export const Comments = ({ items = [], children, isLoading }: Props) => {
 	if (isLoading) {
 		return <CommentsSkeleton />;
 	}
@@ -43,9 +46,12 @@ export const Comments = ({ items = [], children, isLoading = true }: Props) => {
 									primary={item.author.fullName}
 									secondary={item.text}
 								/>
-
-								<FavoriteIcon />
-								<span>{item.likesCount}</span>
+								<div className={styles.likes}>
+									<SvgIcon fontSize='small'>
+										<FavoriteBorderIcon />
+									</SvgIcon>
+									<span>{item.likesCount}</span>
+								</div>
 							</div>
 						</ListItem>
 						<Divider variant='inset' component='li' />
