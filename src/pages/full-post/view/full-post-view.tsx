@@ -9,6 +9,7 @@ import { AddComment } from '../../../components/add-comment';
 type Props = {
 	error: AxiosError | null;
 	post: FullPostType | null;
+	commentLoading: boolean;
 	likeHandle: () => Promise<void>;
 	unlikeHandle: () => Promise<void>;
 	createComment: (text: string) => Promise<void>;
@@ -18,6 +19,7 @@ export const FullPostView = ({
 	error,
 	post,
 	likeHandle,
+	commentLoading,
 	unlikeHandle,
 	createComment,
 }: Props) => {
@@ -53,7 +55,10 @@ export const FullPostView = ({
 			</Post>
 
 			<Comments items={post?.comments} isLoading={false}>
-				<AddComment createComment={createComment} />
+				<AddComment
+					commentLoading={commentLoading}
+					createComment={createComment}
+				/>
 			</Comments>
 		</>
 	);

@@ -14,6 +14,7 @@ export const FullPost = () => {
 	const userId = useAppSelector(getUserId);
 	const [error, setError] = useState<AxiosError | null>(null);
 	const [post, setPost] = useState<FullPostType | null>(null);
+	const [commentLoading, setCommentLoading] = useState(false);
 
 	const deleteLoading = useAppSelector(getDeletePostLoading);
 
@@ -56,6 +57,8 @@ export const FullPost = () => {
 	};
 
 	const createComment = async (text: string) => {
+		setCommentLoading(true);
+
 		await customeAxios
 			.post(`/posts/${id}/create-comment`, { text })
 			.then((response) => {
@@ -65,6 +68,13 @@ export const FullPost = () => {
 						comments: [...post?.comments, response.data],
 					});
 				}
+
+				setCommentLoading(false);
+			})
+			.catch((err) => {
+				console.log(err);
+
+				setCommentLoading(false);
 			});
 	};
 
@@ -87,6 +97,7 @@ export const FullPost = () => {
 			<FullPostView
 				error={error}
 				post={post}
+				commentLoading={commentLoading}
 				likeHandle={likeHandle}
 				unlikeHandle={unlikeHandle}
 				createComment={createComment}
