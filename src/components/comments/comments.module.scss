@@ -1,6 +1,15 @@
+.comment {
+	display: flex;
+	align-items: flex-start;
+}
+
 .likes {
 	display: flex;
 	align-items: center;
 	column-gap: 5px;
 	cursor: pointer;
+}
+
+.settings {
+	display: flex;
 }
