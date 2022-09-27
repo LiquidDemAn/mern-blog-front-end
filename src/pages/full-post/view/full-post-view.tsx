@@ -14,6 +14,7 @@ type Props = {
 	likeHandle: () => Promise<void>;
 	unlikeHandle: () => Promise<void>;
 	createComment: (text: string) => Promise<void>;
+	deleteComment: (postId: string, commentId: string) => Promise<void>;
 };
 
 export const FullPostView = ({
@@ -24,6 +25,7 @@ export const FullPostView = ({
 	createCommentLoading,
 	unlikeHandle,
 	createComment,
+	deleteComment,
 }: Props) => {
 	if (error?.response?.status === 404) {
 		return (
@@ -56,7 +58,11 @@ export const FullPostView = ({
 				{post?.text ? <ReactMarkdown children={post?.text} /> : <></>}
 			</Post>
 
-			<Comments items={post?.comments} isLoading={postLoading}>
+			<Comments
+				items={post?.comments}
+				isLoading={postLoading}
+				deleteComment={deleteComment}
+			>
 				<AddComment
 					isLoading={createCommentLoading}
 					createComment={createComment}

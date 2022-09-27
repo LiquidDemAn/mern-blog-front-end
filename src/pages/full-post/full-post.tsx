@@ -82,6 +82,22 @@ export const FullPost = () => {
 			});
 	};
 
+	const deleteComment = async (postId: string, commentId: string) => {
+		await customeAxios
+			.delete(`/posts/${postId}/delete-comment/${commentId}`)
+			.then(() => {
+				if (post) {
+					setPost({
+						...post,
+						comments: post.comments.filter((item) => item._id !== commentId),
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
 	useEffect(() => {
 		const loadPost = async () => {
 			setError(null);
@@ -106,6 +122,7 @@ export const FullPost = () => {
 				likeHandle={likeHandle}
 				unlikeHandle={unlikeHandle}
 				createComment={createComment}
+				deleteComment={deleteComment}
 			/>
 			<Loader open={deleteLoading} />
 		</>
