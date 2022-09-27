@@ -25,6 +25,7 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogActions,
+	TextField,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
@@ -32,6 +33,11 @@ type Props = {
 	items?: PostCommentType[];
 	isLoading?: boolean;
 	children?: ReactElement | ReactElement[];
+	editComment: (
+		postId: string,
+		commentId: string,
+		text: string
+	) => Promise<void>;
 	deleteComment: (postId: string, commentId: string) => Promise<void>;
 };
 
@@ -39,28 +45,62 @@ export const Comments = ({
 	items = [],
 	children,
 	isLoading,
+	editComment,
 	deleteComment,
 }: Props) => {
 	const { id } = useParams();
-
 	const userId = useAppSelector(getUserId);
+
+	const [comment, setComment] = useState({
+		id: '',
+		text: '',
+	});
+
 	const [openDelete, setOpenDelete] = useState(false);
-	const [commentId, setCommentId] = useState('');
+	const [openEdit, setOpenEdit] = useState(false);
 
 	const openDeleteHandle = (id: string) => {
-		setCommentId(id);
+		setComment({
+			id,
+			text: '',
+		});
 		setOpenDelete(true);
 	};
 
 	const closeDeleteHandle = () => {
-		setCommentId('');
+		setComment({
+			id: '',
+			text: '',
+		});
 		setOpenDelete(false);
+	};
+
+	const openEditHandle = (id: string, text: string) => {
+		setComment({
+			id,
+			text,
+		});
+		setOpenEdit(true);
+	};
+
+	const closeEditHandle = () => {
+		setComment({
+			id: '',
+			text: '',
+		});
+		setOpenEdit(false);
 	};
 
 	const handleDelete = () => {
 		if (id) {
 			closeDeleteHandle();
-			deleteComment(id, commentId);
+			deleteComment(id, comment.id);
+		}
+	};
+
+	const handleEdit = () => {
+		if (id && comment.text) {
+			editComment(id, comment.id, comment.text);
 		}
 	};
 
@@ -106,7 +146,10 @@ export const Comments = ({
 
 								{item.author._id === userId && (
 									<div className={styles.settings}>
-										<IconButton color='primary'>
+										<IconButton
+											onClick={() => openEditHandle(item._id, item.text)}
+											color='primary'
+										>
 											<EditIcon />
 										</IconButton>
 										<IconButton
@@ -146,6 +189,41 @@ export const Comments = ({
 					</Button>
 					<Button onClick={handleDelete} variant='contained' color='error'>
 						Delete
+					</Button>
+				</DialogActions>
+			</Dialog>
+
+			<Dialog
+				open={openEdit}
+				onClose={closeEditHandle}
+				aria-labelledby='edit-comment-title'
+				aria-describedby='edit-comment-description'
+				fullWidth
+			>
+				<DialogTitle id='edit-comment-title'>Editing a comment!</DialogTitle>
+				<DialogContent>
+					<DialogContentText id='edit-comment-description'>
+						<TextField
+							onChange={(event) =>
+								setComment({
+									...comment,
+									text: event.target.value,
+								})
+							}
+							value={comment.text}
+							label='Write a comment'
+							variant='standard'
+							multiline
+							fullWidth
+						/>
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button variant='contained' onClick={closeEditHandle}>
+						Cancel
+					</Button>
+					<Button onClick={handleEdit} variant='contained' color='success'>
+						Submit
 					</Button>
 				</DialogActions>
 			</Dialog>

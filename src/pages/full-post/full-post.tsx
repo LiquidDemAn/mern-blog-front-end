@@ -21,6 +21,7 @@ export const FullPost = () => {
 	const [error, setError] = useState<AxiosError | null>(null);
 	const [post, setPost] = useState<FullPostType | null>(null);
 	const [createCommentLoading, setCreateCommentLoading] = useState(false);
+	const [editCommentLoading, setEditCommentLoading] = useState(false);
 	const [deleteCommentLoading, setDeleteCommentLoading] = useState(false);
 
 	const likeHandle = async () => {
@@ -103,6 +104,37 @@ export const FullPost = () => {
 			});
 	};
 
+	const editComment = async (
+		postId: string,
+		commentId: string,
+		text: string
+	) => {
+		setEditCommentLoading(true);
+
+		await customeAxios
+			.patch(`/posts/${postId}/edit-comment/${commentId}`, text)
+			.then(() => {
+				if (post) {
+					setPost({
+						...post,
+						comments: post.comments.map((item) => {
+							if (item._id === commentId) {
+								item.text = text;
+							}
+
+							return item;
+						}),
+					});
+				}
+
+				setEditCommentLoading(false);
+			})
+			.catch((err) => {
+				console.log(err);
+				setEditCommentLoading(false);
+			});
+	};
+
 	useEffect(() => {
 		const loadPost = async () => {
 			setError(null);
@@ -123,13 +155,20 @@ export const FullPost = () => {
 				error={error}
 				post={post}
 				postLoading={postLoading}
-				createCommentLoading={createCommentLoading}
 				likeHandle={likeHandle}
 				unlikeHandle={unlikeHandle}
 				createComment={createComment}
+				editComment={editComment}
 				deleteComment={deleteComment}
 			/>
-			<Loader open={deleteLoading || deleteCommentLoading} />
+			<Loader
+				open={
+					deleteLoading ||
+					createCommentLoading ||
+					editCommentLoading ||
+					deleteCommentLoading
+				}
+			/>
 		</>
 	);
 };

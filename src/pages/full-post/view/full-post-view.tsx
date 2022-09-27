@@ -10,10 +10,14 @@ type Props = {
 	error: AxiosError | null;
 	post: FullPostType | null;
 	postLoading?: boolean;
-	createCommentLoading: boolean;
 	likeHandle: () => Promise<void>;
 	unlikeHandle: () => Promise<void>;
 	createComment: (text: string) => Promise<void>;
+	editComment: (
+		postId: string,
+		commentId: string,
+		text: string
+	) => Promise<void>;
 	deleteComment: (postId: string, commentId: string) => Promise<void>;
 };
 
@@ -22,9 +26,9 @@ export const FullPostView = ({
 	post,
 	likeHandle,
 	postLoading,
-	createCommentLoading,
 	unlikeHandle,
 	createComment,
+	editComment,
 	deleteComment,
 }: Props) => {
 	if (error?.response?.status === 404) {
@@ -61,12 +65,10 @@ export const FullPostView = ({
 			<Comments
 				items={post?.comments}
 				isLoading={postLoading}
+				editComment={editComment}
 				deleteComment={deleteComment}
 			>
-				<AddComment
-					isLoading={createCommentLoading}
-					createComment={createComment}
-				/>
+				<AddComment createComment={createComment} />
 			</Comments>
 		</>
 	);
