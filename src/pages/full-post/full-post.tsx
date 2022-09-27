@@ -21,6 +21,7 @@ export const FullPost = () => {
 	const [error, setError] = useState<AxiosError | null>(null);
 	const [post, setPost] = useState<FullPostType | null>(null);
 	const [createCommentLoading, setCreateCommentLoading] = useState(false);
+	const [deleteCommentLoading, setDeleteCommentLoading] = useState(false);
 
 	const likeHandle = async () => {
 		setError(null);
@@ -83,6 +84,8 @@ export const FullPost = () => {
 	};
 
 	const deleteComment = async (postId: string, commentId: string) => {
+		setDeleteCommentLoading(true);
+
 		await customeAxios
 			.delete(`/posts/${postId}/delete-comment/${commentId}`)
 			.then(() => {
@@ -92,9 +95,11 @@ export const FullPost = () => {
 						comments: post.comments.filter((item) => item._id !== commentId),
 					});
 				}
+				setDeleteCommentLoading(false);
 			})
 			.catch((err) => {
 				console.log(err);
+				setDeleteCommentLoading(false);
 			});
 	};
 
@@ -124,7 +129,7 @@ export const FullPost = () => {
 				createComment={createComment}
 				deleteComment={deleteComment}
 			/>
-			<Loader open={deleteLoading} />
+			<Loader open={deleteLoading || deleteCommentLoading} />
 		</>
 	);
 };

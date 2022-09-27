@@ -57,10 +57,11 @@ export const Comments = ({
 		setOpenDelete(false);
 	};
 
-	const handleDelete = (postId: string, commentId: string) => {
-		deleteComment(postId, commentId).then(() => {
+	const handleDelete = () => {
+		if (id) {
 			closeDeleteHandle();
-		});
+			deleteComment(id, commentId);
+		}
 	};
 
 	if (isLoading) {
@@ -143,11 +144,7 @@ export const Comments = ({
 					<Button variant='contained' onClick={closeDeleteHandle}>
 						Cancel
 					</Button>
-					<Button
-						onClick={() => id && handleDelete(id, commentId)}
-						variant='contained'
-						color='error'
-					>
+					<Button onClick={handleDelete} variant='contained' color='error'>
 						Delete
 					</Button>
 				</DialogActions>
