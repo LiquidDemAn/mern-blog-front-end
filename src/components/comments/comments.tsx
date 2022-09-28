@@ -1,22 +1,14 @@
-import { ReactElement, Fragment, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { SideBlock } from '../side-block';
 import { PostCommentType } from '../../redux/services/posts/typedef';
 import { CommentsSkeleton } from './skeleton';
 import { useAppSelector } from '../../redux/store/hooks';
 import { getUserId } from '../../redux/services/auth/selectors';
-import {
-	List,
-	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogContentText,
-	DialogActions,
-	TextField,
-} from '@mui/material';
+import { List, TextField } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { Comment } from '../comment/comment';
+import { Comment } from '../comment';
 import { EditDialog } from '../dialogs/edit';
+import { DeleteDialog } from '../dialogs/delete';
 
 type Props = {
 	items?: PostCommentType[];
@@ -56,7 +48,7 @@ export const Comments = ({
 		setOpenDelete(true);
 	};
 
-	const closeDeleteHandle = () => {
+	const handleCloseDelete = () => {
 		setComment({
 			id: '',
 			text: '',
@@ -72,7 +64,7 @@ export const Comments = ({
 		setOpenEdit(true);
 	};
 
-	const closeEditHandle = () => {
+	const handleCloseEdit = () => {
 		setComment({
 			id: '',
 			text: '',
@@ -82,14 +74,14 @@ export const Comments = ({
 
 	const handleDelete = () => {
 		if (id) {
-			closeDeleteHandle();
+			handleCloseDelete();
 			deleteComment(id, comment.id);
 		}
 	};
 
 	const handleEdit = () => {
 		if (id && comment.text) {
-			closeEditHandle();
+			handleCloseEdit();
 			editComment(id, comment.id, comment.text);
 		}
 	};
@@ -116,32 +108,10 @@ export const Comments = ({
 			</SideBlock>
 
 			{/* Dialogs */}
-			<Dialog
-				open={openDelete}
-				onClose={closeDeleteHandle}
-				aria-labelledby='delete-comment-title'
-				aria-describedby='delete-comment-description'
-			>
-				<DialogTitle id='delete-comment-title'>Deleting a Comment!</DialogTitle>
-				<DialogContent>
-					<DialogContentText id='delete-comment-description'>
-						Do you really want to delete this Comment?
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button variant='contained' onClick={closeDeleteHandle}>
-						Cancel
-					</Button>
-					<Button onClick={handleDelete} variant='contained' color='error'>
-						Delete
-					</Button>
-				</DialogActions>
-			</Dialog>
-
 			<EditDialog
 				title='Editing a comment!'
 				open={openEdit}
-				closeHandle={closeEditHandle}
+				closeHandle={handleCloseEdit}
 				onSubmit={handleEdit}
 			>
 				<TextField
@@ -158,6 +128,15 @@ export const Comments = ({
 					fullWidth
 				/>
 			</EditDialog>
+
+			<DeleteDialog
+				title='Deleting a Comment!'
+				open={openDelete}
+				handleClose={handleCloseDelete}
+				onDelete={handleDelete}
+			>
+				<> Do you really want to delete this Comment?</>
+			</DeleteDialog>
 		</>
 	);
 };

@@ -26,7 +26,6 @@ export const EditDialog = ({
 	return (
 		<Dialog
 			open={open}
-			onClose={closeHandle}
 			aria-labelledby='edit-title'
 			aria-describedby='edit-description'
 			fullWidth
