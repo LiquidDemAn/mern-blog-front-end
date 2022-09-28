@@ -1,24 +1,11 @@
-import styles from './comments.module.scss';
 import { ReactElement, Fragment, useState } from 'react';
 import { SideBlock } from '../side-block';
 import { PostCommentType } from '../../redux/services/posts/typedef';
-import { PathsEnum } from '../../typedef';
 import { CommentsSkeleton } from './skeleton';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import DeleteIcon from '@mui/icons-material/Clear';
-import EditIcon from '@mui/icons-material/Edit';
 import { useAppSelector } from '../../redux/store/hooks';
 import { getUserId } from '../../redux/services/auth/selectors';
 import {
-	ListItem,
-	ListItemAvatar,
-	Avatar,
-	ListItemText,
-	Divider,
 	List,
-	SvgIcon,
-	IconButton,
 	Button,
 	Dialog,
 	DialogTitle,
@@ -28,6 +15,7 @@ import {
 	TextField,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import { Comment } from '../comment/comment';
 
 type Props = {
 	items?: PostCommentType[];
@@ -100,6 +88,7 @@ export const Comments = ({
 
 	const handleEdit = () => {
 		if (id && comment.text) {
+			closeEditHandle();
 			editComment(id, comment.id, comment.text);
 		}
 	};
@@ -112,59 +101,14 @@ export const Comments = ({
 		<>
 			<SideBlock title='Comments'>
 				<List>
-					{items.map((item, index) => (
-						<Fragment key={index}>
-							<ListItem
-								style={{
-									display: 'flex',
-									alignItems: 'flex-start',
-									justifyContent: 'space-between',
-								}}
-							>
-								<div className={styles.comment}>
-									<ListItemAvatar>
-										<Avatar
-											alt={item.author.nickName}
-											src={`${PathsEnum.Server}${item.author.avatarUrl}`}
-										/>
-									</ListItemAvatar>
-
-									<div>
-										<ListItemText
-											style={{ marginTop: '0' }}
-											primary={item.author.fullName}
-											secondary={item.text}
-										/>
-										<div className={styles.likes}>
-											<SvgIcon fontSize='small'>
-												<FavoriteBorderIcon />
-											</SvgIcon>
-											<span>{item.likesCount}</span>
-										</div>
-									</div>
-								</div>
-
-								{item.author._id === userId && (
-									<div className={styles.settings}>
-										<IconButton
-											onClick={() => openEditHandle(item._id, item.text)}
-											color='primary'
-										>
-											<EditIcon />
-										</IconButton>
-										<IconButton
-											onClick={() => openDeleteHandle(item._id)}
-											color='error'
-										>
-											<DeleteIcon />
-										</IconButton>
-									</div>
-								)}
-							</ListItem>
-							<Divider variant='inset' component='li' />
-
-							{/* Dialogs */}
-						</Fragment>
+					{items.map((item) => (
+						<Comment
+							key={item._id}
+							comment={item}
+							userId={userId}
+							openEditHandle={openEditHandle}
+							openDeleteHandle={openDeleteHandle}
+						/>
 					))}
 				</List>
 				{children && userId ? <>{children}</> : <></>}
