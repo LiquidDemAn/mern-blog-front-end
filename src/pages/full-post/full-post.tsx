@@ -112,7 +112,7 @@ export const FullPost = () => {
 		setEditCommentLoading(true);
 
 		await customeAxios
-			.patch(`/posts/${postId}/edit-comment/${commentId}`, text)
+			.patch(`/posts/${postId}/edit-comment/${commentId}`, { text })
 			.then(() => {
 				if (post) {
 					setPost({

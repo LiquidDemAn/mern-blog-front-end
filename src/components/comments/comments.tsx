@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { Comment } from '../comment/comment';
+import { EditDialog } from '../dialogs/edit';
 
 type Props = {
 	items?: PostCommentType[];
@@ -137,40 +138,26 @@ export const Comments = ({
 				</DialogActions>
 			</Dialog>
 
-			<Dialog
+			<EditDialog
+				title='Editing a comment!'
 				open={openEdit}
-				onClose={closeEditHandle}
-				aria-labelledby='edit-comment-title'
-				aria-describedby='edit-comment-description'
-				fullWidth
+				closeHandle={closeEditHandle}
+				onSubmit={handleEdit}
 			>
-				<DialogTitle id='edit-comment-title'>Editing a comment!</DialogTitle>
-				<DialogContent>
-					<DialogContentText id='edit-comment-description'>
-						<TextField
-							onChange={(event) =>
-								setComment({
-									...comment,
-									text: event.target.value,
-								})
-							}
-							value={comment.text}
-							label='Write a comment'
-							variant='standard'
-							multiline
-							fullWidth
-						/>
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button variant='contained' onClick={closeEditHandle}>
-						Cancel
-					</Button>
-					<Button onClick={handleEdit} variant='contained' color='success'>
-						Submit
-					</Button>
-				</DialogActions>
-			</Dialog>
+				<TextField
+					onChange={(event) =>
+						setComment({
+							...comment,
+							text: event.target.value,
+						})
+					}
+					value={comment.text}
+					label='Write a comment'
+					variant='standard'
+					multiline
+					fullWidth
+				/>
+			</EditDialog>
 		</>
 	);
 };
