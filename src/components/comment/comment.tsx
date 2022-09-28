@@ -46,7 +46,7 @@ export const Comment = ({
 
 					<div>
 						<ListItemText
-							style={{ marginTop: '0' }}
+							style={{ marginTop: '0', whiteSpace: 'pre-line' }}
 							primary={comment.author.fullName}
 							secondary={comment.text}
 						/>

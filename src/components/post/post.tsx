@@ -21,8 +21,8 @@ import {
 	likePost,
 	unlikePost,
 } from '../../redux/services/posts/actions';
-import { DeletePost } from '../dialogs/delete-post';
 import { getUserId } from '../../redux/services/auth/selectors';
+import { DeleteDialog } from '../dialogs/delete';
 
 type Props = {
 	post?: PostType | FullPostType | null;
@@ -187,12 +187,14 @@ export const Post = ({
 				</div>
 			</div>
 
-			{/* Dialogs */}
-			<DeletePost
-				open={open}
+			<DeleteDialog
+				title='Deleting a post!'
+				onDelete={handleDelete}
 				handleClose={handleClose}
-				handleDelete={handleDelete}
-			/>
+				open={open}
+			>
+				<>Do you really want to delete this post?</>
+			</DeleteDialog>
 		</>
 	);
 };
