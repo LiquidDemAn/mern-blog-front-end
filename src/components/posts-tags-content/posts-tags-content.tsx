@@ -4,19 +4,19 @@ import { BreakpointsEnum, TabsEnum } from '../../typedef';
 import { TabPanel } from '../tab-panel';
 import { Posts } from '../posts/posts';
 import { useAppSelector } from '../../redux/store/hooks';
-import { getUserId } from '../../redux/services/auth/selectors';
+import { Tags } from '../tags';
 
 import {
 	getTags,
 	getTagsLoading,
 	getTagsError,
 } from '../../redux/services/tags/selectors';
+
 import {
 	getPostsLoading,
 	getPostsError,
 	getPosts,
 } from '../../redux/services/posts/selectors';
-import { Tags } from '../tags';
 
 type Props = {
 	value: TabsEnum;
@@ -24,8 +24,6 @@ type Props = {
 };
 
 export const PostsTagsContent = ({ value, handleChange }: Props) => {
-	const userId = useAppSelector(getUserId);
-
 	const posts = useAppSelector(getPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
 	const postsError = useAppSelector(getPostsError);
@@ -53,20 +51,10 @@ export const PostsTagsContent = ({ value, handleChange }: Props) => {
 			<Grid container={isMedium} spacing={4}>
 				<Grid xs={8} item>
 					<TabPanel value={value} index={TabsEnum.New}>
-						<Posts
-							isLoading={postsLoading}
-							error={postsError}
-							userId={userId}
-							posts={posts}
-						/>
+						<Posts isLoading={postsLoading} error={postsError} posts={posts} />
 					</TabPanel>
 					<TabPanel value={value} index={TabsEnum.Popular}>
-						<Posts
-							isLoading={postsLoading}
-							error={postsError}
-							userId={userId}
-							posts={posts}
-						/>
+						<Posts isLoading={postsLoading} error={postsError} posts={posts} />
 					</TabPanel>
 				</Grid>
 

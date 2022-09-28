@@ -5,11 +5,10 @@ import { Post } from '../post/post';
 type Props = {
 	isLoading: boolean;
 	posts: PostType[];
-	userId?: string;
 	error?: ErrorType | null;
 };
 
-export const Posts = ({ isLoading, posts, userId, error }: Props) => {
+export const Posts = ({ isLoading, posts, error }: Props) => {
 	if (error) {
 		return <h2>Something went wrong....</h2>;
 	}
