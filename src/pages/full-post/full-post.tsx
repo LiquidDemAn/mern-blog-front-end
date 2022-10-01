@@ -20,9 +20,7 @@ export const FullPost = () => {
 
 	const [error, setError] = useState<AxiosError | null>(null);
 	const [post, setPost] = useState<FullPostType | null>(null);
-	const [createCommentLoading, setCreateCommentLoading] = useState(false);
-	const [editCommentLoading, setEditCommentLoading] = useState(false);
-	const [deleteCommentLoading, setDeleteCommentLoading] = useState(false);
+	const [commentLoading, setCommentLoading] = useState(false);
 
 	const likeHandle = async () => {
 		setError(null);
@@ -63,7 +61,7 @@ export const FullPost = () => {
 	};
 
 	const createComment = async (text: string) => {
-		setCreateCommentLoading(true);
+		setCommentLoading(true);
 
 		await customeAxios
 			.post(`/posts/${id}/create-comment`, { text })
@@ -75,17 +73,17 @@ export const FullPost = () => {
 					});
 				}
 
-				setCreateCommentLoading(false);
+				setCommentLoading(false);
 			})
 			.catch((err) => {
 				console.log(err);
 
-				setCreateCommentLoading(false);
+				setCommentLoading(false);
 			});
 	};
 
 	const deleteComment = async (postId: string, commentId: string) => {
-		setDeleteCommentLoading(true);
+		setCommentLoading(true);
 
 		await customeAxios
 			.delete(`/posts/${postId}/delete-comment/${commentId}`)
@@ -96,11 +94,11 @@ export const FullPost = () => {
 						comments: post.comments.filter((item) => item._id !== commentId),
 					});
 				}
-				setDeleteCommentLoading(false);
+				setCommentLoading(false);
 			})
 			.catch((err) => {
 				console.log(err);
-				setDeleteCommentLoading(false);
+				setCommentLoading(false);
 			});
 	};
 
@@ -109,7 +107,7 @@ export const FullPost = () => {
 		commentId: string,
 		text: string
 	) => {
-		setEditCommentLoading(true);
+		setCommentLoading(true);
 
 		await customeAxios
 			.patch(`/posts/${postId}/edit-comment/${commentId}`, { text })
@@ -127,11 +125,11 @@ export const FullPost = () => {
 					});
 				}
 
-				setEditCommentLoading(false);
+				setCommentLoading(false);
 			})
 			.catch((err) => {
 				console.log(err);
-				setEditCommentLoading(false);
+				setCommentLoading(false);
 			});
 	};
 
@@ -161,14 +159,7 @@ export const FullPost = () => {
 				editComment={editComment}
 				deleteComment={deleteComment}
 			/>
-			<Loader
-				open={
-					deleteLoading ||
-					createCommentLoading ||
-					editCommentLoading ||
-					deleteCommentLoading
-				}
-			/>
+			<Loader open={deleteLoading || commentLoading} />
 		</>
 	);
 };
