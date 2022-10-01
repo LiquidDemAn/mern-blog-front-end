@@ -22,7 +22,21 @@ export const FullPost = () => {
 	const [post, setPost] = useState<FullPostType | null>(null);
 	const [commentLoading, setCommentLoading] = useState(false);
 
-	const likeHandle = async () => {
+	const onLoadPost = async () => {
+		setError(null);
+
+		await customeAxios
+			.get(`/posts/${id}`)
+			.then(({ data }) => {
+				setPost(data);
+			})
+			.catch((err: AxiosError) => {
+				console.log(err);
+				setError(err);
+			});
+	};
+
+	const onLikePost = async () => {
 		setError(null);
 
 		if (post && userId) {
@@ -41,7 +55,7 @@ export const FullPost = () => {
 		}
 	};
 
-	const unlikeHandle = async () => {
+	const onUnlikePost = async () => {
 		setError(null);
 
 		if (post && userId) {
@@ -60,7 +74,7 @@ export const FullPost = () => {
 		}
 	};
 
-	const createComment = async (text: string) => {
+	const onCreateComment = async (text: string) => {
 		setCommentLoading(true);
 
 		await customeAxios
@@ -82,35 +96,11 @@ export const FullPost = () => {
 			});
 	};
 
-	const deleteComment = async (postId: string, commentId: string) => {
+	const onEditComment = async (commentId: string, text: string) => {
 		setCommentLoading(true);
 
 		await customeAxios
-			.delete(`/posts/${postId}/delete-comment/${commentId}`)
-			.then(() => {
-				if (post) {
-					setPost({
-						...post,
-						comments: post.comments.filter((item) => item._id !== commentId),
-					});
-				}
-				setCommentLoading(false);
-			})
-			.catch((err) => {
-				console.log(err);
-				setCommentLoading(false);
-			});
-	};
-
-	const editComment = async (
-		postId: string,
-		commentId: string,
-		text: string
-	) => {
-		setCommentLoading(true);
-
-		await customeAxios
-			.patch(`/posts/${postId}/edit-comment/${commentId}`, { text })
+			.patch(`/posts/${id}/edit-comment/${commentId}`, { text })
 			.then(() => {
 				if (post) {
 					setPost({
@@ -133,19 +123,30 @@ export const FullPost = () => {
 			});
 	};
 
+	const onDeleteComment = async (commentId: string) => {
+		setCommentLoading(true);
+
+		await customeAxios
+			.delete(`/posts/${id}/delete-comment/${commentId}`)
+			.then(() => {
+				if (post) {
+					setPost({
+						...post,
+						comments: post.comments.filter((item) => item._id !== commentId),
+					});
+				}
+				setCommentLoading(false);
+			})
+			.catch((err) => {
+				console.log(err);
+				setCommentLoading(false);
+			});
+	};
+
 	useEffect(() => {
-		const loadPost = async () => {
-			setError(null);
-
-			const response = await customeAxios.get(`/posts/${id}`);
-			setPost(response.data);
-		};
-
-		loadPost().catch((error: AxiosError) => {
-			console.warn(error);
-			setError(error);
-		});
-	}, [id]);
+		onLoadPost();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<>
@@ -153,11 +154,11 @@ export const FullPost = () => {
 				error={error}
 				post={post}
 				postLoading={postLoading}
-				likeHandle={likeHandle}
-				unlikeHandle={unlikeHandle}
-				createComment={createComment}
-				editComment={editComment}
-				deleteComment={deleteComment}
+				onLikePost={onLikePost}
+				onUnlikePost={onUnlikePost}
+				onCreateComment={onCreateComment}
+				onEditComment={onEditComment}
+				onDeleteComment={onDeleteComment}
 			/>
 			<Loader open={deleteLoading || commentLoading} />
 		</>

@@ -10,26 +10,22 @@ type Props = {
 	error: AxiosError | null;
 	post: FullPostType | null;
 	postLoading?: boolean;
-	likeHandle: () => Promise<void>;
-	unlikeHandle: () => Promise<void>;
-	createComment: (text: string) => Promise<void>;
-	editComment: (
-		postId: string,
-		commentId: string,
-		text: string
-	) => Promise<void>;
-	deleteComment: (postId: string, commentId: string) => Promise<void>;
+	onLikePost: () => Promise<void>;
+	onUnlikePost: () => Promise<void>;
+	onCreateComment: (text: string) => Promise<void>;
+	onEditComment: (commentId: string, text: string) => Promise<void>;
+	onDeleteComment: (commentId: string) => Promise<void>;
 };
 
 export const FullPostView = ({
 	error,
 	post,
-	likeHandle,
+	onLikePost,
 	postLoading,
-	unlikeHandle,
-	createComment,
-	editComment,
-	deleteComment,
+	onUnlikePost,
+	onCreateComment,
+	onEditComment,
+	onDeleteComment,
 }: Props) => {
 	if (error?.response?.status === 404) {
 		return (
@@ -54,8 +50,8 @@ export const FullPostView = ({
 	return (
 		<>
 			<Post
-				fullPostLikeHandle={likeHandle}
-				fullPostUnlikeHandle={unlikeHandle}
+				onLikeFullPost={onLikePost}
+				onUnlikeFullPost={onUnlikePost}
 				post={post}
 				isFullPost
 			>
@@ -63,12 +59,12 @@ export const FullPostView = ({
 			</Post>
 
 			<Comments
-				items={post?.comments}
+				comments={post?.comments}
 				isLoading={postLoading}
-				editComment={editComment}
-				deleteComment={deleteComment}
+				onEditComment={onEditComment}
+				onDeleteComment={onDeleteComment}
 			>
-				<AddComment createComment={createComment} />
+				<AddComment createComment={onCreateComment} />
 			</Comments>
 		</>
 	);

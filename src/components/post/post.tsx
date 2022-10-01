@@ -28,16 +28,16 @@ type Props = {
 	post?: PostType | FullPostType | null;
 	children?: ReactElement | ReactElement[];
 	isFullPost?: boolean;
-	fullPostLikeHandle?: () => Promise<void>;
-	fullPostUnlikeHandle?: () => Promise<void>;
+	onLikeFullPost?: () => Promise<void>;
+	onUnlikeFullPost?: () => Promise<void>;
 };
 
 export const Post = ({
 	post,
 	children,
 	isFullPost,
-	fullPostLikeHandle,
-	fullPostUnlikeHandle,
+	onLikeFullPost,
+	onUnlikeFullPost,
 }: Props) => {
 	const dispatch = useAppDispach();
 	const navigate = useNavigate();
@@ -150,7 +150,7 @@ export const Post = ({
 							{isFullPost ? (
 								<li
 									className={styles.like}
-									onClick={isLiked ? fullPostUnlikeHandle : fullPostLikeHandle}
+									onClick={isLiked ? onUnlikeFullPost : onLikeFullPost}
 								>
 									{isLiked ? (
 										<SvgIcon htmlColor='red'>

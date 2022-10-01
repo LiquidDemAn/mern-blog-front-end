@@ -12,16 +12,16 @@ type Props = {
 	title?: string;
 	children?: ReactElement | ReactElement[];
 	open: boolean;
-	closeHandle: () => void;
-	onSubmit: () => void;
+	handleClose: () => void;
+	onEdit: () => void;
 };
 
 export const EditDialog = ({
 	title,
 	children,
 	open,
-	closeHandle,
-	onSubmit,
+	handleClose,
+	onEdit,
 }: Props) => {
 	return (
 		<Dialog
@@ -37,11 +37,11 @@ export const EditDialog = ({
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button variant='contained' onClick={closeHandle}>
+				<Button variant='contained' onClick={handleClose}>
 					Cancel
 				</Button>
-				<Button onClick={onSubmit} variant='contained' color='success'>
-					Submit
+				<Button onClick={onEdit} variant='contained' color='success'>
+					Edit
 				</Button>
 			</DialogActions>
 		</Dialog>

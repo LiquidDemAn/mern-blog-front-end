@@ -17,16 +17,24 @@ import EditIcon from '@mui/icons-material/Edit';
 type Props = {
 	userId: string;
 	comment: PostCommentType;
-	openEditHandle: (id: string, text: string) => void;
-	openDeleteHandle: (id: string) => void;
+	handleEditOpen: (id: string, text: string) => void;
+	handleDeleteOpen: (id: string) => void;
 };
 
 export const Comment = ({
 	comment,
 	userId,
-	openEditHandle,
-	openDeleteHandle,
+	handleEditOpen,
+	handleDeleteOpen,
 }: Props) => {
+	const onEdit = () => {
+		handleEditOpen(comment._id, comment.text);
+	};
+
+	const onDelete = () => {
+		handleDeleteOpen(comment._id);
+	};
+
 	return (
 		<>
 			<ListItem
@@ -61,16 +69,10 @@ export const Comment = ({
 
 				{comment.author._id === userId && (
 					<div className={styles.settings}>
-						<IconButton
-							onClick={() => openEditHandle(comment._id, comment.text)}
-							color='primary'
-						>
+						<IconButton onClick={onEdit} color='primary'>
 							<EditIcon />
 						</IconButton>
-						<IconButton
-							onClick={() => openDeleteHandle(comment._id)}
-							color='error'
-						>
+						<IconButton onClick={onDelete} color='error'>
 							<DeleteIcon />
 						</IconButton>
 					</div>
