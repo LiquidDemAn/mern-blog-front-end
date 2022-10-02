@@ -143,6 +143,31 @@ export const FullPost = () => {
 			});
 	};
 
+	const onlikeComment = async (commentId: string) => {
+		// setError(null);
+
+		if (post && userId) {
+			await customeAxios
+				.patch(`/posts/${id}/like-comment/${commentId}`)
+				.then(() => {
+					setPost({
+						...post,
+						comments: post.comments.map((item) => {
+							if (item._id === commentId) {
+								item.likesCount = item.likesCount + 1;
+								item.likesIds.push(userId);
+							}
+
+							return item;
+						}),
+					});
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	};
+
 	useEffect(() => {
 		onLoadPost();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -159,6 +184,7 @@ export const FullPost = () => {
 				onCreateComment={onCreateComment}
 				onEditComment={onEditComment}
 				onDeleteComment={onDeleteComment}
+				onlikeComment={onlikeComment}
 			/>
 			<Loader open={deleteLoading || commentLoading} />
 		</>

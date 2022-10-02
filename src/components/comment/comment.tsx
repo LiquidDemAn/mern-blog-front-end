@@ -10,29 +10,39 @@ import {
 	IconButton,
 } from '@mui/material';
 import { PathsEnum } from '../../typedef';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
+import { useAppSelector } from '../../redux/store/hooks';
+import { getUserId } from '../../redux/services/auth/selectors';
 
 type Props = {
-	userId: string;
 	comment: PostCommentType;
 	handleEditOpen: (id: string, text: string) => void;
 	handleDeleteOpen: (id: string) => void;
+	onlikeComment: (commentId: string) => Promise<void>;
 };
 
 export const Comment = ({
 	comment,
-	userId,
 	handleEditOpen,
 	handleDeleteOpen,
+	onlikeComment,
 }: Props) => {
+	const userId = useAppSelector(getUserId);
+	const isLiked = comment.likesIds.includes(userId);
+
 	const onEdit = () => {
 		handleEditOpen(comment._id, comment.text);
 	};
 
 	const onDelete = () => {
 		handleDeleteOpen(comment._id);
+	};
+
+	const onLike = () => {
+		onlikeComment(comment._id);
 	};
 
 	return (
@@ -58,10 +68,17 @@ export const Comment = ({
 							primary={comment.author.fullName}
 							secondary={comment.text}
 						/>
-						<div className={styles.likes}>
-							<SvgIcon fontSize='small'>
-								<FavoriteBorderIcon />
-							</SvgIcon>
+						<div onClick={onLike} className={styles.likes}>
+							{isLiked ? (
+								<SvgIcon fontSize='small' htmlColor='red'>
+									<FavoriteIcon />
+								</SvgIcon>
+							) : (
+								<SvgIcon fontSize='small'>
+									<FavoriteBorderIcon />
+								</SvgIcon>
+							)}
+
 							<span>{comment.likesCount}</span>
 						</div>
 					</div>

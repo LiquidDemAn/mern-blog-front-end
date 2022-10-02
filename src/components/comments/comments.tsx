@@ -5,7 +5,6 @@ import { CommentsSkeleton } from './skeleton';
 import { useAppSelector } from '../../redux/store/hooks';
 import { getUserId } from '../../redux/services/auth/selectors';
 import { List, TextField } from '@mui/material';
-import { useParams } from 'react-router-dom';
 import { Comment } from '../comment';
 import { EditDialog } from '../dialogs/edit';
 import { DeleteDialog } from '../dialogs/delete';
@@ -16,6 +15,7 @@ type Props = {
 	children?: ReactElement | ReactElement[];
 	onEditComment: (commentId: string, text: string) => Promise<void>;
 	onDeleteComment: (commentId: string) => Promise<void>;
+	onlikeComment: (commentId: string) => Promise<void>;
 };
 
 export const Comments = ({
@@ -24,8 +24,8 @@ export const Comments = ({
 	isLoading,
 	onEditComment,
 	onDeleteComment,
+	onlikeComment,
 }: Props) => {
-	const { id } = useParams();
 	const userId = useAppSelector(getUserId);
 
 	const [comment, setComment] = useState({
@@ -69,10 +69,8 @@ export const Comments = ({
 	};
 
 	const onDeleteSubmit = () => {
-		if (id) {
-			handleDeleteClose();
-			onDeleteComment(comment.id);
-		}
+		handleDeleteClose();
+		onDeleteComment(comment.id);
 	};
 
 	const onEditCommentText = (
@@ -85,7 +83,7 @@ export const Comments = ({
 	};
 
 	const onEditSubmit = () => {
-		if (id && comment.text) {
+		if (comment.text) {
 			handleEditClose();
 			onEditComment(comment.id, comment.text);
 		}
@@ -103,9 +101,9 @@ export const Comments = ({
 						<Comment
 							key={item._id}
 							comment={item}
-							userId={userId}
 							handleEditOpen={handleEditOpen}
 							handleDeleteOpen={handleDeleteOpen}
+							onlikeComment={onlikeComment}
 						/>
 					))}
 				</List>
