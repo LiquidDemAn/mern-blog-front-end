@@ -81,6 +81,12 @@ $blue: #4361ee;
 	font-size: 22px;
 	margin-bottom: 5px;
 
+	text-overflow: ellipsis;
+	overflow: hidden;
+	width: 80%;
+	height: 1.2em;
+	white-space: nowrap;
+
 	a {
 		text-decoration: none;
 		color: #000;
@@ -91,6 +97,8 @@ $blue: #4361ee;
 	}
 
 	&Full {
+		width: auto;
+		text-overflow: unset;
 		font-size: 32px;
 		font-weight: 900;
 		margin-bottom: 10px;
