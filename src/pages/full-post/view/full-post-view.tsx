@@ -16,6 +16,7 @@ type Props = {
 	onEditComment: (commentId: string, text: string) => Promise<void>;
 	onDeleteComment: (commentId: string) => Promise<void>;
 	onlikeComment: (commentId: string) => Promise<void>;
+	onUnLikeComment: (commentId: string) => Promise<void>;
 };
 
 export const FullPostView = ({
@@ -28,6 +29,7 @@ export const FullPostView = ({
 	onEditComment,
 	onDeleteComment,
 	onlikeComment,
+	onUnLikeComment,
 }: Props) => {
 	if (error?.response?.status === 404) {
 		return (
@@ -66,6 +68,7 @@ export const FullPostView = ({
 				onEditComment={onEditComment}
 				onDeleteComment={onDeleteComment}
 				onlikeComment={onlikeComment}
+				onUnLikeComment={onUnLikeComment}
 			>
 				<AddComment createComment={onCreateComment} />
 			</Comments>

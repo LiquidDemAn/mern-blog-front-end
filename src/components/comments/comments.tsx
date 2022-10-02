@@ -16,6 +16,7 @@ type Props = {
 	onEditComment: (commentId: string, text: string) => Promise<void>;
 	onDeleteComment: (commentId: string) => Promise<void>;
 	onlikeComment: (commentId: string) => Promise<void>;
+	onUnLikeComment: (commentId: string) => Promise<void>;
 };
 
 export const Comments = ({
@@ -25,6 +26,7 @@ export const Comments = ({
 	onEditComment,
 	onDeleteComment,
 	onlikeComment,
+	onUnLikeComment,
 }: Props) => {
 	const userId = useAppSelector(getUserId);
 
@@ -104,6 +106,7 @@ export const Comments = ({
 							handleEditOpen={handleEditOpen}
 							handleDeleteOpen={handleDeleteOpen}
 							onlikeComment={onlikeComment}
+							onUnLikeComment={onUnLikeComment}
 						/>
 					))}
 				</List>

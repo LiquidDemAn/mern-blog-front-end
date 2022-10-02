@@ -22,6 +22,7 @@ type Props = {
 	handleEditOpen: (id: string, text: string) => void;
 	handleDeleteOpen: (id: string) => void;
 	onlikeComment: (commentId: string) => Promise<void>;
+	onUnLikeComment: (commentId: string) => Promise<void>;
 };
 
 export const Comment = ({
@@ -29,9 +30,10 @@ export const Comment = ({
 	handleEditOpen,
 	handleDeleteOpen,
 	onlikeComment,
+	onUnLikeComment,
 }: Props) => {
 	const userId = useAppSelector(getUserId);
-	const isLiked = comment.likesIds.includes(userId);
+	const isLiked = comment.likesIds.includes(userId); 
 
 	const onEdit = () => {
 		handleEditOpen(comment._id, comment.text);
@@ -43,6 +45,10 @@ export const Comment = ({
 
 	const onLike = () => {
 		onlikeComment(comment._id);
+	};
+
+	const onUnlike = () => {
+		onUnLikeComment(comment._id);
 	};
 
 	return (
@@ -68,7 +74,7 @@ export const Comment = ({
 							primary={comment.author.fullName}
 							secondary={comment.text}
 						/>
-						<div onClick={onLike} className={styles.likes}>
+						<div onClick={isLiked ? onUnlike : onLike} className={styles.likes}>
 							{isLiked ? (
 								<SvgIcon fontSize='small' htmlColor='red'>
 									<FavoriteIcon />
