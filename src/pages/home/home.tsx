@@ -9,9 +9,8 @@ import { loadTags } from '../../redux/services/tags/actions';
 import { getUserName } from '../../redux/services/auth/selectors';
 import { TabsEnum } from '../../typedef';
 import { Loader } from '../../components/loader';
-import { PostsTagsContent } from '../../components/posts-tags-content';
 import { removeDeletePostError } from '../../redux/services/posts/posts.slice';
-import { ErrorDialog } from '../../components/dialogs/error';
+import { HomeView } from './view';
 
 export const Home = () => {
 	const dispatch = useAppDispach();
@@ -58,24 +57,14 @@ export const Home = () => {
 
 	return (
 		<>
-			<h2 style={{ marginBottom: 15 }}>Hello{userName && `, ${userName}`}</h2>
-			<PostsTagsContent value={value} handleChange={handleChange} />
-
-			{/* Dialogs */}
-
-			<ErrorDialog
+			<HomeView
 				open={open}
+				userName={userName}
+				value={value}
+				deleteError={deleteError}
+				handleChange={handleChange}
 				handleClose={handleClose}
-				title='Deletion Error!'
-			>
-				<>
-					{deleteError?.status === 500 && (
-						<>Something went wrong!!!!! Try again later...</>
-					)}
-
-					{deleteError?.status === 404 && <>Post not found!</>}
-				</>
-			</ErrorDialog>
+			/>
 
 			<Loader open={deleteLoading} />
 		</>
