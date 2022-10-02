@@ -10,6 +10,7 @@ import { checkUserAuth } from '../redux/services/auth/actions';
 import { useAppDispach } from '../redux/store/hooks';
 import { Tag } from '../pages/tag';
 import { PathsEnum } from '../typedef';
+import { NotFoundPage } from '../pages/not-found';
 
 function App() {
 	const dispatch = useAppDispach();
@@ -28,6 +29,7 @@ function App() {
 				<Route path={PathsEnum.Register} element={<Registration />} />
 				<Route path={PathsEnum.Login} element={<Login />} />
 				<Route path={PathsEnum.Tag} element={<Tag />} />
+				<Route path='*' element={<NotFoundPage />} />
 			</Route>
 		</Routes>
 	);
