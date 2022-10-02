@@ -18,12 +18,15 @@ export const FullPost = () => {
 	const postLoading = useAppSelector(getPostsLoading);
 	const deleteLoading = useAppSelector(getDeletePostLoading);
 
-	const [error, setError] = useState<AxiosError | null>(null);
+	const [postError, setPostError] = useState<AxiosError | null>(null);
 	const [post, setPost] = useState<FullPostType | null>(null);
+
+	const [openCommentError, setOpenCommentError] = useState(false);
+	const [commentError, setCommentError] = useState<AxiosError | null>(null);
 	const [commentLoading, setCommentLoading] = useState(false);
 
 	const onLoadPost = async () => {
-		setError(null);
+		setPostError(null);
 
 		await customeAxios
 			.get(`/posts/${id}`)
@@ -32,12 +35,12 @@ export const FullPost = () => {
 			})
 			.catch((err: AxiosError) => {
 				console.log(err);
-				setError(err);
+				setPostError(err);
 			});
 	};
 
 	const onLikePost = async () => {
-		setError(null);
+		setPostError(null);
 
 		if (post && userId) {
 			await customeAxios
@@ -56,7 +59,7 @@ export const FullPost = () => {
 	};
 
 	const onUnlikePost = async () => {
-		setError(null);
+		setPostError(null);
 
 		if (post && userId) {
 			await customeAxios
@@ -76,6 +79,7 @@ export const FullPost = () => {
 
 	const onCreateComment = async (text: string) => {
 		setCommentLoading(true);
+		setCommentError(null);
 
 		await customeAxios
 			.post(`/posts/${id}/create-comment`, { text })
@@ -91,13 +95,14 @@ export const FullPost = () => {
 			})
 			.catch((err) => {
 				console.log(err);
-
+				setCommentError(err);
 				setCommentLoading(false);
 			});
 	};
 
 	const onEditComment = async (commentId: string, text: string) => {
 		setCommentLoading(true);
+		setCommentError(null);
 
 		await customeAxios
 			.patch(`/posts/${id}/edit-comment/${commentId}`, { text })
@@ -119,12 +124,14 @@ export const FullPost = () => {
 			})
 			.catch((err) => {
 				console.log(err);
+				setCommentError(err);
 				setCommentLoading(false);
 			});
 	};
 
 	const onDeleteComment = async (commentId: string) => {
 		setCommentLoading(true);
+		setCommentError(null);
 
 		await customeAxios
 			.delete(`/posts/${id}/delete-comment/${commentId}`)
@@ -139,12 +146,13 @@ export const FullPost = () => {
 			})
 			.catch((err) => {
 				console.log(err);
+				setCommentError(err);
 				setCommentLoading(false);
 			});
 	};
 
 	const onlikeComment = async (commentId: string) => {
-		// setError(null);
+		setCommentError(null);
 
 		if (post && userId) {
 			await customeAxios
@@ -164,12 +172,13 @@ export const FullPost = () => {
 				})
 				.catch((err) => {
 					console.log(err);
+					setCommentError(err);
 				});
 		}
 	};
 
 	const onUnLikeComment = async (commentId: string) => {
-		// setError(null);
+		setCommentError(null);
 
 		if (post && userId) {
 			await customeAxios
@@ -189,8 +198,18 @@ export const FullPost = () => {
 				})
 				.catch((err) => {
 					console.log(err);
+					setCommentError(err);
 				});
 		}
+	};
+
+	const handleOpenCommentError = () => {
+		setOpenCommentError(true);
+	};
+
+	const handleCloseCommentError = () => {
+		setOpenCommentError(false);
+		setCommentError(null);
 	};
 
 	useEffect(() => {
@@ -198,14 +217,24 @@ export const FullPost = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	useEffect(() => {
+		if (commentError) {
+			handleOpenCommentError();
+		}
+	}, [commentError]);
+
 	return (
 		<>
 			<FullPostView
-				error={error}
 				post={post}
+				postError={postError}
 				postLoading={postLoading}
 				onLikePost={onLikePost}
 				onUnlikePost={onUnlikePost}
+				
+				commentError={commentError}
+				openCommentError={openCommentError}
+				handleCloseCommentError={handleCloseCommentError}
 				onCreateComment={onCreateComment}
 				onEditComment={onEditComment}
 				onDeleteComment={onDeleteComment}

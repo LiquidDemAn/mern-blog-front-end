@@ -5,13 +5,18 @@ import { Post } from '../../../components/post';
 import { FullPostType } from '../../../redux/services/posts/typedef';
 import { Comments } from '../../../components/comments';
 import { AddComment } from '../../../components/add-comment';
+import { ErrorDialog } from '../../../components/dialogs/error';
 
 type Props = {
-	error: AxiosError | null;
 	post: FullPostType | null;
+	postError: AxiosError | null;
 	postLoading?: boolean;
 	onLikePost: () => Promise<void>;
 	onUnlikePost: () => Promise<void>;
+
+	commentError: AxiosError | null;
+	openCommentError: boolean;
+	handleCloseCommentError: () => void;
 	onCreateComment: (text: string) => Promise<void>;
 	onEditComment: (commentId: string, text: string) => Promise<void>;
 	onDeleteComment: (commentId: string) => Promise<void>;
@@ -20,18 +25,21 @@ type Props = {
 };
 
 export const FullPostView = ({
-	error,
 	post,
+	postError,
 	onLikePost,
 	postLoading,
 	onUnlikePost,
+
+	openCommentError,
+	handleCloseCommentError,
 	onCreateComment,
 	onEditComment,
 	onDeleteComment,
 	onlikeComment,
 	onUnLikeComment,
 }: Props) => {
-	if (error?.response?.status === 404) {
+	if (postError?.response?.status === 404) {
 		return (
 			<h2>
 				Post Not Found! Go to <Link to='/'>Home page</Link>
@@ -39,7 +47,7 @@ export const FullPostView = ({
 		);
 	}
 
-	if (error?.response?.status === 500) {
+	if (postError?.response?.status === 500) {
 		return (
 			<>
 				<h2>Something went wrong! Possible problems:</h2>
@@ -72,6 +80,11 @@ export const FullPostView = ({
 			>
 				<AddComment createComment={onCreateComment} />
 			</Comments>
+
+			<ErrorDialog
+				open={openCommentError}
+				handleClose={handleCloseCommentError}
+			/>
 		</>
 	);
 };
