@@ -1,11 +1,26 @@
 import styles from './header.module.scss';
-import { Button, Container } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { MouseEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
-import { getIsAuth } from '../../redux/services/auth/selectors';
 import { logOut } from '../../redux/services/auth/auth.slice';
 import { PathsEnum } from '../../typedef';
-import { MobileMenu } from '../mobile-menu';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import MenuIcon from '@mui/icons-material/Menu';
+
+import {
+	getIsAuth,
+	getUserAvatar,
+	getUserName,
+} from '../../redux/services/auth/selectors';
+
+import {
+	Avatar,
+	Button,
+	Container,
+	Menu,
+	MenuItem,
+	SvgIcon,
+} from '@mui/material';
 
 export const Header = () => {
 	const dispatch = useAppDispach();
@@ -15,6 +30,37 @@ export const Header = () => {
 		dispatch(logOut());
 	};
 
+	const navigate = useNavigate();
+
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const open = Boolean(anchorEl);
+
+	const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	const onCreatePost = () => {
+		navigate(PathsEnum.CreatePost);
+		handleClose();
+	};
+
+	const onLogin = () => {
+		navigate(PathsEnum.Login);
+		handleClose();
+	};
+
+	const onRegister = () => {
+		navigate(PathsEnum.Register);
+		handleClose();
+	};
+
+	const userAvatar = useAppSelector(getUserAvatar);
+	const userName = useAppSelector(getUserName);
+
 	return (
 		<header className={styles.header}>
 			<Container maxWidth='lg'>
@@ -23,31 +69,50 @@ export const Header = () => {
 						MERN BLOG
 					</Link>
 
-					<div className={styles.menu}>
-						<MobileMenu isAuth={isAuth} onLogOut={onLogOut} />
-					</div>
-
-					<div className={styles.buttons}>
+					<Button
+						id='menu-button'
+						className={styles.avatar}
+						onClick={handleClick}
+						aria-controls={open ? 'menu' : undefined}
+						aria-haspopup='true'
+						aria-expanded={open ? 'true' : undefined}
+					>
 						{isAuth ? (
 							<>
-								<Link to={PathsEnum.CreatePost}>
-									<Button variant='contained'>Write a post</Button>
-								</Link>
-								<Button onClick={onLogOut} variant='contained' color='error'>
-									Log out
-								</Button>
+								<Avatar
+									alt={userName}
+									src={`${PathsEnum.Server}${userAvatar}`}
+								/>
+								<SvgIcon htmlColor='black' fontSize='medium'>
+									<ArrowDropDownIcon />
+								</SvgIcon>
+							</>
+						) : (
+							<MenuIcon color='action' fontSize='large' />
+						)}
+					</Button>
+
+					<Menu
+						id='menu'
+						anchorEl={anchorEl}
+						open={open}
+						onClose={handleClose}
+						MenuListProps={{
+							'aria-labelledby': 'menu-button',
+						}}
+					>
+						{isAuth ? (
+							<>
+								<MenuItem onClick={onCreatePost}>Write a post</MenuItem>
+								<MenuItem onClick={onLogOut}>Log out</MenuItem>
 							</>
 						) : (
 							<>
-								<Link to={PathsEnum.Login}>
-									<Button variant='outlined'>Log in</Button>
-								</Link>
-								<Link to={PathsEnum.Register}>
-									<Button variant='contained'>Create account</Button>
-								</Link>
+								<MenuItem onClick={onLogin}>Log in</MenuItem>
+								<MenuItem onClick={onRegister}>Create account</MenuItem>
 							</>
 						)}
-					</div>
+					</Menu>
 				</div>
 			</Container>
 		</header>
