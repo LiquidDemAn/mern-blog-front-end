@@ -24,13 +24,11 @@ import {
 
 export const Header = () => {
 	const dispatch = useAppDispach();
-	const isAuth = useAppSelector(getIsAuth);
-
-	const onLogOut = () => {
-		dispatch(logOut());
-	};
-
 	const navigate = useNavigate();
+
+	const isAuth = useAppSelector(getIsAuth);
+	const userAvatar = useAppSelector(getUserAvatar);
+	const userName = useAppSelector(getUserName);
 
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
@@ -43,11 +41,6 @@ export const Header = () => {
 		setAnchorEl(null);
 	};
 
-	const onCreatePost = () => {
-		navigate(PathsEnum.CreatePost);
-		handleClose();
-	};
-
 	const onLogin = () => {
 		navigate(PathsEnum.Login);
 		handleClose();
@@ -58,8 +51,14 @@ export const Header = () => {
 		handleClose();
 	};
 
-	const userAvatar = useAppSelector(getUserAvatar);
-	const userName = useAppSelector(getUserName);
+	const onLogOut = () => {
+		dispatch(logOut());
+	};
+
+	const onCreatePost = () => {
+		navigate(PathsEnum.CreatePost);
+		handleClose();
+	};
 
 	return (
 		<header className={styles.header}>
