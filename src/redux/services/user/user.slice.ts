@@ -1,24 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AuthErrorType, AuthStateType } from './typedef';
+import { UserErrorType, UserStateType } from './typedef';
 import { loginUser, checkUserAuth, registerUser } from './actions';
 import { removeToken } from '../../../local-storage';
 import { PathsEnum } from '../../../typedef';
 
-const initialState: AuthStateType = {
-	userData: null,
+const initialState: UserStateType = {
+	data: null,
 	loading: false,
 	error: null,
 	validationError: null,
 };
 
-export const authSlice = createSlice({
-	name: 'auth',
+export const userSlice = createSlice({
+	name: 'user',
 	initialState,
 	reducers: {
 		logOut(state) {
 			state.error = null;
 			state.validationError = null;
-			state.userData = null;
+			state.data = null;
 			removeToken();
 			window.location.replace(PathsEnum.Login);
 		},
@@ -39,7 +39,7 @@ export const authSlice = createSlice({
 				state.loading = false;
 				state.error = null;
 				state.validationError = null;
-				state.userData = payload;
+				state.data = payload;
 			})
 			.addCase(checkUserAuth.rejected, (state) => {
 				state.loading = false;
@@ -56,10 +56,10 @@ export const authSlice = createSlice({
 			.addCase(loginUser.fulfilled, (state, { payload }) => {
 				state.loading = false;
 				state.error = null;
-				state.userData = payload;
+				state.data = payload;
 			})
 			.addCase(loginUser.rejected, (state, { payload }) => {
-				const value = payload as AuthErrorType;
+				const value = payload as UserErrorType;
 
 				state.loading = false;
 				state.validationError = value.status === 403 ? value : null;
@@ -76,10 +76,10 @@ export const authSlice = createSlice({
 				state.loading = false;
 				state.error = null;
 				state.validationError = null;
-				state.userData = payload;
+				state.data = payload;
 			})
 			.addCase(registerUser.rejected, (state, { payload }) => {
-				const value = payload as AuthErrorType;
+				const value = payload as UserErrorType;
 
 				state.loading = false;
 				state.validationError = value.status === 403 ? value : null;
@@ -87,4 +87,4 @@ export const authSlice = createSlice({
 			}),
 });
 
-export const { logOut, resetErrors } = authSlice.actions;
+export const { logOut, resetErrors } = userSlice.actions;

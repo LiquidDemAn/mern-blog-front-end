@@ -21,7 +21,7 @@ import {
 	likePost,
 	unlikePost,
 } from '../../redux/services/posts/actions';
-import { getUserId } from '../../redux/services/auth/selectors';
+import { getUserId } from '../../redux/services/user/selectors';
 import { DeleteDialog } from '../dialogs/delete';
 
 type Props = {

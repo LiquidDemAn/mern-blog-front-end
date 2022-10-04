@@ -2,7 +2,7 @@ import styles from './add-comment.module.scss';
 import { useState } from 'react';
 import { TextField, Avatar, Button } from '@mui/material';
 import { useAppSelector } from '../../redux/store/hooks';
-import { getUserAvatar } from '../../redux/services/auth/selectors';
+import { getUserAvatar } from '../../redux/services/user/selectors';
 import { PathsEnum } from '../../typedef';
 
 type Props = {

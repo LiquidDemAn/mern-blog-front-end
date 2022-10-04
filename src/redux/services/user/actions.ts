@@ -1,4 +1,4 @@
-import { customeAxios } from './../../axios';
+import { customeAxios } from '../../axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { UserDataType, LoginType, RegisterType } from './typedef';
 import { setToken } from '../../../local-storage';

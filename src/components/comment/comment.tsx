@@ -15,7 +15,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAppSelector } from '../../redux/store/hooks';
-import { getUserId } from '../../redux/services/auth/selectors';
+import { getUserId } from '../../redux/services/user/selectors';
 
 type Props = {
 	comment: PostCommentType;

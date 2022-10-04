@@ -1,16 +1,16 @@
-import { loginUser } from '../../redux/services/auth/actions';
+import { loginUser } from '../../redux/services/user/actions';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { LoginType, ParamsEnum } from '../../redux/services/auth/typedef';
+import { LoginType, ParamsEnum } from '../../redux/services/user/typedef';
 import {
-	getAuthError,
-	getAuthLoading,
-	getAuthValidationParams,
+	getUserError,
+	getUserLoading,
+	getUserValidationParams,
 	getIsAuth,
-} from '../../redux/services/auth/selectors';
+} from '../../redux/services/user/selectors';
 import { Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { resetErrors } from '../../redux/services/auth/auth.slice';
+import { resetErrors } from '../../redux/services/user/user.slice';
 import { Loader } from '../../components/loader';
 import { LoginView } from './view';
 import { PathsEnum } from '../../typedef';
@@ -19,10 +19,10 @@ export const Login = () => {
 	const dispatch = useAppDispach();
 	const isAuth = useAppSelector(getIsAuth);
 
-	const loading = useAppSelector(getAuthLoading);
+	const loading = useAppSelector(getUserLoading);
 
-	const error = useAppSelector(getAuthError);
-	const params = useAppSelector(getAuthValidationParams);
+	const error = useAppSelector(getUserError);
+	const params = useAppSelector(getUserValidationParams);
 
 	const emailError = params?.includes(ParamsEnum.Email);
 	const passwordError = params?.includes(ParamsEnum.Password);

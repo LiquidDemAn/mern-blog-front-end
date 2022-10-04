@@ -2,7 +2,7 @@ import styles from './header.module.scss';
 import { MouseEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
-import { logOut } from '../../redux/services/auth/auth.slice';
+import { logOut } from '../../redux/services/user/user.slice';
 import { PathsEnum } from '../../typedef';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -11,7 +11,7 @@ import {
 	getIsAuth,
 	getUserAvatar,
 	getUserName,
-} from '../../redux/services/auth/selectors';
+} from '../../redux/services/user/selectors';
 
 import {
 	Avatar,

@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState, ChangeEvent } from 'react';
 import { useAppSelector } from '../../redux/store/hooks';
-import { getIsAuth } from '../../redux/services/auth/selectors';
+import { getIsAuth } from '../../redux/services/user/selectors';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../local-storage';
 import { customeAxios } from '../../redux/axios';

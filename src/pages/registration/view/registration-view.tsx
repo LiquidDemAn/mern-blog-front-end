@@ -2,10 +2,10 @@ import { Alert, TextField } from '@mui/material';
 import { AuthForm } from '../../../components/auth-form';
 
 import {
-	AuthErrorType,
+	UserErrorType,
 	ParamsEnum,
 	RegisterType,
-} from '../../../redux/services/auth/typedef';
+} from '../../../redux/services/user/typedef';
 import {
 	DeepRequired,
 	FieldErrorsImpl,
@@ -17,7 +17,7 @@ import { AvatarCreator } from '../../../components/avatar-creator';
 type Props = {
 	isValid: boolean;
 	errors: FieldErrorsImpl<DeepRequired<RegisterType>>;
-	error: AuthErrorType | null;
+	error: UserErrorType | null;
 	handleSubmit: UseFormHandleSubmit<RegisterType>;
 	register: UseFormRegister<RegisterType>;
 	setAvatar: (valuse: string) => void;

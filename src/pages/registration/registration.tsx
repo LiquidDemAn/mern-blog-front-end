@@ -1,16 +1,16 @@
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { ParamsEnum, RegisterType } from '../../redux/services/auth/typedef';
+import { ParamsEnum, RegisterType } from '../../redux/services/user/typedef';
 import { Navigate } from 'react-router-dom';
 import {
-	getAuthError,
-	getAuthLoading,
-	getAuthValidationParams,
+	getUserError,
+	getUserLoading,
+	getUserValidationParams,
 	getIsAuth,
-} from '../../redux/services/auth/selectors';
-import { registerUser } from '../../redux/services/auth/actions';
+} from '../../redux/services/user/selectors';
+import { registerUser } from '../../redux/services/user/actions';
 import { useState, useEffect } from 'react';
-import { resetErrors } from '../../redux/services/auth/auth.slice';
+import { resetErrors } from '../../redux/services/user/user.slice';
 import { Loader } from '../../components/loader';
 import { RegistrationView } from './view';
 
@@ -35,9 +35,9 @@ export const Registration = () => {
 
 	const dispatch = useAppDispach();
 	const isAuth = useAppSelector(getIsAuth);
-	const loading = useAppSelector(getAuthLoading);
-	const error = useAppSelector(getAuthError);
-	const params = useAppSelector(getAuthValidationParams);
+	const loading = useAppSelector(getUserLoading);
+	const error = useAppSelector(getUserError);
+	const params = useAppSelector(getUserValidationParams);
 
 	const fullNameError = params?.includes(ParamsEnum.FullName);
 	const nickNameError = params?.includes(ParamsEnum.NickName);

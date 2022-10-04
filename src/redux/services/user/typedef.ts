@@ -20,8 +20,8 @@ export type UserDataType = {
 	token: string;
 };
 
-export type AuthStateType = {
-	userData: null | UserDataType;
+export type UserStateType = {
+	data: null | UserDataType;
 	loading: boolean;
 	error: null | unknown;
 	validationError: null | unknown;
@@ -35,14 +35,14 @@ export enum ParamsEnum {
 	AvatarUrl = 'avatarUrl',
 }
 
-export type AuthValidtionErrorType = {
+export type UserValidtionErrorType = {
 	status: number;
 	data: {
 		param: ParamsEnum;
 	}[];
 };
 
-export type AuthErrorType = {
+export type UserErrorType = {
 	status: number;
 	data: {
 		message: string;

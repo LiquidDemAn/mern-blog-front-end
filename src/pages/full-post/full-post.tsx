@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../../components/loader';
 import { customeAxios } from '../../redux/axios';
-import { getUserId } from '../../redux/services/auth/selectors';
+import { getUserId } from '../../redux/services/user/selectors';
 import {
 	getDeletePostLoading,
 	getPostsLoading,

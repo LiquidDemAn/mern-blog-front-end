@@ -6,7 +6,7 @@ import {
 	getDeletePostLoading,
 } from '../../redux/services/posts/selectors';
 import { loadTags } from '../../redux/services/tags/actions';
-import { getUserName } from '../../redux/services/auth/selectors';
+import { getUserName } from '../../redux/services/user/selectors';
 import { TabsEnum } from '../../typedef';
 import { Loader } from '../../components/loader';
 import { removeDeletePostError } from '../../redux/services/posts/posts.slice';

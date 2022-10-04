@@ -6,11 +6,12 @@ import { FullPost } from '../pages/full-post';
 import { Home } from '../pages/home';
 import { Login } from '../pages/login';
 import { Registration } from '../pages/registration';
-import { checkUserAuth } from '../redux/services/auth/actions';
+import { checkUserAuth } from '../redux/services/user/actions';
 import { useAppDispach } from '../redux/store/hooks';
 import { Tag } from '../pages/tag';
 import { PathsEnum } from '../typedef';
 import { NotFoundPage } from '../pages/not-found';
+import { Profile } from '../pages/profile';
 
 function App() {
 	const dispatch = useAppDispach();
@@ -30,6 +31,7 @@ function App() {
 				<Route path={PathsEnum.Login} element={<Login />} />
 				<Route path={PathsEnum.Tag} element={<Tag />} />
 				<Route path='*' element={<NotFoundPage />} />
+				<Route path=':nickname' element={<Profile />} />
 			</Route>
 		</Routes>
 	);

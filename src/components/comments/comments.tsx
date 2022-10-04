@@ -3,7 +3,7 @@ import { SideBlock } from '../side-block';
 import { PostCommentType } from '../../redux/services/posts/typedef';
 import { CommentsSkeleton } from './skeleton';
 import { useAppSelector } from '../../redux/store/hooks';
-import { getUserId } from '../../redux/services/auth/selectors';
+import { getUserId } from '../../redux/services/user/selectors';
 import { List, TextField } from '@mui/material';
 import { Comment } from '../comment';
 import { EditDialog } from '../dialogs/edit';

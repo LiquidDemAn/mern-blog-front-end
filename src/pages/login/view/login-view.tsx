@@ -6,12 +6,12 @@ import {
 	UseFormHandleSubmit,
 	UseFormRegister,
 } from 'react-hook-form';
-import { AuthErrorType, LoginType } from '../../../redux/services/auth/typedef';
+import { UserErrorType, LoginType } from '../../../redux/services/user/typedef';
 
 type Props = {
 	isValid: boolean;
 	errors: FieldErrorsImpl<DeepRequired<LoginType>>;
-	error: AuthErrorType | null;
+	error: UserErrorType | null;
 	handleSubmit: UseFormHandleSubmit<LoginType>;
 	register: UseFormRegister<LoginType>;
 	onSubmit: (values: LoginType) => void;

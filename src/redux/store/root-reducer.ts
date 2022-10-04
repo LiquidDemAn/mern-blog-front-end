@@ -1,4 +1,4 @@
-import { authSlice } from './../services/auth/auth.slice';
+import { userSlice } from '../services/user/user.slice';
 import { combineReducers } from '@reduxjs/toolkit';
 import { postsSlice } from '../services/posts/posts.slice';
 import { tagsSlice } from '../services/tags/tags.slice';
@@ -6,5 +6,5 @@ import { tagsSlice } from '../services/tags/tags.slice';
 export const rootReducer = combineReducers({
 	posts: postsSlice.reducer,
 	tags: tagsSlice.reducer,
-	auth: authSlice.reducer,
+	user: userSlice.reducer,
 });
