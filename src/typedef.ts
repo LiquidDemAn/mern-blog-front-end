@@ -18,6 +18,9 @@ export enum PathsEnum {
 export enum TabsEnum {
 	New = 'New',
 	Popular = 'Popular',
+	Posts = 'Posts',
+	Followers = 'Followers',
+	Following = 'Following',
 }
 
 export enum BreakpointsEnum {
