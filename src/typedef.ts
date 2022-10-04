@@ -12,6 +12,7 @@ export enum PathsEnum {
 	EditPost = 'posts/:id/edit',
 	CreatePost = 'create/post',
 	Tag = 'tags/:tag',
+	Profile = ':nickName',
 }
 
 export enum TabsEnum {

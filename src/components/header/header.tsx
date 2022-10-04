@@ -6,12 +6,7 @@ import { logOut } from '../../redux/services/user/user.slice';
 import { PathsEnum } from '../../typedef';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import MenuIcon from '@mui/icons-material/Menu';
-
-import {
-	getIsAuth,
-	getUserAvatar,
-	getUserName,
-} from '../../redux/services/user/selectors';
+import { getIsAuth, getUser } from '../../redux/services/user/selectors';
 
 import {
 	Avatar,
@@ -27,8 +22,7 @@ export const Header = () => {
 	const navigate = useNavigate();
 
 	const isAuth = useAppSelector(getIsAuth);
-	const userAvatar = useAppSelector(getUserAvatar);
-	const userName = useAppSelector(getUserName);
+	const user = useAppSelector(getUser);
 
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
@@ -39,6 +33,13 @@ export const Header = () => {
 
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	const onProfile = () => {
+		if (user) {
+			navigate(user.nickName);
+			handleClose();
+		}
 	};
 
 	const onLogin = () => {
@@ -79,8 +80,8 @@ export const Header = () => {
 						{isAuth ? (
 							<>
 								<Avatar
-									alt={userName}
-									src={`${PathsEnum.Server}${userAvatar}`}
+									alt={user?.fullName}
+									src={`${PathsEnum.Server}${user?.avatarUrl}`}
 								/>
 								<SvgIcon htmlColor='black' fontSize='medium'>
 									<ArrowDropDownIcon />
@@ -102,6 +103,7 @@ export const Header = () => {
 					>
 						{isAuth ? (
 							<>
+								<MenuItem onClick={onProfile}>Profile</MenuItem>
 								<MenuItem onClick={onCreatePost}>Write a post</MenuItem>
 								<MenuItem onClick={onLogOut}>Log out</MenuItem>
 							</>

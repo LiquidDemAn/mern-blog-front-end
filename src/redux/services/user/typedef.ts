@@ -14,6 +14,7 @@ export type RegisterType = {
 export type UserDataType = {
 	_id: string;
 	fullName: string;
+	nickName: string;
 	email: string;
 	avatarUrl: string;
 	createdAt: string;

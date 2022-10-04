@@ -6,6 +6,7 @@ export const getUser = (state: AppState) => state.user.data;
 export const getUserId = (state: AppState) => state.user.data?._id || '';
 export const getUserName = (state: AppState) => state.user.data?.fullName;
 export const getUserLoading = (state: AppState) => state.user.loading;
+// export const getUseNickname = (state: AppState) => state
 
 export const getUserAvatar = (state: AppState) => {
 	return state.user.data?.avatarUrl;

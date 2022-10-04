@@ -31,7 +31,7 @@ function App() {
 				<Route path={PathsEnum.Login} element={<Login />} />
 				<Route path={PathsEnum.Tag} element={<Tag />} />
 				<Route path='*' element={<NotFoundPage />} />
-				<Route path=':nickname' element={<Profile />} />
+				<Route path={PathsEnum.Profile} element={<Profile />} />
 			</Route>
 		</Routes>
 	);
