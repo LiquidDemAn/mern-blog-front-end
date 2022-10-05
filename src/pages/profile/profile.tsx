@@ -1,42 +1,62 @@
 import styles from './profile.module.scss';
 import { Avatar, Button, Tab, Tabs } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { getIsAuth, getUser } from '../../redux/services/user/selectors';
+import { getUser } from '../../redux/services/user/selectors';
 import { useAppSelector } from '../../redux/store/hooks';
 import { PathsEnum, TabsEnum } from '../../typedef';
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
+import { UserDataType } from '../../redux/services/user/typedef';
+import { customeAxios } from '../../redux/axios';
+import { AxiosError } from 'axios';
 
 export const Profile = () => {
 	const { nickName } = useParams();
 
 	const [value, setValue] = useState(TabsEnum.Posts);
 
-	const user = useAppSelector(getUser);
-	const isAuth = useAppSelector(getIsAuth);
-	const isUserProfile = nickName === user?.nickName;
+	const thisUser = useAppSelector(getUser);
+	const isThisUser = nickName === thisUser?.nickName;
+
+	const [user, setUser] = useState<UserDataType | null>(null);
 
 	const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
 	};
 
+	useEffect(() => {
+		if (!thisUser) {
+			(async () => {
+				await customeAxios
+					.get(`/users/${nickName}`)
+					.then(({ data }) => {
+						setUser(data);
+					})
+					.catch((err: AxiosError) => {
+						console.log(err);
+					});
+			})();
+		}
+	}, [thisUser, nickName]);
+
 	return (
 		<div className={styles.profile}>
 			<div>
-				{user?.avatarUrl ? (
-					<Avatar
-						sx={{ width: 260, height: 260 }}
-						src={`${PathsEnum.Server}${user?.avatarUrl}`}
-					/>
-				) : (
-					<Avatar sx={{ width: 260, height: 260 }} />
-				)}
+				<Avatar
+					sx={{ width: 260, height: 260 }}
+					src={`${PathsEnum.Server}${
+						isThisUser ? thisUser?.avatarUrl : user?.avatarUrl
+					}`}
+				/>
 
 				<h1 className={styles.names}>
-					<span className={styles.fullName}>{user?.fullName}</span>
-					<span className={styles.nickName}>@{user?.nickName}</span>
+					<span className={styles.fullName}>
+						{isThisUser ? thisUser?.fullName : user?.fullName}
+					</span>
+					<span className={styles.nickName}>
+						@{isThisUser ? thisUser?.nickName : user?.nickName}
+					</span>
 				</h1>
-
-				{isAuth ? (
+				{isThisUser ? (
 					<Button variant='outlined' fullWidth>
 						Edit profile
 					</Button>
