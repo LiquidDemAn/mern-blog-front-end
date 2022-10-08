@@ -8,6 +8,7 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import { UserDataType } from '../../redux/services/user/typedef';
 import { customeAxios } from '../../redux/axios';
 import { AxiosError } from 'axios';
+import { PostType } from '../../redux/services/posts/typedef';
 
 export const Profile = () => {
 	const { nickName } = useParams();
@@ -19,9 +20,28 @@ export const Profile = () => {
 
 	const [user, setUser] = useState<UserDataType | null>(null);
 
+	const [userPosts, setUserPosts] = useState<PostType[]>([]);
+
 	const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
 	};
+
+	console.log(userPosts);
+
+	useEffect(() => {
+		if (user) {
+			(async () => {
+				await customeAxios
+					.get(`/posts/users/${user?._id}`)
+					.then(({ data }) => {
+						setUserPosts(data);
+					})
+					.catch((err: AxiosError) => {
+						console.log(err);
+					});
+			})();
+		}
+	}, [user]);
 
 	useEffect(() => {
 		if (!thisUser) {
