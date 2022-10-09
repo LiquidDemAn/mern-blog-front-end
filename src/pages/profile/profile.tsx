@@ -1,5 +1,5 @@
 import styles from './profile.module.scss';
-import { Avatar, Button, Tab, Tabs } from '@mui/material';
+import { Avatar, Button, Tab, Tabs, Grid } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { getUser } from '../../redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
@@ -9,7 +9,13 @@ import { UserDataType } from '../../redux/services/user/typedef';
 import { customeAxios } from '../../redux/axios';
 import { AxiosError } from 'axios';
 import { loadPosts } from '../../redux/services/posts/actions';
-import { getPosts } from '../../redux/services/posts/selectors';
+import {
+	getPosts,
+	getPostsLoading,
+	getPostsError,
+} from '../../redux/services/posts/selectors';
+import { TabPanel } from '../../components/tab-panel';
+import { Posts } from '../../components/posts';
 
 export const Profile = () => {
 	const { nickName } = useParams();
@@ -17,6 +23,8 @@ export const Profile = () => {
 	const dispatch = useAppDispach();
 	const logedUser = useAppSelector(getUser);
 	const posts = useAppSelector(getPosts);
+	const postsLoading = useAppSelector(getPostsLoading);
+	const postsError = useAppSelector(getPostsError);
 
 	const [tabValue, setTabValue] = useState(TabsEnum.Posts);
 	const [visitedUser, setVisitedUser] = useState<UserDataType | null>(null);
@@ -79,8 +87,8 @@ export const Profile = () => {
 				)}
 			</div>
 
-			<div>
-				<Tabs value={tabValue} onChange={handleChange}>
+			<main className={styles.main}>
+				<Tabs className={styles.tabs} value={tabValue} onChange={handleChange}>
 					<Tab
 						aria-controls={`tabpanel-${TabsEnum.Posts}`}
 						label={TabsEnum.Posts}
@@ -97,7 +105,13 @@ export const Profile = () => {
 						value={TabsEnum.Following}
 					/>
 				</Tabs>
-			</div>
+
+				<Grid>
+					<TabPanel value={tabValue} index={TabsEnum.Posts}>
+						<Posts error={postsError} isLoading={postsLoading} posts={posts} />
+					</TabPanel>
+				</Grid>
+			</main>
 		</div>
 	);
 };

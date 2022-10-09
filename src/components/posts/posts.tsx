@@ -3,7 +3,7 @@ import { ErrorType } from '../../typedef';
 import { Post } from '../post/post';
 
 type Props = {
-	isLoading: boolean;
+	isLoading?: boolean;
 	posts: PostType[];
 	error?: ErrorType | null;
 };
