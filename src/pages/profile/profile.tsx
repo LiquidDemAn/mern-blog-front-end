@@ -2,61 +2,53 @@ import styles from './profile.module.scss';
 import { Avatar, Button, Tab, Tabs } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { getUser } from '../../redux/services/user/selectors';
-import { useAppSelector } from '../../redux/store/hooks';
+import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { PathsEnum, TabsEnum } from '../../typedef';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { UserDataType } from '../../redux/services/user/typedef';
 import { customeAxios } from '../../redux/axios';
 import { AxiosError } from 'axios';
-import { PostType } from '../../redux/services/posts/typedef';
+import { loadPosts } from '../../redux/services/posts/actions';
+import { getPosts } from '../../redux/services/posts/selectors';
 
 export const Profile = () => {
 	const { nickName } = useParams();
 
-	const [value, setValue] = useState(TabsEnum.Posts);
+	const dispatch = useAppDispach();
+	const logedUser = useAppSelector(getUser);
+	const posts = useAppSelector(getPosts);
 
-	const thisUser = useAppSelector(getUser);
-	const isThisUser = nickName === thisUser?.nickName;
+	const [tabValue, setTabValue] = useState(TabsEnum.Posts);
+	const [visitedUser, setVisitedUser] = useState<UserDataType | null>(null);
 
-	const [user, setUser] = useState<UserDataType | null>(null);
-
-	const [userPosts, setUserPosts] = useState<PostType[]>([]);
+	const isLogedUser = nickName === logedUser?.nickName;
 
 	const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
-		setValue(newValue);
+		setTabValue(newValue);
 	};
 
-	console.log(userPosts);
-
 	useEffect(() => {
-		if (user) {
-			(async () => {
-				await customeAxios
-					.get(`/posts/users/${user?._id}`)
-					.then(({ data }) => {
-						setUserPosts(data);
-					})
-					.catch((err: AxiosError) => {
-						console.log(err);
-					});
-			})();
+		if (isLogedUser && logedUser?._id) {
+			dispatch(loadPosts(`/posts/users/${logedUser._id}`));
+		} else if (visitedUser?._id) {
+			dispatch(loadPosts(`/posts/users/${visitedUser._id}`));
 		}
-	}, [user]);
+	}, [dispatch, logedUser?._id, visitedUser?._id, isLogedUser]);
 
 	useEffect(() => {
-		if (!thisUser) {
+		if (!isLogedUser) {
 			(async () => {
 				await customeAxios
 					.get(`/users/${nickName}`)
 					.then(({ data }) => {
-						setUser(data);
+						setVisitedUser(data);
 					})
 					.catch((err: AxiosError) => {
 						console.log(err);
 					});
 			})();
 		}
-	}, [thisUser, nickName]);
+	}, [isLogedUser, nickName]);
 
 	return (
 		<div className={styles.profile}>
@@ -64,19 +56,19 @@ export const Profile = () => {
 				<Avatar
 					sx={{ width: 260, height: 260 }}
 					src={`${PathsEnum.Server}${
-						isThisUser ? thisUser?.avatarUrl : user?.avatarUrl
+						isLogedUser ? logedUser?.avatarUrl : visitedUser?.avatarUrl
 					}`}
 				/>
 
 				<h1 className={styles.names}>
 					<span className={styles.fullName}>
-						{isThisUser ? thisUser?.fullName : user?.fullName}
+						{isLogedUser ? logedUser?.fullName : visitedUser?.fullName}
 					</span>
 					<span className={styles.nickName}>
-						@{isThisUser ? thisUser?.nickName : user?.nickName}
+						@{isLogedUser ? logedUser?.nickName : visitedUser?.nickName}
 					</span>
 				</h1>
-				{isThisUser ? (
+				{isLogedUser ? (
 					<Button variant='outlined' fullWidth>
 						Edit profile
 					</Button>
@@ -88,7 +80,7 @@ export const Profile = () => {
 			</div>
 
 			<div>
-				<Tabs value={value} onChange={handleChange}>
+				<Tabs value={tabValue} onChange={handleChange}>
 					<Tab
 						aria-controls={`tabpanel-${TabsEnum.Posts}`}
 						label={TabsEnum.Posts}
