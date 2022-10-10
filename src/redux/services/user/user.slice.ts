@@ -1,6 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { UserErrorType, UserStateType } from './typedef';
-import { loginUser, checkUserAuth, registerUser } from './actions';
+import {
+	loginUser,
+	checkUserAuth,
+	registerUser,
+	follow,
+	unFollow,
+} from './actions';
 import { removeToken } from '../../../local-storage';
 import { PathsEnum } from '../../../typedef';
 
@@ -84,6 +90,40 @@ export const userSlice = createSlice({
 				state.loading = false;
 				state.validationError = value.status === 403 ? value : null;
 				state.error = value.status !== 403 ? value : null;
+			})
+
+			// follow
+			.addCase(follow.pending, (state) => {
+				state.error = null;
+			})
+			.addCase(follow.fulfilled, (state, { payload, meta }) => {
+				state.error = null;
+
+				if (payload) {
+					state.data?.following.push(payload);
+				}
+			})
+			.addCase(follow.rejected, (state, { payload }) => {
+				state.loading = false;
+				state.error = payload;
+			})
+
+			// unFollow
+			.addCase(unFollow.pending, (state) => {
+				state.error = null;
+			})
+			.addCase(unFollow.fulfilled, (state, { payload, meta }) => {
+				state.error = null;
+
+				if (payload && state.data?.following) {
+					state.data.following = state.data?.following.filter(
+						(item) => item !== payload
+					);
+				}
+			})
+			.addCase(unFollow.rejected, (state, { payload }) => {
+				state.loading = false;
+				state.error = payload;
 			}),
 });
 

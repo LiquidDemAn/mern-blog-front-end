@@ -55,8 +55,8 @@ export const likePost = createAsyncThunk<string | undefined, string>(
 export const unlikePost = createAsyncThunk<string | undefined, string>(
 	'posts/unlike-post',
 	async (id, { getState }) => {
-		const { auth } = getState() as { auth: UserStateType };
-		const userId = auth.data?._id;
+		const { user } = getState() as { user: UserStateType };
+		const userId = user.data?._id;
 
 		try {
 			await customeAxios.patch(`/posts/${id}/unlike`);

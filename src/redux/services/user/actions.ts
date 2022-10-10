@@ -5,7 +5,7 @@ import { setToken } from '../../../local-storage';
 import { AxiosError } from 'axios';
 
 export const checkUserAuth = createAsyncThunk<UserDataType>(
-	'auth/check-auth',
+	'user/check-auth',
 	async () => {
 		const response = await customeAxios.get('/auth/me');
 		return response.data;
@@ -13,7 +13,7 @@ export const checkUserAuth = createAsyncThunk<UserDataType>(
 );
 
 export const loginUser = createAsyncThunk<UserDataType, LoginType>(
-	'auth/login',
+	'user/login',
 	async (params, { rejectWithValue }) => {
 		try {
 			const response = await customeAxios.post('/auth/login', params);
@@ -38,7 +38,7 @@ export const loginUser = createAsyncThunk<UserDataType, LoginType>(
 );
 
 export const registerUser = createAsyncThunk<UserDataType, RegisterType>(
-	'auth/register',
+	'user/register',
 	async (params, { rejectWithValue }) => {
 		try {
 			const avatar = params.avatarUrl;
@@ -66,3 +66,38 @@ export const registerUser = createAsyncThunk<UserDataType, RegisterType>(
 		}
 	}
 );
+
+export const follow = createAsyncThunk<string | undefined, string>(
+	'user/follow',
+	async (id, { rejectWithValue }) => {
+		try {
+			await customeAxios.patch(`/user/follow/${id}`);
+			return id;
+		} catch (err) {
+			const error = err as AxiosError;
+
+			return rejectWithValue({
+				data: error.response?.data,
+				status: error.response?.status,
+			});
+		}
+	}
+);
+
+export const unFollow = createAsyncThunk<string | undefined, string>(
+	'user/unFollow',
+	async (id, { rejectWithValue }) => {
+		try {
+			await customeAxios.patch(`/user/unfollow/${id}`);
+			return id;
+		} catch (err) {
+			const error = err as AxiosError;
+
+			return rejectWithValue({
+				data: error.response?.data,
+				status: error.response?.status,
+			});
+		}
+	}
+);
+

@@ -18,6 +18,8 @@ export type UserDataType = {
 	email: string;
 	avatarUrl: string;
 	createdAt: string;
+	followers: string[];
+	following: string[];
 	token: string;
 };
 
