@@ -27,7 +27,7 @@ export const Profile = () => {
 	const postsError = useAppSelector(getPostsError);
 
 	const [tabValue, setTabValue] = useState(TabsEnum.Posts);
-	const [visitedUser, setVisitedUser] = useState<UserDataType | null>(null);
+	const [anotherUser, setAnotherUser] = useState<UserDataType | null>(null);
 
 	const isLogedUser = nickName === logedUser?.nickName;
 
@@ -35,13 +35,15 @@ export const Profile = () => {
 		setTabValue(newValue);
 	};
 
+	console.log(logedUser);
+
 	useEffect(() => {
 		if (isLogedUser && logedUser?._id) {
 			dispatch(loadPosts(`/posts/users/${logedUser._id}`));
-		} else if (visitedUser?._id) {
-			dispatch(loadPosts(`/posts/users/${visitedUser._id}`));
+		} else if (anotherUser?._id) {
+			dispatch(loadPosts(`/posts/users/${anotherUser._id}`));
 		}
-	}, [dispatch, logedUser?._id, visitedUser?._id, isLogedUser]);
+	}, [dispatch, logedUser?._id, anotherUser?._id, isLogedUser]);
 
 	useEffect(() => {
 		if (!isLogedUser) {
@@ -49,7 +51,7 @@ export const Profile = () => {
 				await customeAxios
 					.get(`/users/${nickName}`)
 					.then(({ data }) => {
-						setVisitedUser(data);
+						setAnotherUser(data);
 					})
 					.catch((err: AxiosError) => {
 						console.log(err);
@@ -64,16 +66,16 @@ export const Profile = () => {
 				<Avatar
 					sx={{ width: 260, height: 260 }}
 					src={`${PathsEnum.Server}${
-						isLogedUser ? logedUser?.avatarUrl : visitedUser?.avatarUrl
+						isLogedUser ? logedUser?.avatarUrl : anotherUser?.avatarUrl
 					}`}
 				/>
 
 				<h1 className={styles.names}>
 					<span className={styles.fullName}>
-						{isLogedUser ? logedUser?.fullName : visitedUser?.fullName}
+						{isLogedUser ? logedUser?.fullName : anotherUser?.fullName}
 					</span>
 					<span className={styles.nickName}>
-						@{isLogedUser ? logedUser?.nickName : visitedUser?.nickName}
+						@{isLogedUser ? logedUser?.nickName : anotherUser?.nickName}
 					</span>
 				</h1>
 				{isLogedUser ? (

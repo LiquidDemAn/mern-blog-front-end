@@ -110,7 +110,11 @@ export const Post = ({
 				)}
 
 				<div className={styles.wrapper}>
-					<UserInfo {...post.author} date={post.createdAt} />
+					<UserInfo
+						fullName={post.author.fullName}
+						avatarUrl={post.author.avatarUrl}
+						date={post.createdAt}
+					/>
 					<div className={styles.indention}>
 						<h2
 							className={clsx(styles.title, {

@@ -1,6 +1,7 @@
 export type PostAuthorType = {
 	_id: string;
 	fullName: string;
+	nickName: string;
 	avatarUrl?: string;
 };
 
