@@ -18,6 +18,7 @@ import { TabPanel } from '../../components/tab-panel';
 import { Posts } from '../../components/posts';
 import { follow, unFollow } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
+import { UserInfo } from '../../components/user-info';
 
 export const Profile = () => {
 	const { nickName } = useParams();
@@ -33,8 +34,11 @@ export const Profile = () => {
 	const [anotherUser, setAnotherUser] = useState<UserDataType | null>(null);
 	const [openError, setOpenError] = useState(false);
 
-	const isFollow =
-		anotherUser && logedUser?.following.includes(anotherUser._id);
+	const isFollow = Boolean(
+		anotherUser &&
+			logedUser?.following.find((item) => item._id === anotherUser._id)
+	);
+
 	const isLogedUser = nickName === logedUser?.nickName;
 
 	const onFollow = () => {
@@ -144,6 +148,20 @@ export const Profile = () => {
 								isLoading={postsLoading}
 								posts={posts}
 							/>
+						</TabPanel>
+
+						<TabPanel value={tabValue} index={TabsEnum.Following}>
+							{isLogedUser ? (
+								logedUser?.following.map((person) => (
+									<UserInfo
+										fullName={person.fullName}
+										nickName={person.nickName}
+										avatarUrl={person?.avatarUrl}
+									/>
+								))
+							) : (
+								<></>
+							)}
 						</TabPanel>
 					</Grid>
 				</main>

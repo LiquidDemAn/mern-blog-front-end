@@ -11,6 +11,13 @@ export type RegisterType = {
 	avatarUrl: string;
 };
 
+export type FollowerType = {
+	_id: string;
+	fullName: string;
+	nickName: string;
+	avatarUrl?: string;
+};
+
 export type UserDataType = {
 	_id: string;
 	fullName: string;
@@ -18,8 +25,8 @@ export type UserDataType = {
 	email: string;
 	avatarUrl: string;
 	createdAt: string;
-	followers: string[];
-	following: string[];
+	followers: FollowerType[];
+	following: FollowerType[];
 	token: string;
 };
 

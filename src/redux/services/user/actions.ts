@@ -1,6 +1,6 @@
 import { customeAxios } from '../../axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { UserDataType, LoginType, RegisterType } from './typedef';
+import { UserDataType, LoginType, RegisterType, FollowerType } from './typedef';
 import { setToken } from '../../../local-storage';
 import { AxiosError } from 'axios';
 
@@ -67,12 +67,12 @@ export const registerUser = createAsyncThunk<UserDataType, RegisterType>(
 	}
 );
 
-export const follow = createAsyncThunk<string | undefined, string>(
+export const follow = createAsyncThunk<FollowerType | undefined, string>(
 	'user/follow',
 	async (id, { rejectWithValue }) => {
 		try {
-			await customeAxios.patch(`/user/follow/${id}`);
-			return id;
+			const response = await customeAxios.patch(`/user/follow/${id}`);
+			return response.data;
 		} catch (err) {
 			const error = err as AxiosError;
 
@@ -100,4 +100,3 @@ export const unFollow = createAsyncThunk<string | undefined, string>(
 		}
 	}
 );
-

@@ -117,7 +117,7 @@ export const userSlice = createSlice({
 
 				if (payload && state.data?.following) {
 					state.data.following = state.data?.following.filter(
-						(item) => item !== payload
+						(item) => item._id !== payload
 					);
 				}
 			})

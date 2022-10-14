@@ -2,7 +2,7 @@ import { PathsEnum } from '../../typedef';
 import styles from './user-info.module.scss';
 
 type Props = {
-	fullName: string;
+	fullName?: string;
 	avatarUrl?: string;
 	date?: string;
 	nickName?: string;
