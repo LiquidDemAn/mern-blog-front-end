@@ -150,18 +150,56 @@ export const Profile = () => {
 							/>
 						</TabPanel>
 
+						<TabPanel value={tabValue} index={TabsEnum.Followers}>
+							<>
+								{isLogedUser && !logedUser?.followers.length && (
+									<>List is Empty</>
+								)}
+
+								{!isLogedUser && !anotherUser?.followers.length && (
+									<>List is Empty</>
+								)}
+
+								{isLogedUser
+									? logedUser?.followers.map((person) => (
+											<UserInfo
+												fullName={person.fullName}
+												nickName={person.nickName}
+												avatarUrl={person?.avatarUrl}
+											/>
+									  ))
+									: anotherUser?.followers.map((person) => (
+											<UserInfo
+												fullName={person.fullName}
+												nickName={person.nickName}
+												avatarUrl={person?.avatarUrl}
+											/>
+									  ))}
+							</>
+						</TabPanel>
+
 						<TabPanel value={tabValue} index={TabsEnum.Following}>
-							{isLogedUser ? (
-								logedUser?.following.map((person) => (
-									<UserInfo
-										fullName={person.fullName}
-										nickName={person.nickName}
-										avatarUrl={person?.avatarUrl}
-									/>
-								))
-							) : (
-								<></>
-							)}
+							<>
+								{isLogedUser && !logedUser?.following.length && (
+									<>List is Empty</>
+								)}
+
+								{!isLogedUser && !anotherUser?.following.length && (
+									<>List is Empty</>
+								)}
+
+								{isLogedUser ? (
+									logedUser?.following.map((person) => (
+										<UserInfo
+											fullName={person.fullName}
+											nickName={person.nickName}
+											avatarUrl={person?.avatarUrl}
+										/>
+									))
+								) : (
+									<></>
+								)}
+							</>
 						</TabPanel>
 					</Grid>
 				</main>
