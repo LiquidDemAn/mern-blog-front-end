@@ -1,7 +1,11 @@
 import styles from './profile.module.scss';
 import { Avatar, Button, Tab, Tabs, Grid } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { getUser, getUserError } from '../../redux/services/user/selectors';
+import {
+	getIsFollow,
+	getUser,
+	getUserError,
+} from '../../redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { PathsEnum, TabsEnum } from '../../typedef';
 import { SyntheticEvent, useEffect, useState } from 'react';
@@ -18,7 +22,8 @@ import { TabPanel } from '../../components/tab-panel';
 import { Posts } from '../../components/posts';
 import { follow, unFollow } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
-import { UserInfo } from '../../components/user-info';
+import { FollowerCard } from '../../components/follower-card';
+import { AppState } from '../../redux/store/typedef';
 
 export const Profile = () => {
 	const { nickName } = useParams();
@@ -31,25 +36,24 @@ export const Profile = () => {
 	const logedUserError = useAppSelector(getUserError);
 
 	const [tabValue, setTabValue] = useState(TabsEnum.Posts);
-	const [anotherUser, setAnotherUser] = useState<UserDataType | null>(null);
+	const [user, setUser] = useState<UserDataType | null>(null);
 	const [openError, setOpenError] = useState(false);
 
-	const isFollow = Boolean(
-		anotherUser &&
-			logedUser?.following.find((item) => item._id === anotherUser._id)
+	const isFollow = useAppSelector((state: AppState) =>
+		getIsFollow(state, nickName)
 	);
 
 	const isLogedUser = nickName === logedUser?.nickName;
 
-	const onFollow = () => {
-		if (anotherUser?._id) {
-			dispatch(follow(anotherUser?._id));
+	const onFollow = (id?: string) => {
+		if (id) {
+			dispatch(follow(id));
 		}
 	};
 
-	const onUnFollow = () => {
-		if (anotherUser?._id) {
-			dispatch(unFollow(anotherUser?._id));
+	const onUnFollow = (id?: string) => {
+		if (id) {
+			dispatch(unFollow(id));
 		}
 	};
 
@@ -64,25 +68,27 @@ export const Profile = () => {
 	useEffect(() => {
 		if (isLogedUser && logedUser?._id) {
 			dispatch(loadPosts(`/posts/users/${logedUser._id}`));
-		} else if (anotherUser?._id) {
-			dispatch(loadPosts(`/posts/users/${anotherUser._id}`));
+		} else if (user?._id) {
+			dispatch(loadPosts(`/posts/users/${user._id}`));
 		}
-	}, [dispatch, logedUser?._id, anotherUser?._id, isLogedUser]);
+	}, [dispatch, logedUser?._id, user?._id, isLogedUser]);
 
 	useEffect(() => {
-		if (!isLogedUser) {
+		if (!isLogedUser && logedUser?.nickName) {
 			(async () => {
 				await customeAxios
 					.get(`/users/${nickName}`)
 					.then(({ data }) => {
-						setAnotherUser(data);
+						setUser(data);
 					})
 					.catch((err: AxiosError) => {
 						console.log(err);
 					});
 			})();
+		} else {
+			setUser(logedUser);
 		}
-	}, [isLogedUser, nickName]);
+	}, [isLogedUser, nickName, logedUser?.nickName, logedUser]);
 
 	return (
 		<>
@@ -91,16 +97,16 @@ export const Profile = () => {
 					<Avatar
 						sx={{ width: 260, height: 260 }}
 						src={`${PathsEnum.Server}${
-							isLogedUser ? logedUser?.avatarUrl : anotherUser?.avatarUrl
+							isLogedUser ? logedUser?.avatarUrl : user?.avatarUrl
 						}`}
 					/>
 
 					<h1 className={styles.names}>
 						<span className={styles.fullName}>
-							{isLogedUser ? logedUser?.fullName : anotherUser?.fullName}
+							{isLogedUser ? logedUser?.fullName : user?.fullName}
 						</span>
 						<span className={styles.nickName}>
-							@{isLogedUser ? logedUser?.nickName : anotherUser?.nickName}
+							@{isLogedUser ? logedUser?.nickName : user?.nickName}
 						</span>
 					</h1>
 					{isLogedUser ? (
@@ -109,7 +115,9 @@ export const Profile = () => {
 						</Button>
 					) : (
 						<Button
-							onClick={isFollow ? onUnFollow : onFollow}
+							onClick={() =>
+								isFollow ? onUnFollow(user?._id) : onFollow(user?._id)
+							}
 							variant='outlined'
 							fullWidth
 						>
@@ -152,53 +160,33 @@ export const Profile = () => {
 
 						<TabPanel value={tabValue} index={TabsEnum.Followers}>
 							<>
-								{isLogedUser && !logedUser?.followers.length && (
-									<>List is Empty</>
-								)}
+								{!user?.followers.length && <>List is Empty</>}
 
-								{!isLogedUser && !anotherUser?.followers.length && (
-									<>List is Empty</>
-								)}
-
-								{isLogedUser
-									? logedUser?.followers.map((person) => (
-											<UserInfo
-												fullName={person.fullName}
-												nickName={person.nickName}
-												avatarUrl={person?.avatarUrl}
-											/>
-									  ))
-									: anotherUser?.followers.map((person) => (
-											<UserInfo
-												fullName={person.fullName}
-												nickName={person.nickName}
-												avatarUrl={person?.avatarUrl}
-											/>
-									  ))}
+								{user?.followers.map((follower) => (
+									<>
+										<FollowerCard
+											follower={follower}
+											onFollow={onFollow}
+											onUnFollow={onUnFollow}
+										/>
+									</>
+								))}
 							</>
 						</TabPanel>
 
 						<TabPanel value={tabValue} index={TabsEnum.Following}>
 							<>
-								{isLogedUser && !logedUser?.following.length && (
-									<>List is Empty</>
-								)}
+								{!user?.following.length && <>List is Empty</>}
 
-								{!isLogedUser && !anotherUser?.following.length && (
-									<>List is Empty</>
-								)}
-
-								{isLogedUser ? (
-									logedUser?.following.map((person) => (
-										<UserInfo
-											fullName={person.fullName}
-											nickName={person.nickName}
-											avatarUrl={person?.avatarUrl}
+								{user?.following.map((follower) => (
+									<>
+										<FollowerCard
+											follower={follower}
+											onFollow={onFollow}
+											onUnFollow={onUnFollow}
 										/>
-									))
-								) : (
-									<></>
-								)}
+									</>
+								))}
 							</>
 						</TabPanel>
 					</Grid>

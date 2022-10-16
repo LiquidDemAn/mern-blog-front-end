@@ -6,7 +6,14 @@ export const getUser = (state: AppState) => state.user.data;
 export const getUserId = (state: AppState) => state.user.data?._id || '';
 export const getUserName = (state: AppState) => state.user.data?.fullName;
 export const getUserLoading = (state: AppState) => state.user.loading;
-// export const getUseNickname = (state: AppState) => state
+export const getUserNickName = (state: AppState) => state.user.data?.nickName;
+
+export const getIsFollow = (state: AppState, nickName?: string) => {
+	const following = state.user.data?.following;
+	const person = following?.find((item) => item.nickName === nickName);
+
+	return Boolean(person);
+};
 
 export const getUserAvatar = (state: AppState) => {
 	return state.user.data?.avatarUrl;
