@@ -29,18 +29,18 @@ export const Profile = () => {
 	const { nickName } = useParams();
 	const dispatch = useAppDispach();
 
+	const [tabValue, setTabValue] = useState(TabsEnum.Posts);
+	const [user, setUser] = useState<UserDataType | null>(null);
+	const [openError, setOpenError] = useState(false);
+
 	const logedUser = useAppSelector(getUser);
 	const posts = useAppSelector(getPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
 	const postsError = useAppSelector(getPostsError);
 	const logedUserError = useAppSelector(getUserError);
 	const isFollow = useAppSelector((state: AppState) =>
-		getIsFollow(state, nickName)
+		getIsFollow(state, user?._id)
 	);
-
-	const [tabValue, setTabValue] = useState(TabsEnum.Posts);
-	const [user, setUser] = useState<UserDataType | null>(null);
-	const [openError, setOpenError] = useState(false);
 
 	const isLogedUser = nickName === logedUser?.nickName;
 
