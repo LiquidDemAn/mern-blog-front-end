@@ -27,21 +27,20 @@ import { AppState } from '../../redux/store/typedef';
 
 export const Profile = () => {
 	const { nickName } = useParams();
-
 	const dispatch = useAppDispach();
+
 	const logedUser = useAppSelector(getUser);
 	const posts = useAppSelector(getPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
 	const postsError = useAppSelector(getPostsError);
 	const logedUserError = useAppSelector(getUserError);
+	const isFollow = useAppSelector((state: AppState) =>
+		getIsFollow(state, nickName)
+	);
 
 	const [tabValue, setTabValue] = useState(TabsEnum.Posts);
 	const [user, setUser] = useState<UserDataType | null>(null);
 	const [openError, setOpenError] = useState(false);
-
-	const isFollow = useAppSelector((state: AppState) =>
-		getIsFollow(state, nickName)
-	);
 
 	const isLogedUser = nickName === logedUser?.nickName;
 
@@ -89,6 +88,10 @@ export const Profile = () => {
 			setUser(logedUser);
 		}
 	}, [isLogedUser, nickName, logedUser?.nickName, logedUser]);
+
+	useEffect(() => {
+		setTabValue(TabsEnum.Posts);
+	}, [nickName]);
 
 	return (
 		<>
@@ -139,12 +142,12 @@ export const Profile = () => {
 						/>
 						<Tab
 							aria-controls={`tabpanel-${TabsEnum.Followers}`}
-							label={TabsEnum.Followers}
+							label={`${TabsEnum.Followers} (${user?.followers.length})`}
 							value={TabsEnum.Followers}
 						/>
 						<Tab
 							aria-controls={`tabpanel-${TabsEnum.Following}`}
-							label={TabsEnum.Following}
+							label={`${TabsEnum.Following} (${user?.following.length})`}
 							value={TabsEnum.Following}
 						/>
 					</Tabs>
@@ -163,13 +166,11 @@ export const Profile = () => {
 								{!user?.followers.length && <>List is Empty</>}
 
 								{user?.followers.map((follower) => (
-									<>
-										<FollowerCard
-											follower={follower}
-											onFollow={onFollow}
-											onUnFollow={onUnFollow}
-										/>
-									</>
+									<FollowerCard
+										follower={follower}
+										onFollow={onFollow}
+										onUnFollow={onUnFollow}
+									/>
 								))}
 							</>
 						</TabPanel>
@@ -179,13 +180,11 @@ export const Profile = () => {
 								{!user?.following.length && <>List is Empty</>}
 
 								{user?.following.map((follower) => (
-									<>
-										<FollowerCard
-											follower={follower}
-											onFollow={onFollow}
-											onUnFollow={onUnFollow}
-										/>
-									</>
+									<FollowerCard
+										follower={follower}
+										onFollow={onFollow}
+										onUnFollow={onUnFollow}
+									/>
 								))}
 							</>
 						</TabPanel>

@@ -1,3 +1,4 @@
+import styles from './follower-card.module.scss';
 import { Button } from '@mui/material';
 import {
 	getUserNickName,
@@ -7,6 +8,8 @@ import { FollowerType } from '../../redux/services/user/typedef';
 import { useAppSelector } from '../../redux/store/hooks';
 import { AppState } from '../../redux/store/typedef';
 import { UserInfo } from '../user-info';
+import { Link } from 'react-router-dom';
+import { PathsEnum } from '../../typedef';
 
 type Props = {
 	follower: FollowerType;
@@ -18,27 +21,31 @@ export const FollowerCard = ({ follower, onFollow, onUnFollow }: Props) => {
 	const logedUserNickName = useAppSelector(getUserNickName);
 
 	const isFollow = useAppSelector((state: AppState) =>
-		getIsFollow(state, follower.nickName)
+		getIsFollow(state, follower._id)
 	);
 
 	return (
 		<>
-			<UserInfo
-				fullName={follower.fullName}
-				nickName={follower.nickName}
-				avatarUrl={follower?.avatarUrl}
-			/>
+			<div className={styles.follower}>
+				<Link className={styles.link} to={PathsEnum.Home + follower.nickName}>
+					<UserInfo
+						fullName={follower.fullName}
+						nickName={follower.nickName}
+						avatarUrl={follower?.avatarUrl}
+					/>
+				</Link>
 
-			{logedUserNickName !== follower.nickName && (
-				<Button
-					onClick={() =>
-						isFollow ? onUnFollow(follower._id) : onFollow(follower._id)
-					}
-					variant='outlined'
-				>
-					{isFollow ? 'Unfollow' : 'Follow'}
-				</Button>
-			)}
+				{logedUserNickName !== follower.nickName && (
+					<Button
+						onClick={() =>
+							isFollow ? onUnFollow(follower._id) : onFollow(follower._id)
+						}
+						variant='outlined'
+					>
+						{isFollow ? 'Unfollow' : 'Follow'}
+					</Button>
+				)}
+			</div>
 		</>
 	);
 };

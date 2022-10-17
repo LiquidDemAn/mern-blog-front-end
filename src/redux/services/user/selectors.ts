@@ -8,9 +8,9 @@ export const getUserName = (state: AppState) => state.user.data?.fullName;
 export const getUserLoading = (state: AppState) => state.user.loading;
 export const getUserNickName = (state: AppState) => state.user.data?.nickName;
 
-export const getIsFollow = (state: AppState, nickName?: string) => {
+export const getIsFollow = (state: AppState, id?: string) => {
 	const following = state.user.data?.following;
-	const person = following?.find((item) => item.nickName === nickName);
+	const person = following?.find((item) => item._id === id);
 
 	return Boolean(person);
 };
