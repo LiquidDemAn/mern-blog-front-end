@@ -8,8 +8,6 @@ import { FollowerType } from '../../redux/services/user/typedef';
 import { useAppSelector } from '../../redux/store/hooks';
 import { AppState } from '../../redux/store/typedef';
 import { UserInfo } from '../user-info';
-import { Link } from 'react-router-dom';
-import { PathsEnum } from '../../typedef';
 
 type Props = {
 	follower: FollowerType;
@@ -27,13 +25,11 @@ export const FollowerCard = ({ follower, onFollow, onUnFollow }: Props) => {
 	return (
 		<>
 			<div className={styles.follower}>
-				<Link className={styles.link} to={PathsEnum.Home + follower.nickName}>
-					<UserInfo
-						fullName={follower.fullName}
-						nickName={follower.nickName}
-						avatarUrl={follower?.avatarUrl}
-					/>
-				</Link>
+				<UserInfo
+					fullName={follower.fullName}
+					nickName={follower.nickName}
+					avatarUrl={follower?.avatarUrl}
+				/>
 
 				{logedUserNickName !== follower.nickName && (
 					<Button

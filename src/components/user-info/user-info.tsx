@@ -1,4 +1,5 @@
 import { Avatar } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { PathsEnum } from '../../typedef';
 import styles from './user-info.module.scss';
 
@@ -11,7 +12,7 @@ type Props = {
 
 export const UserInfo = ({ avatarUrl, fullName, date, nickName }: Props) => {
 	return (
-		<div className={styles.root}>
+		<Link to={PathsEnum.Home + nickName} className={styles.root}>
 			{avatarUrl ? (
 				<Avatar
 					className={styles.avatar}
@@ -25,11 +26,11 @@ export const UserInfo = ({ avatarUrl, fullName, date, nickName }: Props) => {
 			<div className={styles.userDetails}>
 				<span className={styles.userName}>{fullName}</span>
 
-				<span className={styles.additional}>
-					{date && new Date(date).toDateString()}
-					{nickName && nickName}
-				</span>
+				<div className={styles.additional}>
+					{nickName && <span>@{nickName}</span>}
+					{date && <span>{new Date(date).toDateString()}</span>}
+				</div>
 			</div>
-		</div>
+		</Link>
 	);
 };

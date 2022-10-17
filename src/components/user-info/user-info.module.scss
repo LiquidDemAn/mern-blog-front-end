@@ -1,6 +1,8 @@
 .root {
 	display: flex;
+	width: max-content;
 	align-items: center;
+	text-decoration: none;
 }
 
 .avatar {
@@ -21,6 +23,12 @@
 }
 
 .additional {
+	display: flex;
+	flex-direction: column;
+	row-gap: 3px;
 	font-size: 12px;
 	opacity: 0.6;
+}
+
+.link {
 }

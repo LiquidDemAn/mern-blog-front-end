@@ -113,6 +113,7 @@ export const Post = ({
 					<UserInfo
 						fullName={post.author.fullName}
 						avatarUrl={post.author.avatarUrl}
+						nickName={post.author.nickName}
 						date={post.createdAt}
 					/>
 					<div className={styles.indention}>
