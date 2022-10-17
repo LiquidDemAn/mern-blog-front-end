@@ -114,7 +114,6 @@ export const Post = ({
 						fullName={post.author.fullName}
 						avatarUrl={post.author.avatarUrl}
 						nickName={post.author.nickName}
-						date={post.createdAt}
 					/>
 					<div className={styles.indention}>
 						<h2
@@ -128,6 +127,10 @@ export const Post = ({
 								<Link to={`/posts/${post._id}`}>{post.title}</Link>
 							)}
 						</h2>
+
+						<span className={styles.date}>
+							{new Date(post.createdAt).toDateString()}
+						</span>
 
 						<ul className={styles.tags}>
 							{post.tags.length !== 0 &&
