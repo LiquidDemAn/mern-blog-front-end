@@ -5,6 +5,7 @@ import {
 	getIsFollow,
 	getUser,
 	getUserError,
+	getUserLoading,
 } from '../../redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { PathsEnum, TabsEnum } from '../../typedef';
@@ -24,6 +25,7 @@ import { follow, unFollow } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
 import { FollowerCard } from '../../components/follower-card';
 import { AppState } from '../../redux/store/typedef';
+import { Loader } from '../../components/loader';
 
 export const Profile = () => {
 	const { nickName } = useParams();
@@ -33,11 +35,14 @@ export const Profile = () => {
 	const [user, setUser] = useState<UserDataType | null>(null);
 	const [openError, setOpenError] = useState(false);
 
-	const logedUser = useAppSelector(getUser);
 	const posts = useAppSelector(getPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
 	const postsError = useAppSelector(getPostsError);
+
+	const logedUser = useAppSelector(getUser);
 	const logedUserError = useAppSelector(getUserError);
+	const logedUserLoading = useAppSelector(getUserLoading);
+
 	const isFollow = useAppSelector((state: AppState) =>
 		getIsFollow(state, user?._id)
 	);
@@ -195,6 +200,8 @@ export const Profile = () => {
 			{logedUserError && (
 				<ErrorDialog open={openError} handleClose={handleErrorClose} />
 			)}
+
+			<Loader open={logedUserLoading} />
 		</>
 	);
 };
