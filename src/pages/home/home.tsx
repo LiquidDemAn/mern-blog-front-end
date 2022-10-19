@@ -6,14 +6,16 @@ import {
 	getDeletePostLoading,
 } from '../../redux/services/posts/selectors';
 import { loadTags } from '../../redux/services/tags/actions';
-import { getUserName } from '../../redux/services/user/selectors';
+import { getIsAuth, getUserName } from '../../redux/services/user/selectors';
 import { TabsEnum } from '../../typedef';
 import { Loader } from '../../components/loader';
 import { removeDeletePostError } from '../../redux/services/posts/posts.slice';
 import { HomeView } from './view';
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
 	const dispatch = useAppDispach();
+	const navigate = useNavigate();
 
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState(TabsEnum.New);
@@ -21,6 +23,7 @@ export const Home = () => {
 	const userName = useAppSelector(getUserName);
 	const deleteError = useAppSelector(getDeletePostError);
 	const deleteLoading = useAppSelector(getDeletePostLoading);
+	const isAuth = useAppSelector(getIsAuth);
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -34,6 +37,14 @@ export const Home = () => {
 	const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
 	};
+
+	useEffect(() => {
+		console.log(1);
+
+		if (!isAuth) {
+			navigate('/login');
+		}
+	}, [isAuth, navigate]);
 
 	useEffect(() => {
 		if (value === TabsEnum.New) {

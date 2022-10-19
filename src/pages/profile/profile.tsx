@@ -70,15 +70,15 @@ export const Profile = () => {
 	};
 
 	useEffect(() => {
-		if (isLogedUser && logedUser?._id) {
-			dispatch(loadPosts(`/posts/users/${logedUser._id}`));
-		} else if (user?._id) {
+		if (user?._id) {
 			dispatch(loadPosts(`/posts/users/${user._id}`));
 		}
-	}, [dispatch, logedUser?._id, user?._id, isLogedUser]);
+	}, [dispatch, user?._id]);
 
 	useEffect(() => {
-		if (!isLogedUser && logedUser?.nickName) {
+		if (isLogedUser) {
+			setUser(logedUser);
+		} else {
 			(async () => {
 				await customeAxios
 					.get(`/users/${nickName}`)
@@ -89,8 +89,6 @@ export const Profile = () => {
 						console.log(err);
 					});
 			})();
-		} else {
-			setUser(logedUser);
 		}
 	}, [isLogedUser, nickName, logedUser?.nickName, logedUser]);
 
