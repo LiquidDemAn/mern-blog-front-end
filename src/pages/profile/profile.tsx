@@ -70,6 +70,10 @@ export const Profile = () => {
 	};
 
 	useEffect(() => {
+		setTabValue(TabsEnum.Posts);
+	}, [nickName]);
+
+	useEffect(() => {
 		if (user?._id) {
 			dispatch(loadPosts(`/posts/users/${user._id}`));
 		}
@@ -91,10 +95,6 @@ export const Profile = () => {
 			})();
 		}
 	}, [isLogedUser, nickName, logedUser?.nickName, logedUser]);
-
-	useEffect(() => {
-		setTabValue(TabsEnum.Posts);
-	}, [nickName]);
 
 	return (
 		<>
