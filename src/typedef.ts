@@ -21,6 +21,7 @@ export enum TabsEnum {
 	Posts = 'Posts',
 	Followers = 'Followers',
 	Following = 'Following',
+	FindPerson = 'Find Person',
 }
 
 export enum BreakpointsEnum {

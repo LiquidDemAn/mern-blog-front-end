@@ -1,5 +1,5 @@
 import styles from './profile.module.scss';
-import { Avatar, Button, Tab, Tabs, Grid } from '@mui/material';
+import { Avatar, Button, Tab, Tabs, Grid, TextField } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import {
 	getIsFollow,
@@ -31,7 +31,7 @@ export const Profile = () => {
 	const { nickName } = useParams();
 	const dispatch = useAppDispach();
 
-	const [tabValue, setTabValue] = useState(TabsEnum.Posts);
+	const [tabValue, setTabValue] = useState(TabsEnum.FindPerson);
 	const [user, setUser] = useState<UserDataType | null>(null);
 	const [openError, setOpenError] = useState(false);
 
@@ -153,9 +153,15 @@ export const Profile = () => {
 							label={`${TabsEnum.Following} (${user?.following.length})`}
 							value={TabsEnum.Following}
 						/>
+						<Tab
+							aria-controls={`tabpanel-${TabsEnum.FindPerson}`}
+							label={TabsEnum.FindPerson}
+							value={TabsEnum.FindPerson}
+						/>
 					</Tabs>
 
 					<Grid>
+						{/* Posts */}
 						<TabPanel value={tabValue} index={TabsEnum.Posts}>
 							<Posts
 								error={postsError}
@@ -164,6 +170,7 @@ export const Profile = () => {
 							/>
 						</TabPanel>
 
+						{/* Followers */}
 						<TabPanel value={tabValue} index={TabsEnum.Followers}>
 							<>
 								{!user?.followers.length && <>List is Empty</>}
@@ -178,6 +185,7 @@ export const Profile = () => {
 							</>
 						</TabPanel>
 
+						{/* Following */}
 						<TabPanel value={tabValue} index={TabsEnum.Following}>
 							<>
 								{!user?.following.length && <>List is Empty</>}
@@ -190,6 +198,20 @@ export const Profile = () => {
 									/>
 								))}
 							</>
+						</TabPanel>
+
+						{/* Find Person */}
+						<TabPanel value={tabValue} index={TabsEnum.FindPerson}>
+							<div className={styles.search}>
+								<TextField
+									id='find-person'
+									label='Find Person'
+									variant='outlined'
+									size='small'
+									fullWidth
+								/>
+								<Button variant='contained'>Find</Button>
+							</div>
 						</TabPanel>
 					</Grid>
 				</main>
