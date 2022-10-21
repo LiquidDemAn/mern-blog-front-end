@@ -9,8 +9,8 @@ import {
 } from '../../redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { PathsEnum, TabsEnum } from '../../typedef';
-import { SyntheticEvent, useEffect, useState } from 'react';
-import { UserDataType } from '../../redux/services/user/typedef';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { FoundUserType, UserDataType } from '../../redux/services/user/typedef';
 import { customeAxios } from '../../redux/axios';
 import { AxiosError } from 'axios';
 import { loadPosts } from '../../redux/services/posts/actions';
@@ -34,6 +34,9 @@ export const Profile = () => {
 	const [tabValue, setTabValue] = useState(TabsEnum.FindPerson);
 	const [user, setUser] = useState<UserDataType | null>(null);
 	const [openError, setOpenError] = useState(false);
+	const [foundUsers, setFoundUsers] = useState<FoundUserType[] | null>(null);
+
+	const [foundUsersLoading, setFoundUsersLoading] = useState(false);
 
 	const posts = useAppSelector(getPosts);
 	const postsLoading = useAppSelector(getPostsLoading);
@@ -43,11 +46,32 @@ export const Profile = () => {
 	const logedUserError = useAppSelector(getUserError);
 	const logedUserLoading = useAppSelector(getUserLoading);
 
+	const findRef = useRef<HTMLInputElement | null>(null);
+
 	const isFollow = useAppSelector((state: AppState) =>
 		getIsFollow(state, user?._id)
 	);
 
 	const isLogedUser = nickName === logedUser?.nickName;
+
+	const onFind = async () => {
+		const nickName = findRef.current?.value;
+
+		if (nickName) {
+			setFoundUsersLoading(true);
+
+			customeAxios
+				.get(`/users/find/${nickName}`)
+				.then(({ data }) => {
+					setFoundUsers(data);
+					setFoundUsersLoading(false);
+				})
+				.catch((err) => {
+					console.log(err);
+					setFoundUsersLoading(false);
+				});
+		}
+	};
 
 	const onFollow = (id?: string) => {
 		if (id) {
@@ -155,7 +179,9 @@ export const Profile = () => {
 						/>
 						<Tab
 							aria-controls={`tabpanel-${TabsEnum.FindPerson}`}
-							label={TabsEnum.FindPerson}
+							label={`${TabsEnum.FindPerson} ${
+								foundUsers ? `(${foundUsers.length})` : ''
+							} `}
 							value={TabsEnum.FindPerson}
 						/>
 					</Tabs>
@@ -204,14 +230,31 @@ export const Profile = () => {
 						<TabPanel value={tabValue} index={TabsEnum.FindPerson}>
 							<div className={styles.search}>
 								<TextField
+									inputRef={findRef}
 									id='find-person'
 									label='Find Person'
 									variant='outlined'
 									size='small'
 									fullWidth
 								/>
-								<Button variant='contained'>Find</Button>
+								<Button onClick={onFind} variant='contained'>
+									Find
+								</Button>
 							</div>
+							<>
+								{foundUsers && !foundUsers.length ? (
+									<span>List is Empty</span>
+								) : (
+									<></>
+								)}
+								{foundUsers?.map((user) => (
+									<FollowerCard
+										follower={user}
+										onFollow={onFollow}
+										onUnFollow={onUnFollow}
+									/>
+								))}
+							</>
 						</TabPanel>
 					</Grid>
 				</main>
@@ -221,7 +264,7 @@ export const Profile = () => {
 				<ErrorDialog open={openError} handleClose={handleErrorClose} />
 			)}
 
-			<Loader open={logedUserLoading} />
+			<Loader open={logedUserLoading || foundUsersLoading} />
 		</>
 	);
 };

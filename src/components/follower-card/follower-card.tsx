@@ -4,13 +4,13 @@ import {
 	getUserNickName,
 	getIsFollow,
 } from '../../redux/services/user/selectors';
-import { FollowerType } from '../../redux/services/user/typedef';
+import { FollowerType, FoundUserType } from '../../redux/services/user/typedef';
 import { useAppSelector } from '../../redux/store/hooks';
 import { AppState } from '../../redux/store/typedef';
 import { UserInfo } from '../user-info';
 
 type Props = {
-	follower: FollowerType;
+	follower: FollowerType | FoundUserType;
 	onFollow: (id?: string) => void;
 	onUnFollow: (id?: string) => void;
 };

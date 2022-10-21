@@ -59,3 +59,10 @@ export type UserErrorType = {
 		param?: string;
 	};
 };
+
+export type FoundUserType = {
+	_id: string;
+	nickName: string;
+	fullName: string;
+	avatarUrl: string;
+};
