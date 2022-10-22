@@ -7,8 +7,29 @@ import { AxiosError } from 'axios';
 export const checkUserAuth = createAsyncThunk<UserDataType>(
 	'user/check-auth',
 	async () => {
-		const response = await customeAxios.get('/auth/me');
-		return response.data;
+		const { data } = await customeAxios.get('/auth/me');
+		return data;
+	}
+);
+
+export const loadUser = createAsyncThunk<
+	void,
+	{
+		nickName: string;
+		setUser: (value: UserDataType) => void;
+		setProfileError: (error: AxiosError) => void;
+	}
+>(
+	'user/load-user',
+	async ({ nickName, setUser, setProfileError }) => {
+		try {
+			const { data } = await customeAxios.get(`/users/${nickName}`);
+
+			setUser(data);
+		} catch (err) {
+			const error = err as AxiosError;
+			setProfileError(error);
+		}
 	}
 );
 

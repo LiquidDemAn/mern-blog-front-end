@@ -1,6 +1,6 @@
 import styles from './profile.module.scss';
 import { Avatar, Button, Tab, Tabs, Grid, TextField } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
 	getIsFollow,
 	getUser,
@@ -21,7 +21,7 @@ import {
 } from '../../redux/services/posts/selectors';
 import { TabPanel } from '../../components/tab-panel';
 import { Posts } from '../../components/posts';
-import { follow, unFollow } from '../../redux/services/user/actions';
+import { follow, loadUser, unFollow } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
 import { FollowerCard } from '../../components/follower-card';
 import { AppState } from '../../redux/store/typedef';
@@ -30,11 +30,14 @@ import { Loader } from '../../components/loader';
 export const Profile = () => {
 	const { nickName } = useParams();
 	const dispatch = useAppDispach();
+	const navigate = useNavigate();
 
 	const [tabValue, setTabValue] = useState(TabsEnum.FindPerson);
 	const [user, setUser] = useState<UserDataType | null>(null);
 	const [openError, setOpenError] = useState(false);
 	const [foundUsers, setFoundUsers] = useState<FoundUserType[] | null>(null);
+
+	const [profileError, setProfileError] = useState<AxiosError | null>(null);
 
 	const [foundUsersLoading, setFoundUsersLoading] = useState(false);
 
@@ -75,7 +78,9 @@ export const Profile = () => {
 
 	const onFollow = (id?: string) => {
 		if (id) {
-			dispatch(follow(id));
+			dispatch(follow(id)).then(({ payload }) => {
+				console.log(payload);
+			});
 		}
 	};
 
@@ -91,7 +96,15 @@ export const Profile = () => {
 
 	const handleErrorClose = () => {
 		setOpenError(false);
+		setProfileError(null);
 	};
+
+	useEffect(() => {
+		if (profileError) {
+			setOpenError(true);
+			navigate(`/${logedUser?.nickName}`);
+		}
+	}, [profileError, logedUser?.nickName, navigate]);
 
 	useEffect(() => {
 		setTabValue(TabsEnum.Posts);
@@ -106,19 +119,10 @@ export const Profile = () => {
 	useEffect(() => {
 		if (isLogedUser) {
 			setUser(logedUser);
-		} else {
-			(async () => {
-				await customeAxios
-					.get(`/users/${nickName}`)
-					.then(({ data }) => {
-						setUser(data);
-					})
-					.catch((err: AxiosError) => {
-						console.log(err);
-					});
-			})();
+		} else if (nickName) {
+			dispatch(loadUser({ nickName, setUser, setProfileError }));
 		}
-	}, [isLogedUser, nickName, logedUser?.nickName, logedUser]);
+	}, [isLogedUser, nickName, logedUser, dispatch]);
 
 	return (
 		<>
@@ -260,7 +264,7 @@ export const Profile = () => {
 				</main>
 			</div>
 
-			{logedUserError && (
+			{(profileError || logedUserError) && (
 				<ErrorDialog open={openError} handleClose={handleErrorClose} />
 			)}
 
