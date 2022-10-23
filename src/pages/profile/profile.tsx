@@ -9,7 +9,7 @@ import {
 } from '../../redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { PathsEnum, TabsEnum } from '../../typedef';
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { FoundUserType, UserDataType } from '../../redux/services/user/typedef';
 import { customeAxios } from '../../redux/axios';
 import { AxiosError } from 'axios';
@@ -57,7 +57,8 @@ export const Profile = () => {
 
 	const isLogedUser = nickName === logedUser?.nickName;
 
-	const onFind = async () => {
+	const onFind = async (event: FormEvent) => {
+		event.preventDefault();
 		const nickName = findRef.current?.value;
 
 		if (nickName) {
@@ -232,7 +233,7 @@ export const Profile = () => {
 
 						{/* Find Person */}
 						<TabPanel value={tabValue} index={TabsEnum.FindPerson}>
-							<div className={styles.search}>
+							<form onSubmit={onFind} className={styles.search}>
 								<TextField
 									inputRef={findRef}
 									id='find-person'
@@ -241,10 +242,8 @@ export const Profile = () => {
 									size='small'
 									fullWidth
 								/>
-								<Button onClick={onFind} variant='contained'>
-									Find
-								</Button>
-							</div>
+								<Button variant='contained'>Find</Button>
+							</form>
 							<>
 								{foundUsers && !foundUsers.length ? (
 									<span>List is Empty</span>
