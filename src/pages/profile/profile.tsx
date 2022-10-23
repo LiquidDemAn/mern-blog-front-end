@@ -1,5 +1,15 @@
 import styles from './profile.module.scss';
-import { Avatar, Button, Tab, Tabs, Grid, TextField } from '@mui/material';
+import {
+	Avatar,
+	Button,
+	Tab,
+	Tabs,
+	Grid,
+	TextField,
+	Select,
+	MenuItem,
+	SelectChangeEvent,
+} from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
 	getIsFollow,
@@ -8,7 +18,7 @@ import {
 	getUserLoading,
 } from '../../redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
-import { PathsEnum, TabsEnum } from '../../typedef';
+import { FindUsersEnum, PathsEnum, TabsEnum } from '../../typedef';
 import { FormEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { FoundUserType, UserDataType } from '../../redux/services/user/typedef';
 import { customeAxios } from '../../redux/axios';
@@ -32,13 +42,12 @@ export const Profile = () => {
 	const dispatch = useAppDispach();
 	const navigate = useNavigate();
 
+	const [selectValue, setSelectValue] = useState(FindUsersEnum.NickName);
 	const [tabValue, setTabValue] = useState(TabsEnum.FindPerson);
 	const [user, setUser] = useState<UserDataType | null>(null);
 	const [openError, setOpenError] = useState(false);
 	const [foundUsers, setFoundUsers] = useState<FoundUserType[] | null>(null);
-
 	const [profileError, setProfileError] = useState<AxiosError | null>(null);
-
 	const [foundUsersLoading, setFoundUsersLoading] = useState(false);
 
 	const posts = useAppSelector(getPosts);
@@ -57,31 +66,47 @@ export const Profile = () => {
 
 	const isLogedUser = nickName === logedUser?.nickName;
 
+	const onSelectChange = (event: SelectChangeEvent) => {
+		setSelectValue(event.target.value as FindUsersEnum);
+	};
+
 	const onFind = async (event: FormEvent) => {
 		event.preventDefault();
-		const nickName = findRef.current?.value;
 
-		if (nickName) {
+		const value = findRef.current?.value;
+
+		if (value) {
 			setFoundUsersLoading(true);
 
-			customeAxios
-				.get(`/users/find/${nickName}`)
-				.then(({ data }) => {
-					setFoundUsers(data);
-					setFoundUsersLoading(false);
-				})
-				.catch((err) => {
-					console.log(err);
-					setFoundUsersLoading(false);
-				});
+			if (selectValue === FindUsersEnum.NickName) {
+				customeAxios
+					.get(`/users/findByNickName/${value}`)
+					.then(({ data }) => {
+						setFoundUsers(data);
+						setFoundUsersLoading(false);
+					})
+					.catch((err) => {
+						console.log(err);
+						setFoundUsersLoading(false);
+					});
+			} else {
+				customeAxios
+					.get(`/users/findByFullName/${value}`)
+					.then(({ data }) => {
+						setFoundUsers(data);
+						setFoundUsersLoading(false);
+					})
+					.catch((err) => {
+						console.log(err);
+						setFoundUsersLoading(false);
+					});
+			}
 		}
 	};
 
 	const onFollow = (id?: string) => {
 		if (id) {
-			dispatch(follow(id)).then(({ payload }) => {
-				console.log(payload);
-			});
+			dispatch(follow(id));
 		}
 	};
 
@@ -182,13 +207,16 @@ export const Profile = () => {
 							label={`${TabsEnum.Following} (${user?.following.length})`}
 							value={TabsEnum.Following}
 						/>
-						<Tab
-							aria-controls={`tabpanel-${TabsEnum.FindPerson}`}
-							label={`${TabsEnum.FindPerson} ${
-								foundUsers ? `(${foundUsers.length})` : ''
-							} `}
-							value={TabsEnum.FindPerson}
-						/>
+
+						{isLogedUser && (
+							<Tab
+								aria-controls={`tabpanel-${TabsEnum.FindPerson}`}
+								label={`${TabsEnum.FindPerson} ${
+									foundUsers ? `(${foundUsers.length})` : ''
+								} `}
+								value={TabsEnum.FindPerson}
+							/>
+						)}
 					</Tabs>
 
 					<Grid>
@@ -232,33 +260,59 @@ export const Profile = () => {
 						</TabPanel>
 
 						{/* Find Person */}
-						<TabPanel value={tabValue} index={TabsEnum.FindPerson}>
-							<form onSubmit={onFind} className={styles.search}>
-								<TextField
-									inputRef={findRef}
-									id='find-person'
-									label='Find Person'
-									variant='outlined'
-									size='small'
-									fullWidth
-								/>
-								<Button variant='contained'>Find</Button>
-							</form>
-							<>
-								{foundUsers && !foundUsers.length ? (
-									<span>List is Empty</span>
-								) : (
-									<></>
-								)}
-								{foundUsers?.map((user) => (
-									<FollowerCard
-										follower={user}
-										onFollow={onFollow}
-										onUnFollow={onUnFollow}
+						{isLogedUser && (
+							<TabPanel value={tabValue} index={TabsEnum.FindPerson}>
+								<div className={styles.select}>
+									<label>Search by:</label>
+									<Select
+										displayEmpty
+										value={selectValue}
+										onChange={onSelectChange}
+										id='find-users-select'
+										size='small'
+									>
+										<MenuItem value={FindUsersEnum.NickName}>
+											{FindUsersEnum.NickName}
+										</MenuItem>
+										<MenuItem value={FindUsersEnum.FullName}>
+											{FindUsersEnum.FullName}
+										</MenuItem>
+									</Select>
+								</div>
+
+								<form onSubmit={onFind} className={styles.search}>
+									<TextField
+										inputRef={findRef}
+										id='find-person'
+										label={
+											selectValue === FindUsersEnum.NickName
+												? 'Enter nickname'
+												: 'Enter fullname'
+										}
+										variant='outlined'
+										size='small'
+										fullWidth
 									/>
-								))}
-							</>
-						</TabPanel>
+									<Button onClick={onFind} variant='contained'>
+										Find
+									</Button>
+								</form>
+								<>
+									{foundUsers && !foundUsers.length ? (
+										<span>List is Empty</span>
+									) : (
+										<></>
+									)}
+									{foundUsers?.map((user) => (
+										<FollowerCard
+											follower={user}
+											onFollow={onFollow}
+											onUnFollow={onUnFollow}
+										/>
+									))}
+								</>
+							</TabPanel>
+						)}
 					</Grid>
 				</main>
 			</div>

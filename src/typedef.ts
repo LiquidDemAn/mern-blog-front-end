@@ -24,6 +24,11 @@ export enum TabsEnum {
 	FindPerson = 'Find Person',
 }
 
+export enum FindUsersEnum {
+	NickName = 'nickname',
+	FullName = 'fullname',
+}
+
 export enum BreakpointsEnum {
 	Small = 576,
 	Medium = 768,

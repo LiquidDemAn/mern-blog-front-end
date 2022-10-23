@@ -32,5 +32,12 @@
 .search {
 	display: flex;
 	column-gap: 10px;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
+}
+
+.select {
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+	column-gap: 10px;
 }

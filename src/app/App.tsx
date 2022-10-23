@@ -26,11 +26,11 @@ function App() {
 		dispatch(checkUserAuth());
 	}, [dispatch]);
 
-	useEffect(() => {
-		if (!isAuth && !isLoading) {
-			navigate('/login');
-		}
-	}, [isAuth, isLoading, navigate]);
+	// useEffect(() => {
+	// 	if (!isAuth && !isLoading) {
+	// 		navigate('/login');
+	// 	}
+	// }, [isAuth, isLoading, navigate]);
 
 	return (
 		<>
