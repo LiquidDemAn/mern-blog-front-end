@@ -29,7 +29,7 @@ import {
 } from '../../redux/services/posts/selectors';
 import { TabPanel } from '../../components/tab-panel';
 import { Posts } from '../../components/posts';
-import { follow, loadUser, unFollow } from '../../redux/services/user/actions';
+import { loadUser } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
 import { FollowerCard } from '../../components/follower-card';
 import { Loader } from '../../components/loader';
@@ -95,18 +95,6 @@ export const Profile = () => {
 						setFoundUsersLoading(false);
 					});
 			}
-		}
-	};
-
-	const onFollow = (id?: string) => {
-		if (id) {
-			dispatch(follow(id));
-		}
-	};
-
-	const onUnFollow = (id?: string) => {
-		if (id) {
-			dispatch(unFollow(id));
 		}
 	};
 
@@ -198,12 +186,7 @@ export const Profile = () => {
 								{!user?.followers.length && <>List is Empty</>}
 
 								{user?.followers.map((follower) => (
-									<FollowerCard
-										key={follower._id}
-										follower={follower}
-										onFollow={onFollow}
-										onUnFollow={onUnFollow}
-									/>
+									<FollowerCard key={follower._id} follower={follower} />
 								))}
 							</>
 						</TabPanel>
@@ -214,12 +197,7 @@ export const Profile = () => {
 								{!user?.following.length && <>List is Empty</>}
 
 								{user?.following.map((follower) => (
-									<FollowerCard
-										key={follower._id}
-										follower={follower}
-										onFollow={onFollow}
-										onUnFollow={onUnFollow}
-									/>
+									<FollowerCard key={follower._id} follower={follower} />
 								))}
 							</>
 						</TabPanel>
@@ -269,12 +247,7 @@ export const Profile = () => {
 										<></>
 									)}
 									{foundUsers?.map((user) => (
-										<FollowerCard
-											key={user._id}
-											follower={user}
-											onFollow={onFollow}
-											onUnFollow={onUnFollow}
-										/>
+										<FollowerCard key={user._id} follower={user} />
 									))}
 								</>
 							</TabPanel>
