@@ -1,6 +1,5 @@
 import styles from './profile.module.scss';
 import {
-	Avatar,
 	Button,
 	Tab,
 	Tabs,
@@ -12,13 +11,12 @@ import {
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-	getIsFollow,
 	getUser,
 	getUserError,
 	getUserLoading,
 } from '../../redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
-import { FindUsersEnum, PathsEnum, TabsEnum } from '../../typedef';
+import { FindUsersEnum, TabsEnum } from '../../typedef';
 import { FormEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { FoundUserType, UserDataType } from '../../redux/services/user/typedef';
 import { customeAxios } from '../../redux/axios';
@@ -34,8 +32,8 @@ import { Posts } from '../../components/posts';
 import { follow, loadUser, unFollow } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
 import { FollowerCard } from '../../components/follower-card';
-import { AppState } from '../../redux/store/typedef';
 import { Loader } from '../../components/loader';
+import { ProfileCard } from '../../components/profile-card';
 
 export const Profile = () => {
 	const { nickName } = useParams();
@@ -59,10 +57,6 @@ export const Profile = () => {
 	const logedUserLoading = useAppSelector(getUserLoading);
 
 	const findRef = useRef<HTMLInputElement | null>(null);
-
-	const isFollow = useAppSelector((state: AppState) =>
-		getIsFollow(state, user?._id)
-	);
 
 	const isLogedUser = nickName === logedUser?.nickName;
 
@@ -153,38 +147,7 @@ export const Profile = () => {
 	return (
 		<>
 			<div className={styles.profile}>
-				<div>
-					<Avatar
-						sx={{ width: 260, height: 260 }}
-						src={`${PathsEnum.Server}${
-							isLogedUser ? logedUser?.avatarUrl : user?.avatarUrl
-						}`}
-					/>
-
-					<h1 className={styles.names}>
-						<span className={styles.fullName}>
-							{isLogedUser ? logedUser?.fullName : user?.fullName}
-						</span>
-						<span className={styles.nickName}>
-							@{isLogedUser ? logedUser?.nickName : user?.nickName}
-						</span>
-					</h1>
-					{isLogedUser ? (
-						<Button variant='outlined' fullWidth>
-							Edit profile
-						</Button>
-					) : (
-						<Button
-							onClick={() =>
-								isFollow ? onUnFollow(user?._id) : onFollow(user?._id)
-							}
-							variant='outlined'
-							fullWidth
-						>
-							{isFollow ? 'Unfollow' : 'Follow'}
-						</Button>
-					)}
-				</div>
+				<ProfileCard user={user} isLogedUser={isLogedUser} />
 
 				<main className={styles.main}>
 					<Tabs
@@ -236,6 +199,7 @@ export const Profile = () => {
 
 								{user?.followers.map((follower) => (
 									<FollowerCard
+										key={follower._id}
 										follower={follower}
 										onFollow={onFollow}
 										onUnFollow={onUnFollow}
@@ -251,6 +215,7 @@ export const Profile = () => {
 
 								{user?.following.map((follower) => (
 									<FollowerCard
+										key={follower._id}
 										follower={follower}
 										onFollow={onFollow}
 										onUnFollow={onUnFollow}
@@ -305,6 +270,7 @@ export const Profile = () => {
 									)}
 									{foundUsers?.map((user) => (
 										<FollowerCard
+											key={user._id}
 											follower={user}
 											onFollow={onFollow}
 											onUnFollow={onUnFollow}
