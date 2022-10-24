@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { loadPosts } from '../../redux/services/posts/actions';
 import { loadTags } from '../../redux/services/tags/actions';
 import { useAppDispach } from '../../redux/store/hooks';
-import { TabsEnum } from '../../typedef';
+import { PathsEnum, TabsEnum } from '../../typedef';
 import { PostsTagsContent } from '../../components/posts-tags-content';
+import { getToken } from '../../local-storage';
 
 export const Tag = () => {
 	const { tag } = useParams();
 	const dispatch = useAppDispach();
+	const navigate = useNavigate();
 
+	const isToken = Boolean(getToken());
 	const [value, setValue] = useState(TabsEnum.New);
 
 	useEffect(() => {
@@ -24,16 +27,31 @@ export const Tag = () => {
 	}, [dispatch, value, tag]);
 
 	useEffect(() => {
+		if (!isToken) {
+			navigate(PathsEnum.Login);
+		}
+	}, [isToken, navigate]);
+
+	useEffect(() => {
 		dispatch(loadTags());
 	}, [dispatch]);
+
+	console.log(isToken);
 
 	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
 	};
+
 	return (
-		<div>
-			<h2>Tag: #{tag}</h2>
-			<PostsTagsContent value={value} handleChange={handleChange} />
-		</div>
+		<>
+			{isToken ? (
+				<>
+					<h2>Tag: #{tag}</h2>
+					<PostsTagsContent value={value} handleChange={handleChange} />
+				</>
+			) : (
+				<></>
+			)}
+		</>
 	);
 };

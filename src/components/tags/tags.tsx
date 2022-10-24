@@ -26,13 +26,13 @@ export const Tags = ({ tags, isLoading, error }: Props) => {
 				) : (
 					<>
 						{tags.length ? (
-							(isLoading ? [...Array(5)] : tags).map((tag) => (
+							(isLoading ? [...Array(5)] : tags).map((tag, index) => (
 								<Link
-									key={tag}
+									key={tag || index}
 									style={{ textDecoration: 'none', color: 'black' }}
 									to={`/tags/${tag}`}
 								>
-									<ListItem key={tag} disablePadding>
+									<ListItem disablePadding>
 										<ListItemButton>
 											<ListItemIcon>
 												<TagIcon />

@@ -6,14 +6,20 @@ import {
 	getDeletePostLoading,
 } from '../../redux/services/posts/selectors';
 import { loadTags } from '../../redux/services/tags/actions';
-import { getUserName } from '../../redux/services/user/selectors';
-import { TabsEnum } from '../../typedef';
+import { getIsAuth, getUserName } from '../../redux/services/user/selectors';
+import { PathsEnum, TabsEnum } from '../../typedef';
 import { Loader } from '../../components/loader';
 import { removeDeletePostError } from '../../redux/services/posts/posts.slice';
 import { HomeView } from './view';
+import { getToken } from '../../local-storage';
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
 	const dispatch = useAppDispach();
+	const navigate = useNavigate();
+
+	const isToken = Boolean(getToken());
+	const isAuth = useAppSelector(getIsAuth);
 
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState(TabsEnum.New);
@@ -34,6 +40,12 @@ export const Home = () => {
 	const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
 		setValue(newValue);
 	};
+
+	useEffect(() => {
+		if (!isToken) {
+			navigate(PathsEnum.Login);
+		}
+	}, [isToken, navigate]);
 
 	useEffect(() => {
 		if (value === TabsEnum.New) {
@@ -57,14 +69,16 @@ export const Home = () => {
 
 	return (
 		<>
-			<HomeView
-				open={open}
-				userName={userName}
-				value={value}
-				deleteError={deleteError}
-				handleChange={handleChange}
-				handleClose={handleClose}
-			/>
+			{isAuth && (
+				<HomeView
+					open={open}
+					userName={userName}
+					value={value}
+					deleteError={deleteError}
+					handleChange={handleChange}
+					handleClose={handleClose}
+				/>
+			)}
 
 			<Loader open={deleteLoading} />
 		</>

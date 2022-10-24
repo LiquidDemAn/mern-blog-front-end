@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { Layout } from '../components/layout';
 import { CreatePost } from '../pages/create-post';
 import { FullPost } from '../pages/full-post';
@@ -12,25 +12,16 @@ import { Tag } from '../pages/tag';
 import { PathsEnum } from '../typedef';
 import { NotFoundPage } from '../pages/not-found';
 import { Profile } from '../pages/profile';
-import { getIsAuth, getUserLoading } from '../redux/services/user/selectors';
+import { getUserLoading } from '../redux/services/user/selectors';
 import { Loader } from '../components/loader';
 
 function App() {
-	const navigate = useNavigate();
-
 	const dispatch = useAppDispach();
-	const isAuth = useAppSelector(getIsAuth);
 	const isLoading = useAppSelector(getUserLoading);
 
 	useEffect(() => {
 		dispatch(checkUserAuth());
 	}, [dispatch]);
-
-	// useEffect(() => {
-	// 	if (!isAuth && !isLoading) {
-	// 		navigate('/login');
-	// 	}
-	// }, [isAuth, isLoading, navigate]);
 
 	return (
 		<>

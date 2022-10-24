@@ -102,16 +102,16 @@ export const Header = () => {
 						}}
 					>
 						{isAuth ? (
-							<>
+							<ul>
 								<MenuItem onClick={onProfile}>Profile</MenuItem>
 								<MenuItem onClick={onCreatePost}>Write a post</MenuItem>
 								<MenuItem onClick={onLogOut}>Log out</MenuItem>
-							</>
+							</ul>
 						) : (
-							<>
+							<ul>
 								<MenuItem onClick={onLogin}>Log in</MenuItem>
 								<MenuItem onClick={onRegister}>Create account</MenuItem>
-							</>
+							</ul>
 						)}
 					</Menu>
 				</div>
