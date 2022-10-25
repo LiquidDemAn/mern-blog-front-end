@@ -1,8 +1,15 @@
 import { customeAxios } from '../../axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { UserDataType, LoginType, RegisterType, FollowerType } from './typedef';
+import {
+	UserDataType,
+	LoginType,
+	RegisterType,
+	FollowerType,
+	FoundUserType,
+} from './typedef';
 import { setToken } from '../../../local-storage';
 import { AxiosError } from 'axios';
+import { FindUsersEnum } from '../../../typedef';
 
 export const checkUserAuth = createAsyncThunk<UserDataType>(
 	'user/check-auth',
@@ -19,19 +26,16 @@ export const loadUser = createAsyncThunk<
 		setUser: (value: UserDataType) => void;
 		setProfileError: (error: AxiosError) => void;
 	}
->(
-	'user/load-user',
-	async ({ nickName, setUser, setProfileError }) => {
-		try {
-			const { data } = await customeAxios.get(`/users/${nickName}`);
+>('user/load-user', async ({ nickName, setUser, setProfileError }) => {
+	try {
+		const { data } = await customeAxios.get(`/users/${nickName}`);
 
-			setUser(data);
-		} catch (err) {
-			const error = err as AxiosError;
-			setProfileError(error);
-		}
+		setUser(data);
+	} catch (err) {
+		const error = err as AxiosError;
+		setProfileError(error);
 	}
-);
+});
 
 export const loginUser = createAsyncThunk<UserDataType, LoginType>(
 	'user/login',
@@ -118,6 +122,43 @@ export const unFollow = createAsyncThunk<string | undefined, string>(
 				data: error.response?.data,
 				status: error.response?.status,
 			});
+		}
+	}
+);
+
+export const findUsers = createAsyncThunk<
+	void,
+	{
+		selectValue: FindUsersEnum;
+		value: string;
+		setData: (data: FoundUserType[] | null) => void;
+		setLoading: (value: boolean) => void;
+		setError: (error: AxiosError) => void;
+	}
+>(
+	'user/find-users',
+	async ({ selectValue, value, setData, setLoading, setError }) => {
+		try {
+			if (selectValue === FindUsersEnum.NickName) {
+				const { data } = await customeAxios.get(
+					`/users/findByNickName/${value}`
+				);
+
+				setData(data);
+			} else {
+				const { data } = await customeAxios.get(
+					`/users/findByFullName/${value}`
+				);
+
+				setData(data);
+			}
+
+			setLoading(false);
+		} catch (err) {
+			console.log(err);
+
+			setError(err as AxiosError);
+			setLoading(false);
 		}
 	}
 );

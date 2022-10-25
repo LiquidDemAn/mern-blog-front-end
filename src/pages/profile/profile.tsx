@@ -19,7 +19,6 @@ import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { FindUsersEnum, TabsEnum } from '../../typedef';
 import { FormEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { FoundUserType, UserDataType } from '../../redux/services/user/typedef';
-import { customeAxios } from '../../redux/axios';
 import { AxiosError } from 'axios';
 import { loadPosts } from '../../redux/services/posts/actions';
 import {
@@ -29,7 +28,7 @@ import {
 } from '../../redux/services/posts/selectors';
 import { TabPanel } from '../../components/tab-panel';
 import { Posts } from '../../components/posts';
-import { loadUser } from '../../redux/services/user/actions';
+import { findUsers, loadUser } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
 import { FollowerCard } from '../../components/follower-card';
 import { Loader } from '../../components/loader';
@@ -72,29 +71,15 @@ export const Profile = () => {
 		if (value) {
 			setFoundUsersLoading(true);
 
-			if (selectValue === FindUsersEnum.NickName) {
-				customeAxios
-					.get(`/users/findByNickName/${value}`)
-					.then(({ data }) => {
-						setFoundUsers(data);
-						setFoundUsersLoading(false);
-					})
-					.catch((err) => {
-						console.log(err);
-						setFoundUsersLoading(false);
-					});
-			} else {
-				customeAxios
-					.get(`/users/findByFullName/${value}`)
-					.then(({ data }) => {
-						setFoundUsers(data);
-						setFoundUsersLoading(false);
-					})
-					.catch((err) => {
-						console.log(err);
-						setFoundUsersLoading(false);
-					});
-			}
+			dispatch(
+				findUsers({
+					selectValue,
+					value,
+					setData: setFoundUsers,
+					setLoading: setFoundUsersLoading,
+					setError: setProfileError,
+				})
+			);
 		}
 	};
 
