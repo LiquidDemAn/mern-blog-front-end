@@ -1,14 +1,5 @@
 import styles from './profile.module.scss';
-import {
-	Button,
-	Tab,
-	Tabs,
-	Grid,
-	TextField,
-	Select,
-	MenuItem,
-	SelectChangeEvent,
-} from '@mui/material';
+import { Tab, Tabs, Grid } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
 	getUser,
@@ -16,8 +7,8 @@ import {
 	getUserLoading,
 } from '../../redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
-import { FindUsersEnum, TabsEnum } from '../../typedef';
-import { FormEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { TabsEnum } from '../../typedef';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { FoundUserType, UserDataType } from '../../redux/services/user/typedef';
 import { AxiosError } from 'axios';
 import { loadPosts } from '../../redux/services/posts/actions';
@@ -28,18 +19,18 @@ import {
 } from '../../redux/services/posts/selectors';
 import { TabPanel } from '../../components/tab-panel';
 import { Posts } from '../../components/posts';
-import { findUsers, loadUser } from '../../redux/services/user/actions';
+import { loadUser } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
 import { FollowerCard } from '../../components/follower-card';
 import { Loader } from '../../components/loader';
 import { ProfileCard } from '../../components/profile-card';
+import { UsersSearch } from '../../components/users-search';
 
 export const Profile = () => {
 	const { nickName } = useParams();
 	const dispatch = useAppDispach();
 	const navigate = useNavigate();
 
-	const [selectValue, setSelectValue] = useState(FindUsersEnum.NickName);
 	const [tabValue, setTabValue] = useState(TabsEnum.FindPerson);
 	const [user, setUser] = useState<UserDataType | null>(null);
 	const [openError, setOpenError] = useState(false);
@@ -55,33 +46,7 @@ export const Profile = () => {
 	const logedUserError = useAppSelector(getUserError);
 	const logedUserLoading = useAppSelector(getUserLoading);
 
-	const findRef = useRef<HTMLInputElement | null>(null);
-
 	const isLogedUser = nickName === logedUser?.nickName;
-
-	const onSelectChange = (event: SelectChangeEvent) => {
-		setSelectValue(event.target.value as FindUsersEnum);
-	};
-
-	const onFind = async (event: FormEvent) => {
-		event.preventDefault();
-
-		const value = findRef.current?.value;
-
-		if (value) {
-			setFoundUsersLoading(true);
-
-			dispatch(
-				findUsers({
-					selectValue,
-					value,
-					setData: setFoundUsers,
-					setLoading: setFoundUsersLoading,
-					setError: setProfileError,
-				})
-			);
-		}
-	};
 
 	const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
 		setTabValue(newValue);
@@ -190,41 +155,12 @@ export const Profile = () => {
 						{/* Find Person */}
 						{isLogedUser && (
 							<TabPanel value={tabValue} index={TabsEnum.FindPerson}>
-								<div className={styles.select}>
-									<label>Search by:</label>
-									<Select
-										displayEmpty
-										value={selectValue}
-										onChange={onSelectChange}
-										id='find-users-select'
-										size='small'
-									>
-										<MenuItem value={FindUsersEnum.NickName}>
-											{FindUsersEnum.NickName}
-										</MenuItem>
-										<MenuItem value={FindUsersEnum.FullName}>
-											{FindUsersEnum.FullName}
-										</MenuItem>
-									</Select>
-								</div>
+								<UsersSearch
+									setData={setFoundUsers}
+									setError={setProfileError}
+									setLoading={setFoundUsersLoading}
+								/>
 
-								<form onSubmit={onFind} className={styles.search}>
-									<TextField
-										inputRef={findRef}
-										id='find-person'
-										label={
-											selectValue === FindUsersEnum.NickName
-												? 'Enter nickname'
-												: 'Enter fullname'
-										}
-										variant='outlined'
-										size='small'
-										fullWidth
-									/>
-									<Button onClick={onFind} variant='contained'>
-										Find
-									</Button>
-								</form>
 								<>
 									{foundUsers && !foundUsers.length ? (
 										<span>List is Empty</span>
