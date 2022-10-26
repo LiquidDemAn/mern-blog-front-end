@@ -21,10 +21,10 @@ import { TabPanel } from '../../components/tab-panel';
 import { Posts } from '../../components/posts';
 import { loadUser } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
-import { FollowerCard } from '../../components/follower-card';
 import { Loader } from '../../components/loader';
 import { ProfileCard } from '../../components/profile-card';
 import { UsersSearch } from '../../components/users-search';
+import { Followers } from '../../components/followers';
 
 export const Profile = () => {
 	const { nickName } = useParams();
@@ -132,24 +132,12 @@ export const Profile = () => {
 
 						{/* Followers */}
 						<TabPanel value={tabValue} index={TabsEnum.Followers}>
-							<>
-								{!user?.followers.length && <>List is Empty</>}
-
-								{user?.followers.map((follower) => (
-									<FollowerCard key={follower._id} follower={follower} />
-								))}
-							</>
+							<Followers followers={user?.followers} />
 						</TabPanel>
 
 						{/* Following */}
 						<TabPanel value={tabValue} index={TabsEnum.Following}>
-							<>
-								{!user?.following.length && <>List is Empty</>}
-
-								{user?.following.map((follower) => (
-									<FollowerCard key={follower._id} follower={follower} />
-								))}
-							</>
+							<Followers followers={user?.following} />
 						</TabPanel>
 
 						{/* Find Person */}
@@ -161,16 +149,7 @@ export const Profile = () => {
 									setLoading={setFoundUsersLoading}
 								/>
 
-								<>
-									{foundUsers && !foundUsers.length ? (
-										<span>List is Empty</span>
-									) : (
-										<></>
-									)}
-									{foundUsers?.map((user) => (
-										<FollowerCard key={user._id} follower={user} />
-									))}
-								</>
+								<Followers followers={foundUsers} />
 							</TabPanel>
 						)}
 					</Grid>
