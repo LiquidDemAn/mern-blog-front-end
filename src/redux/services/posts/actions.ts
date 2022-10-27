@@ -57,32 +57,66 @@ export const deletePost = createAsyncThunk(
 	}
 );
 
-export const likePost = createAsyncThunk<string | undefined, string>(
-	'posts/like-post',
-	async (id, { getState }) => {
-		const { user } = getState() as { user: UserStateType };
-		const userId = user.data?._id;
-
-		try {
-			await customeAxios.patch(`/posts/${id}/like`);
-			return userId;
-		} catch (err) {
-			console.log(err);
-		}
+export const likePost = createAsyncThunk<
+	string | undefined,
+	{
+		postId?: string;
+		post?: FullPostType | null;
+		setPost?: (value: FullPostType | null) => void;
 	}
-);
+>('posts/like-post', async ({ postId, post, setPost }, { getState }) => {
+	const { user } = getState() as { user: UserStateType };
+	const userId = user.data?._id;
 
-export const unlikePost = createAsyncThunk<string | undefined, string>(
-	'posts/unlike-post',
-	async (id, { getState }) => {
-		const { user } = getState() as { user: UserStateType };
-		const userId = user.data?._id;
-
-		try {
-			await customeAxios.patch(`/posts/${id}/unlike`);
-			return userId;
-		} catch (err) {
-			console.log(err);
+	try {
+		if (postId && userId) {
+			await customeAxios.patch(`/posts/${postId}/like`);
 		}
+
+		if (setPost && post && userId) {
+			await customeAxios.patch(`/posts/${post._id}/like`);
+
+			setPost({
+				...post,
+				likesIds: [...post.likesIds, userId],
+				likesCount: post.likesCount + 1,
+			});
+		}
+
+		return userId;
+	} catch (err) {
+		console.log(err);
 	}
-);
+});
+
+export const unlikePost = createAsyncThunk<
+	string | undefined,
+	{
+		postId?: string;
+		post?: FullPostType | null;
+		setPost?: (value: FullPostType | null) => void;
+	}
+>('posts/unlike-post', async ({ postId, post, setPost }, { getState }) => {
+	const { user } = getState() as { user: UserStateType };
+	const userId = user.data?._id;
+
+	try {
+		if (postId && userId) {
+			await customeAxios.patch(`/posts/${postId}/unlike`);
+		}
+
+		if (setPost && post && userId) {
+			await customeAxios.patch(`/posts/${post._id}/unlike`);
+
+			setPost({
+				...post,
+				likesIds: post.likesIds.filter((item) => item !== userId),
+				likesCount: post.likesCount - 1,
+			});
+		}
+
+		return userId;
+	} catch (err) {
+		console.log(err);
+	}
+});

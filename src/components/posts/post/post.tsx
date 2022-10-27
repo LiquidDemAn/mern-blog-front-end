@@ -28,8 +28,8 @@ type Props = {
 	post?: PostType | FullPostType | null;
 	children?: ReactElement | ReactElement[];
 	isFullPost?: boolean;
-	onLikeFullPost?: () => Promise<void>;
-	onUnlikeFullPost?: () => Promise<void>;
+	onLikeFullPost?: () => void;
+	onUnlikeFullPost?: () => void;
 };
 
 export const Post = ({
@@ -71,13 +71,13 @@ export const Post = ({
 
 	const likeHandle = () => {
 		if (postId) {
-			dispatch(likePost(postId));
+			dispatch(likePost({ postId }));
 		}
 	};
 
 	const unlikeHandle = () => {
 		if (postId) {
-			dispatch(unlikePost(postId));
+			dispatch(unlikePost({ postId }));
 		}
 	};
 

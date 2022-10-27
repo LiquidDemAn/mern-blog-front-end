@@ -11,8 +11,8 @@ type Props = {
 	post: FullPostType | null;
 	postError: AxiosError | null;
 	postLoading?: boolean;
-	onLikePost: () => Promise<void>;
-	onUnlikePost: () => Promise<void>;
+	onLikePost: () => void;
+	onUnlikePost: () => void;
 
 	commentError: AxiosError | null;
 	openCommentError: boolean;

@@ -11,7 +11,11 @@ import {
 import { FullPostType } from '../../redux/services/posts/typedef';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { FullPostView } from './view';
-import { loadPost } from '../../redux/services/posts/actions';
+import {
+	likePost,
+	loadPost,
+	unlikePost,
+} from '../../redux/services/posts/actions';
 
 export const FullPost = () => {
 	const { id } = useParams();
@@ -28,42 +32,14 @@ export const FullPost = () => {
 	const [commentError, setCommentError] = useState<AxiosError | null>(null);
 	const [commentLoading, setCommentLoading] = useState(false);
 
-	const onLikePost = async () => {
+	const onLikePost = () => {
 		setPostError(null);
-
-		if (post && userId) {
-			await customeAxios
-				.patch(`/posts/${id}/like`)
-				.then(() => {
-					setPost({
-						...post,
-						likesIds: [...post.likesIds, userId],
-						likesCount: post.likesCount + 1,
-					});
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		}
+		dispatch(likePost({ post, setPost }));
 	};
 
-	const onUnlikePost = async () => {
+	const onUnlikePost = () => {
 		setPostError(null);
-
-		if (post && userId) {
-			await customeAxios
-				.patch(`/posts/${id}/unlike`)
-				.then(() => {
-					setPost({
-						...post,
-						likesIds: post.likesIds.filter((item) => item !== userId),
-						likesCount: post.likesCount - 1,
-					});
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		}
+		dispatch(unlikePost({ post, setPost }));
 	};
 
 	const onCreateComment = async (text: string) => {
@@ -202,6 +178,7 @@ export const FullPost = () => {
 	};
 
 	useEffect(() => {
+		setPostError(null);
 		dispatch(loadPost({ id, setPost, setPostError }));
 	}, [dispatch, id]);
 

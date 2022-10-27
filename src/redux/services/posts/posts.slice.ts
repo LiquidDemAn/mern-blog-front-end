@@ -54,7 +54,7 @@ export const postsSlice = createSlice({
 			// Like post
 			.addCase(likePost.fulfilled, (state, { meta, payload }) => {
 				if (payload) {
-					const postId = meta.arg;
+					const postId = meta.arg.post?._id;
 					const post = state.posts.find((item) => item._id === postId);
 
 					if (post) {
