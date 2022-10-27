@@ -1,8 +1,8 @@
 import styles from './profile-card.module.scss';
 import { Avatar } from '@mui/material';
-import { PathsEnum } from '../../typedef';
+import { PathsEnum } from '../../../typedef';
 import { FollowBtn } from '../follow-btn';
-import { UserDataType } from '../../redux/services/user/typedef';
+import { UserDataType } from '../../../redux/services/user/typedef';
 
 type Props = {
 	isLogedUser: boolean;

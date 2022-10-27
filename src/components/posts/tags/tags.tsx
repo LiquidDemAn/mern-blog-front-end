@@ -7,9 +7,9 @@ import {
 	Skeleton,
 } from '@mui/material';
 import TagIcon from '@mui/icons-material/Tag';
-import { SideBlock } from '../side-block';
+import { SideBlock } from '../../common/side-block';
 import { Link } from 'react-router-dom';
-import { ErrorType } from '../../typedef';
+import { ErrorType } from '../../../typedef';
 
 type Props = {
 	tags: string[];

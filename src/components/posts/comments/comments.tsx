@@ -1,13 +1,13 @@
 import { ChangeEvent, ReactElement, useState } from 'react';
-import { SideBlock } from '../side-block';
-import { PostCommentType } from '../../redux/services/posts/typedef';
+import { SideBlock } from '../../common/side-block';
+import { PostCommentType } from '../../../redux/services/posts/typedef';
 import { CommentsSkeleton } from './skeleton';
-import { useAppSelector } from '../../redux/store/hooks';
-import { getUserId } from '../../redux/services/user/selectors';
+import { useAppSelector } from '../../../redux/store/hooks';
+import { getUserId } from '../../../redux/services/user/selectors';
 import { List, TextField } from '@mui/material';
 import { Comment } from '../comment';
-import { EditDialog } from '../dialogs/edit';
-import { DeleteDialog } from '../dialogs/delete';
+import { EditDialog } from '../../dialogs/edit';
+import { DeleteDialog } from '../../dialogs/delete';
 
 type Props = {
 	comments?: PostCommentType[];

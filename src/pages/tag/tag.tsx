@@ -4,7 +4,7 @@ import { loadPosts } from '../../redux/services/posts/actions';
 import { loadTags } from '../../redux/services/tags/actions';
 import { useAppDispach } from '../../redux/store/hooks';
 import { PathsEnum, TabsEnum } from '../../typedef';
-import { PostsTagsContent } from '../../components/posts-tags-content';
+import { PostsTagsContent } from '../../components/posts/posts-tags-content';
 import { getToken } from '../../local-storage';
 
 export const Tag = () => {

@@ -1,7 +1,7 @@
 import styles from './follower-card.module.scss';
-import { getUserNickName } from '../../redux/services/user/selectors';
-import { FollowerType, FoundUserType } from '../../redux/services/user/typedef';
-import { useAppSelector } from '../../redux/store/hooks';
+import { getUserNickName } from '../../../redux/services/user/selectors';
+import { FollowerType, FoundUserType } from '../../../redux/services/user/typedef';
+import { useAppSelector } from '../../../redux/store/hooks';
 import { UserInfo } from '../user-info';
 import { FollowBtn } from '../follow-btn';
 

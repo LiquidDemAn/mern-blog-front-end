@@ -1,5 +1,5 @@
 import { Alert, TextField } from '@mui/material';
-import { AuthForm } from '../../../components/auth-form';
+import { AuthForm } from '../../../components/user/auth-form';
 import {
 	DeepRequired,
 	FieldErrorsImpl,

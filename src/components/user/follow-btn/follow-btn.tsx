@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
-import { follow, unFollow } from '../../redux/services/user/actions';
-import { getIsFollow } from '../../redux/services/user/selectors';
-import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
-import { AppState } from '../../redux/store/typedef';
+import { follow, unFollow } from '../../../redux/services/user/actions';
+import { getIsFollow } from '../../../redux/services/user/selectors';
+import { useAppDispach, useAppSelector } from '../../../redux/store/hooks';
+import { AppState } from '../../../redux/store/typedef';
 
 type Props = {
 	id?: string;

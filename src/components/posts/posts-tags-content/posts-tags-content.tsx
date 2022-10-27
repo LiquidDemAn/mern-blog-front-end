@@ -1,22 +1,22 @@
 import { SyntheticEvent } from 'react';
 import { Tabs, Tab, Grid } from '@mui/material';
-import { BreakpointsEnum, TabsEnum } from '../../typedef';
-import { TabPanel } from '../tab-panel';
-import { Posts } from '../posts/posts';
-import { useAppSelector } from '../../redux/store/hooks';
+import { BreakpointsEnum, TabsEnum } from '../../../typedef';
+import { TabPanel } from '../../common/tab-panel';
+import { Posts } from '../posts-wrapper/posts';
+import { useAppSelector } from '../../../redux/store/hooks';
 import { Tags } from '../tags';
 
 import {
 	getTags,
 	getTagsLoading,
 	getTagsError,
-} from '../../redux/services/tags/selectors';
+} from '../../../redux/services/tags/selectors';
 
 import {
 	getPostsLoading,
 	getPostsError,
 	getPosts,
-} from '../../redux/services/posts/selectors';
+} from '../../../redux/services/posts/selectors';
 
 type Props = {
 	value: TabsEnum;

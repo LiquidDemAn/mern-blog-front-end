@@ -6,7 +6,7 @@ import {
 	List,
 	Skeleton,
 } from '@mui/material';
-import { SideBlock } from '../side-block';
+import { SideBlock } from '../../common/side-block';
 
 export const CommentsSkeleton = () => {
 	const arr = [...Array(2)];

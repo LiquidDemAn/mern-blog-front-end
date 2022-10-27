@@ -1,4 +1,4 @@
-import { FollowerType, FoundUserType } from '../../redux/services/user/typedef';
+import { FollowerType, FoundUserType } from '../../../redux/services/user/typedef';
 import { FollowerCard } from '../follower-card';
 
 type Props = {

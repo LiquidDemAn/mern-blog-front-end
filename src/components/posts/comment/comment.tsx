@@ -1,5 +1,5 @@
 import styles from './comment.module.scss';
-import { PostCommentType } from '../../redux/services/posts/typedef';
+import { PostCommentType } from '../../../redux/services/posts/typedef';
 import {
 	ListItem,
 	ListItemAvatar,
@@ -9,13 +9,13 @@ import {
 	SvgIcon,
 	IconButton,
 } from '@mui/material';
-import { PathsEnum } from '../../typedef';
+import { PathsEnum } from '../../../typedef';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
-import { useAppSelector } from '../../redux/store/hooks';
-import { getUserId } from '../../redux/services/user/selectors';
+import { useAppSelector } from '../../../redux/store/hooks';
+import { getUserId } from '../../../redux/services/user/selectors';
 
 type Props = {
 	comment: PostCommentType;

@@ -10,19 +10,19 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { SvgIcon } from '@mui/material';
 
 import styles from './post.module.scss';
-import { UserInfo } from '../user-info';
+import { UserInfo } from '../../user/user-info';
 import { PostSkeleton } from './skeleton';
 import { Link, useNavigate } from 'react-router-dom';
-import { FullPostType, PostType } from '../../redux/services/posts/typedef';
-import { PathsEnum } from '../../typedef';
-import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
+import { FullPostType, PostType } from '../../../redux/services/posts/typedef';
+import { PathsEnum } from '../../../typedef';
+import { useAppDispach, useAppSelector } from '../../../redux/store/hooks';
 import {
 	deletePost,
 	likePost,
 	unlikePost,
-} from '../../redux/services/posts/actions';
-import { getUserId } from '../../redux/services/user/selectors';
-import { DeleteDialog } from '../dialogs/delete';
+} from '../../../redux/services/posts/actions';
+import { getUserId } from '../../../redux/services/user/selectors';
+import { DeleteDialog } from '../../dialogs/delete';
 
 type Props = {
 	post?: PostType | FullPostType | null;

@@ -1,5 +1,5 @@
-import { PostType } from '../../redux/services/posts/typedef';
-import { ErrorType } from '../../typedef';
+import { PostType } from '../../../redux/services/posts/typedef';
+import { ErrorType } from '../../../typedef';
 import { Post } from '../post/post';
 
 type Props = {

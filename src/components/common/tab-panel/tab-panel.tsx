@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { TabsEnum } from '../../typedef';
+import { TabsEnum } from '../../../typedef';
 
 type Props = {
 	children?: ReactElement | ReactElement[];

@@ -1,6 +1,6 @@
 import { Avatar } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { PathsEnum } from '../../typedef';
+import { PathsEnum } from '../../../typedef';
 import styles from './user-info.module.scss';
 
 type Props = {

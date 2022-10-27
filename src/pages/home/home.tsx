@@ -8,7 +8,7 @@ import {
 import { loadTags } from '../../redux/services/tags/actions';
 import { getIsAuth, getUserName } from '../../redux/services/user/selectors';
 import { PathsEnum, TabsEnum } from '../../typedef';
-import { Loader } from '../../components/loader';
+import { Loader } from '../../components/common/loader';
 import { removeDeletePostError } from '../../redux/services/posts/posts.slice';
 import { HomeView } from './view';
 import { getToken } from '../../local-storage';

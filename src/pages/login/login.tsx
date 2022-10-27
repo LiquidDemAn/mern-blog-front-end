@@ -11,7 +11,7 @@ import {
 import { Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { resetErrors } from '../../redux/services/user/user.slice';
-import { Loader } from '../../components/loader';
+import { Loader } from '../../components/common/loader';
 import { LoginView } from './view';
 import { PathsEnum } from '../../typedef';
 

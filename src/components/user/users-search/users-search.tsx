@@ -6,11 +6,11 @@ import {
 	SelectChangeEvent,
 	TextField,
 } from '@mui/material';
-import { FindUsersEnum } from '../../typedef';
+import { FindUsersEnum } from '../../../typedef';
 import { FormEvent, useRef, useState } from 'react';
-import { useAppDispach } from '../../redux/store/hooks';
-import { findUsers } from '../../redux/services/user/actions';
-import { FoundUserType } from '../../redux/services/user/typedef';
+import { useAppDispach } from '../../../redux/store/hooks';
+import { findUsers } from '../../../redux/services/user/actions';
+import { FoundUserType } from '../../../redux/services/user/typedef';
 import { AxiosError } from 'axios';
 
 type Props = {

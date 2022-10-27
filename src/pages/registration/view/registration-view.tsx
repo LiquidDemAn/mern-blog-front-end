@@ -1,5 +1,5 @@
 import { Alert, TextField } from '@mui/material';
-import { AuthForm } from '../../../components/auth-form';
+import { AuthForm } from '../../../components/user/auth-form';
 
 import {
 	UserErrorType,
@@ -12,7 +12,7 @@ import {
 	UseFormHandleSubmit,
 	UseFormRegister,
 } from 'react-hook-form';
-import { AvatarCreator } from '../../../components/avatar-creator';
+import { AvatarCreator } from '../../../components/user/avatar-creator';
 
 type Props = {
 	isValid: boolean;

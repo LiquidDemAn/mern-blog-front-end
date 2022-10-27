@@ -17,14 +17,14 @@ import {
 	getPostsLoading,
 	getPostsError,
 } from '../../redux/services/posts/selectors';
-import { TabPanel } from '../../components/tab-panel';
-import { Posts } from '../../components/posts';
+import { TabPanel } from '../../components/common/tab-panel';
+import { Posts } from '../../components/posts/posts-wrapper';
 import { loadUser } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
-import { Loader } from '../../components/loader';
-import { ProfileCard } from '../../components/profile-card';
-import { UsersSearch } from '../../components/users-search';
-import { Followers } from '../../components/followers';
+import { Loader } from '../../components/common/loader';
+import { ProfileCard } from '../../components/user/profile-card';
+import { UsersSearch } from '../../components/user/users-search';
+import { Followers } from '../../components/user/followers';
 
 export const Profile = () => {
 	const { nickName } = useParams();

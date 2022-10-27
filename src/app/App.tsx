@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Layout } from '../components/layout';
+import { Layout } from '../components/common/layout';
 import { CreatePost } from '../pages/create-post';
 import { FullPost } from '../pages/full-post';
 import { Home } from '../pages/home';
@@ -13,7 +13,7 @@ import { PathsEnum } from '../typedef';
 import { NotFoundPage } from '../pages/not-found';
 import { Profile } from '../pages/profile';
 import { getUserLoading } from '../redux/services/user/selectors';
-import { Loader } from '../components/loader';
+import { Loader } from '../components/common/loader';
 
 function App() {
 	const dispatch = useAppDispach();

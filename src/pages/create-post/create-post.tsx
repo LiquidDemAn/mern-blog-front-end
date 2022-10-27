@@ -5,7 +5,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../local-storage';
 import { customeAxios } from '../../redux/axios';
 import { ErrorType, PathsEnum } from '../../typedef';
-import { Loader } from '../../components/loader';
+import { Loader } from '../../components/common/loader';
 import { CreatePostView } from './view';
 import { AxiosError } from 'axios';
 

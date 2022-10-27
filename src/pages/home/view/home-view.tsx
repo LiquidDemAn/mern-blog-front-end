@@ -1,6 +1,6 @@
 import { SyntheticEvent } from 'react';
 import { ErrorDialog } from '../../../components/dialogs/error';
-import { PostsTagsContent } from '../../../components/posts-tags-content';
+import { PostsTagsContent } from '../../../components/posts/posts-tags-content';
 import { ErrorType, TabsEnum } from '../../../typedef';
 
 type Props = {

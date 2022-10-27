@@ -11,7 +11,7 @@ import {
 import { registerUser } from '../../redux/services/user/actions';
 import { useState, useEffect } from 'react';
 import { resetErrors } from '../../redux/services/user/user.slice';
-import { Loader } from '../../components/loader';
+import { Loader } from '../../components/common/loader';
 import { RegistrationView } from './view';
 
 export const Registration = () => {
