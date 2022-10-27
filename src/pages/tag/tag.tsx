@@ -15,6 +15,10 @@ export const Tag = () => {
 	const isToken = Boolean(getToken());
 	const [value, setValue] = useState(TabsEnum.New);
 
+	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
+		setValue(newValue);
+	};
+
 	useEffect(() => {
 		if (tag) {
 			if (value === TabsEnum.New) {
@@ -35,12 +39,6 @@ export const Tag = () => {
 	useEffect(() => {
 		dispatch(loadTags());
 	}, [dispatch]);
-
-	console.log(isToken);
-
-	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
-		setValue(newValue);
-	};
 
 	return (
 		<>

@@ -17,10 +17,9 @@ import { PathsEnum } from '../../typedef';
 
 export const Login = () => {
 	const dispatch = useAppDispach();
+
 	const isAuth = useAppSelector(getIsAuth);
-
 	const loading = useAppSelector(getUserLoading);
-
 	const error = useAppSelector(getUserError);
 	const params = useAppSelector(getUserValidationParams);
 

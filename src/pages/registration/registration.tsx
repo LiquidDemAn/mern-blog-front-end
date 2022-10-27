@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react';
 import { resetErrors } from '../../redux/services/user/user.slice';
 import { Loader } from '../../components/common/loader';
 import { RegistrationView } from './view';
+import { PathsEnum } from '../../typedef';
 
 export const Registration = () => {
 	const [avatar, setAvatar] = useState('');
@@ -100,7 +101,7 @@ export const Registration = () => {
 	};
 
 	if (isAuth) {
-		return <Navigate to='/' />;
+		return <Navigate to={PathsEnum.Home} />;
 	}
 
 	return (
