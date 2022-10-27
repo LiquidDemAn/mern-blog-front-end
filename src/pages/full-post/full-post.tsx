@@ -9,11 +9,14 @@ import {
 	getPostsLoading,
 } from '../../redux/services/posts/selectors';
 import { FullPostType } from '../../redux/services/posts/typedef';
-import { useAppSelector } from '../../redux/store/hooks';
+import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { FullPostView } from './view';
+import { loadPost } from '../../redux/services/posts/actions';
 
 export const FullPost = () => {
 	const { id } = useParams();
+	const dispatch = useAppDispach();
+
 	const userId = useAppSelector(getUserId);
 	const postLoading = useAppSelector(getPostsLoading);
 	const deleteLoading = useAppSelector(getDeletePostLoading);
@@ -24,20 +27,6 @@ export const FullPost = () => {
 	const [openCommentError, setOpenCommentError] = useState(false);
 	const [commentError, setCommentError] = useState<AxiosError | null>(null);
 	const [commentLoading, setCommentLoading] = useState(false);
-
-	const onLoadPost = async () => {
-		setPostError(null);
-
-		await customeAxios
-			.get(`/posts/${id}`)
-			.then(({ data }) => {
-				setPost(data);
-			})
-			.catch((err: AxiosError) => {
-				console.log(err);
-				setPostError(err);
-			});
-	};
 
 	const onLikePost = async () => {
 		setPostError(null);
@@ -213,9 +202,8 @@ export const FullPost = () => {
 	};
 
 	useEffect(() => {
-		onLoadPost();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		dispatch(loadPost({ id, setPost, setPostError }));
+	}, [dispatch, id]);
 
 	useEffect(() => {
 		if (commentError) {
@@ -231,7 +219,6 @@ export const FullPost = () => {
 				postLoading={postLoading}
 				onLikePost={onLikePost}
 				onUnlikePost={onUnlikePost}
-				
 				commentError={commentError}
 				openCommentError={openCommentError}
 				handleCloseCommentError={handleCloseCommentError}

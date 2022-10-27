@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { customeAxios } from '../../axios';
-import { PostType } from './typedef';
+import { FullPostType, PostType } from './typedef';
 import { UserStateType } from '../user/typedef';
 
 export const loadPosts = createAsyncThunk<PostType[], string>(
@@ -20,6 +20,26 @@ export const loadPosts = createAsyncThunk<PostType[], string>(
 		}
 	}
 );
+
+export const loadPost = createAsyncThunk<
+	void,
+	{
+		id?: string;
+		setPost: (value: FullPostType) => void;
+		setPostError: (value: AxiosError) => void;
+	}
+>('posts/load-post', async ({ id, setPost, setPostError }) => {
+	try {
+		if (id) {
+			const { data } = await customeAxios.get(`/posts/${id}`);
+			setPost(data);
+		}
+	} catch (err) {
+		console.log(err);
+
+		setPostError(err as AxiosError);
+	}
+});
 
 export const deletePost = createAsyncThunk(
 	'posts/delete-post',
