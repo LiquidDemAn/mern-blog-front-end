@@ -13,7 +13,7 @@ type Props = {
 	comments?: PostCommentType[];
 	isLoading?: boolean;
 	children?: ReactElement | ReactElement[];
-	onEditComment: (commentId: string, text: string) => Promise<void>;
+	onEditComment: (commentId: string, text: string) => void;
 	onDeleteComment: (commentId: string) => Promise<void>;
 	onlikeComment: (commentId: string) => Promise<void>;
 	onUnLikeComment: (commentId: string) => Promise<void>;

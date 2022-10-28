@@ -168,3 +168,42 @@ export const createComment = createAsyncThunk<
 		}
 	}
 );
+
+export const editComment = createAsyncThunk<
+	void,
+	{
+		commentId: string;
+		text: string;
+		post: FullPostType;
+		setPost: (value: FullPostType) => void;
+	}
+>(
+	'posts/edit-comment',
+	async ({ commentId, text, post, setPost }, { rejectWithValue }) => {
+		try {
+			await customeAxios
+				.patch(`/posts/${post._id}/edit-comment/${commentId}`, {
+					text,
+				})
+				.then(() => {
+					setPost({
+						...post,
+						comments: post.comments.map((item) => {
+							if (item._id === commentId) {
+								item.text = text;
+							}
+
+							return item;
+						}),
+					});
+				});
+		} catch (err) {
+			const error = err as AxiosError;
+
+			return rejectWithValue({
+				status: error.response?.status,
+				message: error.message,
+			});
+		}
+	}
+);

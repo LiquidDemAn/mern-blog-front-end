@@ -18,8 +18,8 @@ type Props = {
 	commentError: ErrorType | null;
 	openCommentError: boolean;
 	handleCloseCommentError: () => void;
-	onCreateComment: (text: string) => Promise<void>;
-	onEditComment: (commentId: string, text: string) => Promise<void>;
+	onCreateComment: (text: string) => void;
+	onEditComment: (commentId: string, text: string) => void;
 	onDeleteComment: (commentId: string) => Promise<void>;
 	onlikeComment: (commentId: string) => Promise<void>;
 	onUnLikeComment: (commentId: string) => Promise<void>;

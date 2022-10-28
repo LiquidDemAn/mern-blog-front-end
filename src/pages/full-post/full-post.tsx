@@ -17,6 +17,7 @@ import {
 	unlikeFullPost,
 	loadPost,
 	createComment,
+	editComment,
 } from '../../redux/services/posts/actions';
 
 export const FullPost = () => {
@@ -56,32 +57,9 @@ export const FullPost = () => {
 	};
 
 	const onEditComment = async (commentId: string, text: string) => {
-		setCommentLoading(true);
-		setCommentError(null);
-
-		await customeAxios
-			.patch(`/posts/${id}/edit-comment/${commentId}`, { text })
-			.then(() => {
-				if (post) {
-					setPost({
-						...post,
-						comments: post.comments.map((item) => {
-							if (item._id === commentId) {
-								item.text = text;
-							}
-
-							return item;
-						}),
-					});
-				}
-
-				setCommentLoading(false);
-			})
-			.catch((err) => {
-				console.log(err);
-				setCommentError(err);
-				setCommentLoading(false);
-			});
+		if (post) {
+			dispatch(editComment({ commentId, text, post, setPost }));
+		}
 	};
 
 	const onDeleteComment = async (commentId: string) => {

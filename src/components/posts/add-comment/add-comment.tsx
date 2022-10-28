@@ -6,7 +6,7 @@ import { getUserAvatar } from '../../../redux/services/user/selectors';
 import { PathsEnum } from '../../../typedef';
 
 type Props = {
-	createComment: (text: string) => Promise<void>;
+	createComment: (text: string) => void;
 };
 
 export const AddComment = ({ createComment }: Props) => {
@@ -15,9 +15,8 @@ export const AddComment = ({ createComment }: Props) => {
 
 	const handleSubmit = () => {
 		if (value) {
-			createComment(value).then(() => {
-				setValue('');
-			});
+			createComment(value);
+			setValue('');
 		}
 	};
 
