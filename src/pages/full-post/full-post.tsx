@@ -6,6 +6,7 @@ import { customeAxios } from '../../redux/axios';
 import { getUserId } from '../../redux/services/user/selectors';
 import {
 	getDeletePostLoading,
+	getPostsError,
 	getPostsLoading,
 } from '../../redux/services/posts/selectors';
 import { FullPostType } from '../../redux/services/posts/typedef';
@@ -15,6 +16,7 @@ import {
 	likeFullPost,
 	unlikeFullPost,
 	loadPost,
+	createComment,
 } from '../../redux/services/posts/actions';
 
 export const FullPost = () => {
@@ -25,6 +27,9 @@ export const FullPost = () => {
 	const postLoading = useAppSelector(getPostsLoading);
 	const deleteLoading = useAppSelector(getDeletePostLoading);
 
+	const loading = useAppSelector(getPostsLoading);
+	const error = useAppSelector(getPostsError);
+
 	const [postError, setPostError] = useState<AxiosError | null>(null);
 	const [post, setPost] = useState<FullPostType | null>(null);
 
@@ -33,42 +38,21 @@ export const FullPost = () => {
 	const [commentLoading, setCommentLoading] = useState(false);
 
 	const onLikePost = () => {
-		setPostError(null);
-
 		if (post) {
 			dispatch(likeFullPost({ post, setPost }));
 		}
 	};
 
 	const onUnlikePost = () => {
-		setPostError(null);
-
 		if (post) {
 			dispatch(unlikeFullPost({ post, setPost }));
 		}
 	};
 
 	const onCreateComment = async (text: string) => {
-		setCommentLoading(true);
-		setCommentError(null);
-
-		await customeAxios
-			.post(`/posts/${id}/create-comment`, { text })
-			.then((response) => {
-				if (post) {
-					setPost({
-						...post,
-						comments: [...post?.comments, response.data],
-					});
-				}
-
-				setCommentLoading(false);
-			})
-			.catch((err) => {
-				console.log(err);
-				setCommentError(err);
-				setCommentLoading(false);
-			});
+		if (post) {
+			dispatch(createComment({ text, post, setPost }));
+		}
 	};
 
 	const onEditComment = async (commentId: string, text: string) => {
@@ -189,10 +173,10 @@ export const FullPost = () => {
 	}, [dispatch, id]);
 
 	useEffect(() => {
-		if (commentError) {
+		if (error) {
 			handleOpenCommentError();
 		}
-	}, [commentError]);
+	}, [error]);
 
 	return (
 		<>
@@ -202,7 +186,7 @@ export const FullPost = () => {
 				postLoading={postLoading}
 				onLikePost={onLikePost}
 				onUnlikePost={onUnlikePost}
-				commentError={commentError}
+				commentError={error}
 				openCommentError={openCommentError}
 				handleCloseCommentError={handleCloseCommentError}
 				onCreateComment={onCreateComment}
@@ -211,7 +195,7 @@ export const FullPost = () => {
 				onlikeComment={onlikeComment}
 				onUnLikeComment={onUnLikeComment}
 			/>
-			<Loader open={deleteLoading || commentLoading} />
+			<Loader open={deleteLoading || loading} />
 		</>
 	);
 };

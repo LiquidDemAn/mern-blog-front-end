@@ -137,3 +137,34 @@ export const unlikeFullPost = createAsyncThunk<
 		console.log(err);
 	}
 });
+
+export const createComment = createAsyncThunk<
+	void,
+	{
+		text: string;
+		post: FullPostType;
+		setPost: (value: FullPostType) => void;
+	}
+>(
+	'posts/create-comment',
+	async ({ text, post, setPost }, { rejectWithValue }) => {
+		try {
+			const { data } = await customeAxios.post(
+				`/posts/${post._id}/create-comment`,
+				{ text }
+			);
+
+			setPost({
+				...post,
+				comments: [...post?.comments, data],
+			});
+		} catch (err) {
+			const error = err as AxiosError;
+
+			return rejectWithValue({
+				status: error.response?.status,
+				message: error.message,
+			});
+		}
+	}
+);

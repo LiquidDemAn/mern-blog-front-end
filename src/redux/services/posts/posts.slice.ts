@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loadPosts, deletePost, likePost, unlikePost } from './actions';
+import {
+	loadPosts,
+	deletePost,
+	likePost,
+	unlikePost,
+	createComment,
+} from './actions';
 import { PostsStateType } from './typedef';
 
 const initialState: PostsStateType = {
@@ -75,6 +81,21 @@ export const postsSlice = createSlice({
 						post.likesIds = post.likesIds.filter((item) => item !== payload);
 					}
 				}
+			})
+
+			.addCase(createComment.pending, (state) => {
+				state.postsLoading = true;
+				state.postsError = null;
+			})
+
+			.addCase(createComment.fulfilled, (state) => {
+				state.postsLoading = false;
+				state.postsError = null;
+			})
+
+			.addCase(createComment.rejected, (state, { payload }) => {
+				state.postsLoading = false;
+				state.postsError = payload;
 			}),
 });
 
