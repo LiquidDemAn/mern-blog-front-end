@@ -57,23 +57,33 @@ export const deletePost = createAsyncThunk(
 	}
 );
 
-export const likePost = createAsyncThunk<
-	string | undefined,
-	{
-		postId?: string;
-		post?: FullPostType | null;
-		setPost?: (value: FullPostType | null) => void;
+export const likePost = createAsyncThunk<string | undefined, string>(
+	'posts/like-post',
+	async (id, { getState }) => {
+		const { user } = getState() as { user: UserStateType };
+		const userId = user.data?._id;
+
+		try {
+			await customeAxios.patch(`/posts/${id}/like`);
+			return userId;
+		} catch (err) {
+			console.log(err);
+		}
 	}
->('posts/like-post', async ({ postId, post, setPost }, { getState }) => {
+);
+
+export const likeFullPost = createAsyncThunk<
+	void,
+	{
+		post: FullPostType;
+		setPost: (value: FullPostType) => void;
+	}
+>('posts/like-full-post', async ({ post, setPost }, { getState }) => {
 	const { user } = getState() as { user: UserStateType };
 	const userId = user.data?._id;
 
 	try {
-		if (postId && userId) {
-			await customeAxios.patch(`/posts/${postId}/like`);
-		}
-
-		if (setPost && post && userId) {
+		if (userId) {
 			await customeAxios.patch(`/posts/${post._id}/like`);
 
 			setPost({
@@ -82,8 +92,6 @@ export const likePost = createAsyncThunk<
 				likesCount: post.likesCount + 1,
 			});
 		}
-
-		return userId;
 	} catch (err) {
 		console.log(err);
 	}
@@ -103,9 +111,7 @@ export const unlikePost = createAsyncThunk<
 	try {
 		if (postId && userId) {
 			await customeAxios.patch(`/posts/${postId}/unlike`);
-		}
-
-		if (setPost && post && userId) {
+		} else if (setPost && post && userId) {
 			await customeAxios.patch(`/posts/${post._id}/unlike`);
 
 			setPost({

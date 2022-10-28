@@ -71,7 +71,7 @@ export const Post = ({
 
 	const likeHandle = () => {
 		if (postId) {
-			dispatch(likePost({ postId }));
+			dispatch(likePost( postId ));
 		}
 	};
 

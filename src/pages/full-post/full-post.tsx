@@ -12,7 +12,7 @@ import { FullPostType } from '../../redux/services/posts/typedef';
 import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { FullPostView } from './view';
 import {
-	likePost,
+	likeFullPost,
 	loadPost,
 	unlikePost,
 } from '../../redux/services/posts/actions';
@@ -34,7 +34,10 @@ export const FullPost = () => {
 
 	const onLikePost = () => {
 		setPostError(null);
-		dispatch(likePost({ post, setPost }));
+
+		if (post) {
+			dispatch(likeFullPost({ post, setPost }));
+		}
 	};
 
 	const onUnlikePost = () => {
