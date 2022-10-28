@@ -13,8 +13,8 @@ import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
 import { FullPostView } from './view';
 import {
 	likeFullPost,
+	unlikeFullPost,
 	loadPost,
-	unlikePost,
 } from '../../redux/services/posts/actions';
 
 export const FullPost = () => {
@@ -42,7 +42,10 @@ export const FullPost = () => {
 
 	const onUnlikePost = () => {
 		setPostError(null);
-		dispatch(unlikePost({ post, setPost }));
+
+		if (post) {
+			dispatch(unlikeFullPost({ post, setPost }));
+		}
 	};
 
 	const onCreateComment = async (text: string) => {

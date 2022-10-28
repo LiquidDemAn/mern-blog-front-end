@@ -72,6 +72,22 @@ export const likePost = createAsyncThunk<string | undefined, string>(
 	}
 );
 
+export const unlikePost = createAsyncThunk<string | undefined, string>(
+	'posts/unlike-post',
+	async (id, { getState }) => {
+		const { user } = getState() as { user: UserStateType };
+		const userId = user.data?._id;
+
+		try {
+			await customeAxios.patch(`/posts/${id}/unlike`);
+
+			return userId;
+		} catch (err) {
+			console.log(err);
+		}
+	}
+);
+
 export const likeFullPost = createAsyncThunk<
 	void,
 	{
@@ -97,21 +113,18 @@ export const likeFullPost = createAsyncThunk<
 	}
 });
 
-export const unlikePost = createAsyncThunk<
-	string | undefined,
+export const unlikeFullPost = createAsyncThunk<
+	void,
 	{
-		postId?: string;
-		post?: FullPostType | null;
-		setPost?: (value: FullPostType | null) => void;
+		post: FullPostType;
+		setPost: (value: FullPostType) => void;
 	}
->('posts/unlike-post', async ({ postId, post, setPost }, { getState }) => {
+>('posts/unlike-full-post', async ({ post, setPost }, { getState }) => {
 	const { user } = getState() as { user: UserStateType };
 	const userId = user.data?._id;
 
 	try {
-		if (postId && userId) {
-			await customeAxios.patch(`/posts/${postId}/unlike`);
-		} else if (setPost && post && userId) {
+		if (userId) {
 			await customeAxios.patch(`/posts/${post._id}/unlike`);
 
 			setPost({
@@ -120,8 +133,6 @@ export const unlikePost = createAsyncThunk<
 				likesCount: post.likesCount - 1,
 			});
 		}
-
-		return userId;
 	} catch (err) {
 		console.log(err);
 	}
