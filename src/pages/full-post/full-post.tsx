@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../../components/common/loader';
-import { customeAxios } from '../../redux/axios';
-import { getUserId } from '../../redux/services/user/selectors';
 import {
 	getCommentError,
 	getPostError,
@@ -21,7 +19,11 @@ import {
 	likeComment,
 	unlikeCommnet,
 } from '../../redux/services/posts/actions';
-import { removeCommentError } from '../../redux/services/posts/posts.slice';
+import {
+	removeCommentError,
+	removePostError,
+} from '../../redux/services/posts/posts.slice';
+import { ErrorDialog } from '../../components/dialogs/error';
 
 export const FullPost = () => {
 	const { id } = useParams();
@@ -76,8 +78,14 @@ export const FullPost = () => {
 		}
 	};
 
-	const handleCloseCommentError = () => {
-		dispatch(removeCommentError());
+	const handleClose = () => {
+		if (commentError) {
+			dispatch(removeCommentError());
+		}
+
+		if (postError) {
+			dispatch(removePostError());
+		}
 	};
 
 	useEffect(() => {
@@ -92,14 +100,18 @@ export const FullPost = () => {
 				postLoading={loading}
 				onLikePost={onLikePost}
 				onUnlikePost={onUnlikePost}
-				commentError={Boolean(commentError)}
-				handleCloseCommentError={handleCloseCommentError}
 				onCreateComment={onCreateComment}
 				onEditComment={onEditComment}
 				onDeleteComment={onDeleteComment}
 				onlikeComment={onlikeComment}
 				onUnLikeComment={onUnLikeComment}
 			/>
+
+			<ErrorDialog
+				open={Boolean(commentError || postError)}
+				handleClose={handleClose}
+			/>
+
 			<Loader open={loading} />
 		</>
 	);

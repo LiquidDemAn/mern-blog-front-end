@@ -5,7 +5,6 @@ import { Post } from '../../../components/posts/post';
 import { FullPostType } from '../../../redux/services/posts/typedef';
 import { Comments } from '../../../components/posts/comments';
 import { AddComment } from '../../../components/posts/add-comment';
-import { ErrorDialog } from '../../../components/dialogs/error';
 
 type Props = {
 	post: FullPostType | null;
@@ -14,8 +13,6 @@ type Props = {
 	onLikePost: () => void;
 	onUnlikePost: () => void;
 
-	commentError: boolean;
-	handleCloseCommentError: () => void;
 	onCreateComment: (text: string) => void;
 	onEditComment: (commentId: string, text: string) => void;
 	onDeleteComment: (commentId: string) => Promise<void>;
@@ -30,8 +27,6 @@ export const FullPostView = ({
 	postLoading,
 	onUnlikePost,
 
-	commentError,
-	handleCloseCommentError,
 	onCreateComment,
 	onEditComment,
 	onDeleteComment,
@@ -79,8 +74,6 @@ export const FullPostView = ({
 			>
 				<AddComment createComment={onCreateComment} />
 			</Comments>
-
-			<ErrorDialog open={commentError} handleClose={handleCloseCommentError} />
 		</>
 	);
 };

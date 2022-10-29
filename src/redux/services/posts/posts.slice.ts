@@ -27,6 +27,9 @@ export const postsSlice = createSlice({
 		removeDeletePostError(state) {
 			state.deleteError = null;
 		},
+		removePostError(state) {
+			state.postError = null;
+		},
 		removeCommentError(state) {
 			state.commentError = null;
 		},
@@ -155,4 +158,5 @@ export const postsSlice = createSlice({
 			}),
 });
 
-export const { removeDeletePostError, removeCommentError } = postsSlice.actions;
+export const { removeDeletePostError, removeCommentError, removePostError } =
+	postsSlice.actions;
