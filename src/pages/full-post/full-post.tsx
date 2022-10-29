@@ -19,14 +19,13 @@ import {
 	editComment,
 	deleteComment,
 	likeComment,
+	unlikeCommnet,
 } from '../../redux/services/posts/actions';
 import { removeCommentError } from '../../redux/services/posts/posts.slice';
 
 export const FullPost = () => {
 	const { id } = useParams();
 	const dispatch = useAppDispach();
-
-	const userId = useAppSelector(getUserId);
 
 	const loading = useAppSelector(getPostsLoading);
 
@@ -72,25 +71,8 @@ export const FullPost = () => {
 	};
 
 	const onUnLikeComment = async (commentId: string) => {
-		if (post && userId) {
-			await customeAxios
-				.patch(`/posts/${id}/unlike-comment/${commentId}`)
-				.then(() => {
-					setPost({
-						...post,
-						comments: post.comments.map((item) => {
-							if (item._id === commentId) {
-								item.likesCount = item.likesCount - 1;
-								item.likesIds = item.likesIds.filter((id) => id !== userId);
-							}
-
-							return item;
-						}),
-					});
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+		if (post) {
+			dispatch(unlikeCommnet({ commentId, post, setPost }));
 		}
 	};
 

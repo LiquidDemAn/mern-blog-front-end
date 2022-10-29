@@ -206,14 +206,14 @@ export const deleteComment = createAsyncThunk<
 	'posts/delete-comment',
 	async ({ commentId, post, setPost }, { rejectWithValue }) => {
 		try {
-			await customeAxios.delete(
-				`/posts/${post._id}/delete-comment/${commentId}`
-			);
-
-			setPost({
-				...post,
-				comments: post.comments.filter((item) => item._id !== commentId),
-			});
+			await customeAxios
+				.delete(`/posts/${post._id}/delete-comment/${commentId}`)
+				.then(() => {
+					setPost({
+						...post,
+						comments: post.comments.filter((item) => item._id !== commentId),
+					});
+				});
 		} catch (err) {
 			return rejectWithValue(err);
 		}
@@ -235,21 +235,58 @@ export const likeComment = createAsyncThunk<
 			const userId = user.data?._id;
 
 			if (userId) {
-				await customeAxios.patch(
-					`/posts/${post._id}/like-comment/${commentId}`
-				);
+				await customeAxios
+					.patch(`/posts/${post._id}/like-comment/${commentId}`)
+					.then(() => {
+						setPost({
+							...post,
+							comments: post.comments.map((item) => {
+								if (item._id === commentId) {
+									item.likesCount = item.likesCount + 1;
+									item.likesIds.push(userId);
+								}
 
-				setPost({
-					...post,
-					comments: post.comments.map((item) => {
-						if (item._id === commentId) {
-							item.likesCount = item.likesCount + 1;
-							item.likesIds.push(userId);
-						}
+								return item;
+							}),
+						});
+					});
+			}
+		} catch (err) {
+			return rejectWithValue(err);
+		}
+	}
+);
 
-						return item;
-					}),
-				});
+export const unlikeCommnet = createAsyncThunk<
+	void,
+	{
+		commentId: string;
+		post: FullPostType;
+		setPost: (value: FullPostType) => void;
+	}
+>(
+	'posts/unlike-comment',
+	async ({ commentId, post, setPost }, { getState, rejectWithValue }) => {
+		try {
+			const { user } = getState() as { user: UserStateType };
+			const userId = user.data?._id;
+
+			if (userId) {
+				await customeAxios
+					.patch(`/posts/${post._id}/unlike-comment/${commentId}`)
+					.then(() => {
+						setPost({
+							...post,
+							comments: post.comments.map((item) => {
+								if (item._id === commentId) {
+									item.likesCount = item.likesCount - 1;
+									item.likesIds = item.likesIds.filter((id) => id !== userId);
+								}
+
+								return item;
+							}),
+						});
+					});
 			}
 		} catch (err) {
 			return rejectWithValue(err);
