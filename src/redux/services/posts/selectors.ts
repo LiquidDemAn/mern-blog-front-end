@@ -16,7 +16,3 @@ export const getPostError = (state: AppState) => {
 export const getCommentError = (state: AppState) => {
 	return state.posts.commentError as AxiosError | null;
 };
-
-export const getDeletePostError = (state: AppState) => {
-	return state.posts.deleteError as ErrorType | null;
-};

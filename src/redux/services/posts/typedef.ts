@@ -54,5 +54,4 @@ export type PostsStateType = {
 	postsError: null | unknown;
 	postError: null | unknown;
 	commentError: null | unknown;
-	deleteError: null | unknown;
 };

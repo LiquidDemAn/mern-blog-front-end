@@ -17,16 +17,12 @@ const initialState: PostsStateType = {
 	postsError: null,
 	postError: null,
 	commentError: null,
-	deleteError: null,
 };
 
 export const postsSlice = createSlice({
 	name: 'posts',
 	initialState,
 	reducers: {
-		removeDeletePostError(state) {
-			state.deleteError = null;
-		},
 		removePostError(state) {
 			state.postError = null;
 		},
@@ -71,16 +67,16 @@ export const postsSlice = createSlice({
 			// Delete post
 			.addCase(deletePost.pending, (state) => {
 				state.loading = true;
-				state.deleteError = null;
+				state.postError = null;
 			})
 			.addCase(deletePost.fulfilled, (state, { meta }) => {
 				state.posts = state.posts.filter((item) => item._id !== meta.arg);
 				state.loading = false;
-				state.deleteError = null;
+				state.postError = null;
 			})
 			.addCase(deletePost.rejected, (state, { payload }) => {
 				state.loading = false;
-				state.deleteError = payload;
+				state.postError = payload;
 			})
 
 			// Like post
@@ -158,5 +154,4 @@ export const postsSlice = createSlice({
 			}),
 });
 
-export const { removeDeletePostError, removeCommentError, removePostError } =
-	postsSlice.actions;
+export const { removeCommentError, removePostError } = postsSlice.actions;

@@ -45,6 +45,7 @@ export const deletePost = createAsyncThunk(
 			await customeAxios.delete(`/posts/${id}`);
 		} catch (err) {
 			const error = err as AxiosError;
+			console.log(err);
 
 			return rejectWithValue({
 				status: error.response?.status,
