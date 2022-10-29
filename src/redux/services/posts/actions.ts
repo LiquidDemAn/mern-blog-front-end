@@ -206,16 +206,51 @@ export const deleteComment = createAsyncThunk<
 	'posts/delete-comment',
 	async ({ commentId, post, setPost }, { rejectWithValue }) => {
 		try {
-			await customeAxios
-				.delete(`/posts/${post._id}/delete-comment/${commentId}`)
-				.then(() => {
-					if (post) {
-						setPost({
-							...post,
-							comments: post.comments.filter((item) => item._id !== commentId),
-						});
-					}
+			await customeAxios.delete(
+				`/posts/${post._id}/delete-comment/${commentId}`
+			);
+
+			setPost({
+				...post,
+				comments: post.comments.filter((item) => item._id !== commentId),
+			});
+		} catch (err) {
+			return rejectWithValue(err);
+		}
+	}
+);
+
+export const likeComment = createAsyncThunk<
+	void,
+	{
+		commentId: string;
+		post: FullPostType;
+		setPost: (value: FullPostType) => void;
+	}
+>(
+	'posts/like-comment',
+	async ({ commentId, post, setPost }, { getState, rejectWithValue }) => {
+		try {
+			const { user } = getState() as { user: UserStateType };
+			const userId = user.data?._id;
+
+			if (userId) {
+				await customeAxios.patch(
+					`/posts/${post._id}/like-comment/${commentId}`
+				);
+
+				setPost({
+					...post,
+					comments: post.comments.map((item) => {
+						if (item._id === commentId) {
+							item.likesCount = item.likesCount + 1;
+							item.likesIds.push(userId);
+						}
+
+						return item;
+					}),
 				});
+			}
 		} catch (err) {
 			return rejectWithValue(err);
 		}

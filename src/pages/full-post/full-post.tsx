@@ -18,6 +18,7 @@ import {
 	createComment,
 	editComment,
 	deleteComment,
+	likeComment,
 } from '../../redux/services/posts/actions';
 import { removeCommentError } from '../../redux/services/posts/posts.slice';
 
@@ -65,25 +66,8 @@ export const FullPost = () => {
 	};
 
 	const onlikeComment = async (commentId: string) => {
-		if (post && userId) {
-			await customeAxios
-				.patch(`/posts/${id}/like-comment/${commentId}`)
-				.then(() => {
-					setPost({
-						...post,
-						comments: post.comments.map((item) => {
-							if (item._id === commentId) {
-								item.likesCount = item.likesCount + 1;
-								item.likesIds.push(userId);
-							}
-
-							return item;
-						}),
-					});
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+		if (post) {
+			dispatch(likeComment({ commentId, post, setPost }));
 		}
 	};
 
