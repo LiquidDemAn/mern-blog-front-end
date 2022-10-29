@@ -194,3 +194,30 @@ export const editComment = createAsyncThunk<
 		}
 	}
 );
+
+export const deleteComment = createAsyncThunk<
+	void,
+	{
+		commentId: string;
+		post: FullPostType;
+		setPost: (value: FullPostType) => void;
+	}
+>(
+	'posts/delete-comment',
+	async ({ commentId, post, setPost }, { rejectWithValue }) => {
+		try {
+			await customeAxios
+				.delete(`/posts/${post._id}/delete-comment/${commentId}`)
+				.then(() => {
+					if (post) {
+						setPost({
+							...post,
+							comments: post.comments.filter((item) => item._id !== commentId),
+						});
+					}
+				});
+		} catch (err) {
+			return rejectWithValue(err);
+		}
+	}
+);

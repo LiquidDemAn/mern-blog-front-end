@@ -7,6 +7,7 @@ import {
 	createComment,
 	editComment,
 	loadPost,
+	deleteComment,
 } from './actions';
 import { PostsStateType } from './typedef';
 
@@ -133,6 +134,22 @@ export const postsSlice = createSlice({
 			})
 
 			.addCase(editComment.rejected, (state, { payload }) => {
+				state.loading = false;
+				state.commentError = payload;
+			})
+
+			// Delete comment
+			.addCase(deleteComment.pending, (state) => {
+				state.loading = true;
+				state.commentError = null;
+			})
+
+			.addCase(deleteComment.fulfilled, (state) => {
+				state.loading = false;
+				state.commentError = null;
+			})
+
+			.addCase(deleteComment.rejected, (state, { payload }) => {
 				state.loading = false;
 				state.commentError = payload;
 			}),

@@ -17,6 +17,7 @@ import {
 	loadPost,
 	createComment,
 	editComment,
+	deleteComment,
 } from '../../redux/services/posts/actions';
 import { removeCommentError } from '../../redux/services/posts/posts.slice';
 
@@ -58,19 +59,9 @@ export const FullPost = () => {
 	};
 
 	const onDeleteComment = async (commentId: string) => {
-		await customeAxios
-			.delete(`/posts/${id}/delete-comment/${commentId}`)
-			.then(() => {
-				if (post) {
-					setPost({
-						...post,
-						comments: post.comments.filter((item) => item._id !== commentId),
-					});
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		if (post) {
+			dispatch(deleteComment({ commentId, post, setPost }));
+		}
 	};
 
 	const onlikeComment = async (commentId: string) => {
