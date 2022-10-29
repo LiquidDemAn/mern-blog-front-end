@@ -3,7 +3,7 @@ import { useEffect, useState, SyntheticEvent } from 'react';
 import { loadPosts } from '../../redux/services/posts/actions';
 import {
 	getDeletePostError,
-	getDeletePostLoading,
+	getPostsLoading,
 } from '../../redux/services/posts/selectors';
 import { loadTags } from '../../redux/services/tags/actions';
 import { getIsAuth, getUserName } from '../../redux/services/user/selectors';
@@ -26,7 +26,7 @@ export const Home = () => {
 
 	const userName = useAppSelector(getUserName);
 	const deleteError = useAppSelector(getDeletePostError);
-	const deleteLoading = useAppSelector(getDeletePostLoading);
+	const loading = useAppSelector(getPostsLoading);
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -80,7 +80,7 @@ export const Home = () => {
 				/>
 			)}
 
-			<Loader open={deleteLoading} />
+			<Loader open={loading} />
 		</>
 	);
 };

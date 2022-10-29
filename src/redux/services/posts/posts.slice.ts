@@ -6,14 +6,16 @@ import {
 	unlikePost,
 	createComment,
 	editComment,
+	loadPost,
 } from './actions';
 import { PostsStateType } from './typedef';
 
 const initialState: PostsStateType = {
 	posts: [],
-	postsLoading: false,
+	loading: false,
 	postsError: null,
-	deleteLoading: false,
+	postError: null,
+	commentError: null,
 	deleteError: null,
 };
 
@@ -24,37 +26,56 @@ export const postsSlice = createSlice({
 		removeDeletePostError(state) {
 			state.deleteError = null;
 		},
+		removeCommentError(state) {
+			state.commentError = null;
+		},
 	},
 	extraReducers: (bulider) =>
 		bulider
 			// Load all posts
 			.addCase(loadPosts.pending, (state) => {
 				state.posts = [];
-				state.postsLoading = true;
+				state.loading = true;
 				state.postsError = null;
 			})
 			.addCase(loadPosts.fulfilled, (state, { payload }) => {
 				state.posts = payload;
-				state.postsLoading = false;
+				state.loading = false;
 				state.postsError = null;
 			})
 			.addCase(loadPosts.rejected, (state, { payload }) => {
-				state.postsLoading = false;
+				state.loading = false;
 				state.postsError = payload;
+			})
+
+			// Load post
+			.addCase(loadPost.pending, (state) => {
+				state.loading = true;
+				state.postError = null;
+			})
+
+			.addCase(loadPost.fulfilled, (state) => {
+				state.loading = false;
+				state.postError = null;
+			})
+
+			.addCase(loadPost.rejected, (state, { payload }) => {
+				state.loading = false;
+				state.postError = payload;
 			})
 
 			// Delete post
 			.addCase(deletePost.pending, (state) => {
-				state.deleteLoading = true;
+				state.loading = true;
 				state.deleteError = null;
 			})
 			.addCase(deletePost.fulfilled, (state, { meta }) => {
 				state.posts = state.posts.filter((item) => item._id !== meta.arg);
-				state.deleteLoading = false;
+				state.loading = false;
 				state.deleteError = null;
 			})
 			.addCase(deletePost.rejected, (state, { payload }) => {
-				state.deleteLoading = false;
+				state.loading = false;
 				state.deleteError = payload;
 			})
 
@@ -86,35 +107,35 @@ export const postsSlice = createSlice({
 
 			// Create comment
 			.addCase(createComment.pending, (state) => {
-				state.postsLoading = true;
-				state.postsError = null;
+				state.loading = true;
+				state.commentError = null;
 			})
 
 			.addCase(createComment.fulfilled, (state) => {
-				state.postsLoading = false;
-				state.postsError = null;
+				state.loading = false;
+				state.commentError = null;
 			})
 
 			.addCase(createComment.rejected, (state, { payload }) => {
-				state.postsLoading = false;
-				state.postsError = payload;
+				state.loading = false;
+				state.commentError = payload;
 			})
 
 			// Edit comment
 			.addCase(editComment.pending, (state) => {
-				state.postsLoading = true;
-				state.postsError = null;
+				state.loading = true;
+				state.commentError = null;
 			})
 
 			.addCase(editComment.fulfilled, (state) => {
-				state.postsLoading = false;
-				state.postsError = null;
+				state.loading = false;
+				state.commentError = null;
 			})
 
 			.addCase(editComment.rejected, (state, { payload }) => {
-				state.postsLoading = false;
-				state.postsError = payload;
+				state.loading = false;
+				state.commentError = payload;
 			}),
 });
 
-export const { removeDeletePostError } = postsSlice.actions;
+export const { removeDeletePostError, removeCommentError } = postsSlice.actions;

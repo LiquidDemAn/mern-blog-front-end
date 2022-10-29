@@ -1,12 +1,11 @@
-import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../../components/common/loader';
 import { customeAxios } from '../../redux/axios';
 import { getUserId } from '../../redux/services/user/selectors';
 import {
-	getDeletePostLoading,
-	getPostsError,
+	getCommentError,
+	getPostError,
 	getPostsLoading,
 } from '../../redux/services/posts/selectors';
 import { FullPostType } from '../../redux/services/posts/typedef';
@@ -19,24 +18,20 @@ import {
 	createComment,
 	editComment,
 } from '../../redux/services/posts/actions';
+import { removeCommentError } from '../../redux/services/posts/posts.slice';
 
 export const FullPost = () => {
 	const { id } = useParams();
 	const dispatch = useAppDispach();
 
 	const userId = useAppSelector(getUserId);
-	const postLoading = useAppSelector(getPostsLoading);
-	const deleteLoading = useAppSelector(getDeletePostLoading);
 
 	const loading = useAppSelector(getPostsLoading);
-	const error = useAppSelector(getPostsError);
 
-	const [postError, setPostError] = useState<AxiosError | null>(null);
+	const postError = useAppSelector(getPostError);
+	const commentError = useAppSelector(getCommentError);
+
 	const [post, setPost] = useState<FullPostType | null>(null);
-
-	const [openCommentError, setOpenCommentError] = useState(false);
-	const [commentError, setCommentError] = useState<AxiosError | null>(null);
-	const [commentLoading, setCommentLoading] = useState(false);
 
 	const onLikePost = () => {
 		if (post) {
@@ -63,9 +58,6 @@ export const FullPost = () => {
 	};
 
 	const onDeleteComment = async (commentId: string) => {
-		setCommentLoading(true);
-		setCommentError(null);
-
 		await customeAxios
 			.delete(`/posts/${id}/delete-comment/${commentId}`)
 			.then(() => {
@@ -75,18 +67,13 @@ export const FullPost = () => {
 						comments: post.comments.filter((item) => item._id !== commentId),
 					});
 				}
-				setCommentLoading(false);
 			})
 			.catch((err) => {
 				console.log(err);
-				setCommentError(err);
-				setCommentLoading(false);
 			});
 	};
 
 	const onlikeComment = async (commentId: string) => {
-		setCommentError(null);
-
 		if (post && userId) {
 			await customeAxios
 				.patch(`/posts/${id}/like-comment/${commentId}`)
@@ -105,14 +92,11 @@ export const FullPost = () => {
 				})
 				.catch((err) => {
 					console.log(err);
-					setCommentError(err);
 				});
 		}
 	};
 
 	const onUnLikeComment = async (commentId: string) => {
-		setCommentError(null);
-
 		if (post && userId) {
 			await customeAxios
 				.patch(`/posts/${id}/unlike-comment/${commentId}`)
@@ -131,41 +115,27 @@ export const FullPost = () => {
 				})
 				.catch((err) => {
 					console.log(err);
-					setCommentError(err);
 				});
 		}
 	};
 
-	const handleOpenCommentError = () => {
-		setOpenCommentError(true);
-	};
-
 	const handleCloseCommentError = () => {
-		setOpenCommentError(false);
-		setCommentError(null);
+		dispatch(removeCommentError());
 	};
 
 	useEffect(() => {
-		setPostError(null);
-		dispatch(loadPost({ id, setPost, setPostError }));
+		dispatch(loadPost({ id, setPost }));
 	}, [dispatch, id]);
-
-	useEffect(() => {
-		if (error) {
-			handleOpenCommentError();
-		}
-	}, [error]);
 
 	return (
 		<>
 			<FullPostView
 				post={post}
 				postError={postError}
-				postLoading={postLoading}
+				postLoading={loading}
 				onLikePost={onLikePost}
 				onUnlikePost={onUnlikePost}
-				commentError={error}
-				openCommentError={openCommentError}
+				commentError={Boolean(commentError)}
 				handleCloseCommentError={handleCloseCommentError}
 				onCreateComment={onCreateComment}
 				onEditComment={onEditComment}
@@ -173,7 +143,7 @@ export const FullPost = () => {
 				onlikeComment={onlikeComment}
 				onUnLikeComment={onUnLikeComment}
 			/>
-			<Loader open={deleteLoading || loading} />
+			<Loader open={loading} />
 		</>
 	);
 };

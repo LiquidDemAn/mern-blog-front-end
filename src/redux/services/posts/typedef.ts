@@ -50,8 +50,9 @@ export type FullPostType = {
 
 export type PostsStateType = {
 	posts: PostType[];
-	postsLoading: boolean;
+	loading: boolean;
 	postsError: null | unknown;
+	postError: null | unknown;
+	commentError: null | unknown;
 	deleteError: null | unknown;
-	deleteLoading: boolean;
 };

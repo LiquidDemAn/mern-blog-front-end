@@ -26,18 +26,15 @@ export const loadPost = createAsyncThunk<
 	{
 		id?: string;
 		setPost: (value: FullPostType) => void;
-		setPostError: (value: AxiosError) => void;
 	}
->('posts/load-post', async ({ id, setPost, setPostError }) => {
+>('posts/load-post', async ({ id, setPost }, { rejectWithValue }) => {
 	try {
 		if (id) {
 			const { data } = await customeAxios.get(`/posts/${id}`);
 			setPost(data);
 		}
 	} catch (err) {
-		console.log(err);
-
-		setPostError(err as AxiosError);
+		rejectWithValue(err);
 	}
 });
 
@@ -159,12 +156,7 @@ export const createComment = createAsyncThunk<
 				comments: [...post?.comments, data],
 			});
 		} catch (err) {
-			const error = err as AxiosError;
-
-			return rejectWithValue({
-				status: error.response?.status,
-				message: error.message,
-			});
+			return rejectWithValue(err);
 		}
 	}
 );
@@ -198,12 +190,7 @@ export const editComment = createAsyncThunk<
 					});
 				});
 		} catch (err) {
-			const error = err as AxiosError;
-
-			return rejectWithValue({
-				status: error.response?.status,
-				message: error.message,
-			});
+			return rejectWithValue(err);
 		}
 	}
 );
