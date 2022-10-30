@@ -8,9 +8,16 @@ type Props = {
 	avatarUrl?: string;
 	date?: string;
 	nickName?: string;
+	text?: string;
 };
 
-export const UserInfo = ({ avatarUrl, fullName, date, nickName }: Props) => {
+export const UserInfo = ({
+	avatarUrl,
+	fullName,
+	date,
+	nickName,
+	text,
+}: Props) => {
 	return (
 		<Link to={PathsEnum.Home + nickName} className={styles.root}>
 			{avatarUrl ? (
@@ -29,6 +36,7 @@ export const UserInfo = ({ avatarUrl, fullName, date, nickName }: Props) => {
 				<div className={styles.additional}>
 					{nickName && <span>@{nickName}</span>}
 					{date && <span>{new Date(date).toDateString()}</span>}
+					{text && <span>{text}</span>}
 				</div>
 			</div>
 		</Link>

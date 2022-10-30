@@ -1,6 +1,7 @@
 .comment {
 	display: flex;
 	align-items: flex-start;
+	flex-direction: column;
 }
 
 .likes {
@@ -9,6 +10,11 @@
 	align-items: center;
 	column-gap: 5px;
 	cursor: pointer;
+	margin-left: 55px;
+}
+
+.text {
+	margin: 5px 0 5px 55px;
 }
 
 .settings {

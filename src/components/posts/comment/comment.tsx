@@ -2,20 +2,18 @@ import styles from './comment.module.scss';
 import { PostCommentType } from '../../../redux/services/posts/typedef';
 import {
 	ListItem,
-	ListItemAvatar,
-	Avatar,
 	ListItemText,
 	Divider,
 	SvgIcon,
 	IconButton,
 } from '@mui/material';
-import { PathsEnum } from '../../../typedef';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAppSelector } from '../../../redux/store/hooks';
 import { getUserId } from '../../../redux/services/user/selectors';
+import { UserInfo } from '../../user/user-info';
 
 type Props = {
 	comment: PostCommentType;
@@ -33,7 +31,7 @@ export const Comment = ({
 	onUnLikeComment,
 }: Props) => {
 	const userId = useAppSelector(getUserId);
-	const isLiked = comment.likesIds.includes(userId); 
+	const isLiked = comment.likesIds.includes(userId);
 
 	const onEdit = () => {
 		handleEditOpen(comment._id, comment.text);
@@ -61,32 +59,26 @@ export const Comment = ({
 				}}
 			>
 				<div className={styles.comment}>
-					<ListItemAvatar>
-						<Avatar
-							alt={comment.author.nickName}
-							src={`${PathsEnum.Server}${comment.author.avatarUrl}`}
-						/>
-					</ListItemAvatar>
+					<UserInfo
+						avatarUrl={comment.author.avatarUrl}
+						fullName={comment.author.fullName}
+						nickName={comment.author.nickName}
+					/>
 
-					<div>
-						<ListItemText
-							style={{ marginTop: '0', whiteSpace: 'pre-line' }}
-							primary={comment.author.fullName}
-							secondary={comment.text}
-						/>
-						<div onClick={isLiked ? onUnlike : onLike} className={styles.likes}>
-							{isLiked ? (
-								<SvgIcon fontSize='small' htmlColor='red'>
-									<FavoriteIcon />
-								</SvgIcon>
-							) : (
-								<SvgIcon fontSize='small'>
-									<FavoriteBorderIcon />
-								</SvgIcon>
-							)}
+					<ListItemText className={styles.text} primary={comment.text} />
 
-							<span>{comment.likesCount}</span>
-						</div>
+					<div onClick={isLiked ? onUnlike : onLike} className={styles.likes}>
+						{isLiked ? (
+							<SvgIcon fontSize='small' htmlColor='red'>
+								<FavoriteIcon />
+							</SvgIcon>
+						) : (
+							<SvgIcon fontSize='small'>
+								<FavoriteBorderIcon />
+							</SvgIcon>
+						)}
+
+						<span>{comment.likesCount}</span>
 					</div>
 				</div>
 
