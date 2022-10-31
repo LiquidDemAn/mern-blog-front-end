@@ -20,6 +20,7 @@ import { ErrorDialog } from '../../components/dialogs/error';
 import { Loader } from '../../components/common/loader';
 
 import { ProfileView } from './view';
+import { resetErrors } from '../../redux/services/user/user.slice';
 
 export const Profile = () => {
 	const { nickName } = useParams();
@@ -28,7 +29,6 @@ export const Profile = () => {
 
 	const [tabValue, setTabValue] = useState(TabsEnum.FindPerson);
 	const [user, setUser] = useState<UserDataType | null>(null);
-	const [openError, setOpenError] = useState(false);
 	const [foundUsers, setFoundUsers] = useState<FoundUserType[] | null>(null);
 	const [profileError, setProfileError] = useState<AxiosError | null>(null);
 	const [foundUsersLoading, setFoundUsersLoading] = useState(false);
@@ -48,13 +48,17 @@ export const Profile = () => {
 	};
 
 	const handleErrorClose = () => {
-		setOpenError(false);
-		setProfileError(null);
+		if (profileError) {
+			setProfileError(null);
+		}
+
+		if (logedUserError) {
+			dispatch(resetErrors());
+		}
 	};
 
 	useEffect(() => {
 		if (profileError) {
-			setOpenError(true);
 			navigate(`/${logedUser?.nickName}`);
 		}
 	}, [profileError, logedUser?.nickName, navigate]);
@@ -93,9 +97,10 @@ export const Profile = () => {
 				setFoundUsersLoading={setFoundUsersLoading}
 			/>
 
-			{(profileError || logedUserError) && (
-				<ErrorDialog open={openError} handleClose={handleErrorClose} />
-			)}
+			<ErrorDialog
+				open={Boolean(profileError) || Boolean(logedUserError)}
+				handleClose={handleErrorClose}
+			/>
 
 			<Loader open={logedUserLoading || foundUsersLoading} />
 		</>
