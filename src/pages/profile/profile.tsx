@@ -1,5 +1,3 @@
-import styles from './profile.module.scss';
-import { Tab, Tabs, Grid } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
 	getUser,
@@ -17,14 +15,11 @@ import {
 	getPostsLoading,
 	getPostsError,
 } from '../../redux/services/posts/selectors';
-import { TabPanel } from '../../components/common/tab-panel';
-import { Posts } from '../../components/posts/posts-wrapper';
 import { loadUser } from '../../redux/services/user/actions';
 import { ErrorDialog } from '../../components/dialogs/error';
 import { Loader } from '../../components/common/loader';
-import { ProfileCard } from '../../components/user/profile-card';
-import { UsersSearch } from '../../components/user/users-search';
-import { Followers } from '../../components/user/followers';
+
+import { ProfileView } from './view';
 
 export const Profile = () => {
 	const { nickName } = useParams();
@@ -84,77 +79,19 @@ export const Profile = () => {
 
 	return (
 		<>
-			<div className={styles.profile}>
-				<ProfileCard user={user} isLogedUser={isLogedUser} />
-
-				<main className={styles.main}>
-					<Tabs
-						className={styles.tabs}
-						value={tabValue}
-						onChange={handleChange}
-					>
-						<Tab
-							aria-controls={`tabpanel-${TabsEnum.Posts}`}
-							label={TabsEnum.Posts}
-							value={TabsEnum.Posts}
-						/>
-						<Tab
-							aria-controls={`tabpanel-${TabsEnum.Followers}`}
-							label={`${TabsEnum.Followers} (${user?.followers.length})`}
-							value={TabsEnum.Followers}
-						/>
-						<Tab
-							aria-controls={`tabpanel-${TabsEnum.Following}`}
-							label={`${TabsEnum.Following} (${user?.following.length})`}
-							value={TabsEnum.Following}
-						/>
-
-						{isLogedUser && (
-							<Tab
-								aria-controls={`tabpanel-${TabsEnum.FindPerson}`}
-								label={`${TabsEnum.FindPerson} ${
-									foundUsers ? `(${foundUsers.length})` : ''
-								} `}
-								value={TabsEnum.FindPerson}
-							/>
-						)}
-					</Tabs>
-
-					<Grid>
-						{/* Posts */}
-						<TabPanel value={tabValue} index={TabsEnum.Posts}>
-							<Posts
-								error={postsError}
-								isLoading={postsLoading}
-								posts={posts}
-							/>
-						</TabPanel>
-
-						{/* Followers */}
-						<TabPanel value={tabValue} index={TabsEnum.Followers}>
-							<Followers followers={user?.followers} />
-						</TabPanel>
-
-						{/* Following */}
-						<TabPanel value={tabValue} index={TabsEnum.Following}>
-							<Followers followers={user?.following} />
-						</TabPanel>
-
-						{/* Find Person */}
-						{isLogedUser && (
-							<TabPanel value={tabValue} index={TabsEnum.FindPerson}>
-								<UsersSearch
-									setData={setFoundUsers}
-									setError={setProfileError}
-									setLoading={setFoundUsersLoading}
-								/>
-
-								<Followers followers={foundUsers} />
-							</TabPanel>
-						)}
-					</Grid>
-				</main>
-			</div>
+			<ProfileView
+				user={user}
+				posts={posts}
+				foundUsers={foundUsers}
+				tabValue={tabValue}
+				postsError={postsError}
+				isLogedUser={isLogedUser}
+				postsLoading={postsLoading}
+				handleChange={handleChange}
+				setSearchData={setFoundUsers}
+				setProfileError={setProfileError}
+				setFoundUsersLoading={setFoundUsersLoading}
+			/>
 
 			{(profileError || logedUserError) && (
 				<ErrorDialog open={openError} handleClose={handleErrorClose} />

@@ -9,7 +9,7 @@ import { AddComment } from '../../../components/posts/add-comment';
 type Props = {
 	post: FullPostType | null;
 	postError: AxiosError | null;
-	postLoading?: boolean;
+	loading?: boolean;
 	onLikePost: () => void;
 	onUnlikePost: () => void;
 
@@ -24,7 +24,7 @@ export const FullPostView = ({
 	post,
 	postError,
 	onLikePost,
-	postLoading,
+	loading,
 	onUnlikePost,
 
 	onCreateComment,
@@ -66,7 +66,7 @@ export const FullPostView = ({
 
 			<Comments
 				comments={post?.comments}
-				isLoading={postLoading}
+				isLoading={loading}
 				onEditComment={onEditComment}
 				onDeleteComment={onDeleteComment}
 				onlikeComment={onlikeComment}

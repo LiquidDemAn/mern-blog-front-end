@@ -97,7 +97,7 @@ export const FullPost = () => {
 			<FullPostView
 				post={post}
 				postError={postError}
-				postLoading={loading}
+				loading={loading}
 				onLikePost={onLikePost}
 				onUnlikePost={onUnlikePost}
 				onCreateComment={onCreateComment}
