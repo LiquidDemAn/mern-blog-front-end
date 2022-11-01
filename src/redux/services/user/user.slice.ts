@@ -26,7 +26,6 @@ export const userSlice = createSlice({
 			state.validationError = null;
 			state.data = null;
 			removeToken();
-			window.location.replace(PathsEnum.Login);
 		},
 		resetErrors(state) {
 			state.error = null;
