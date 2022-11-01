@@ -1,6 +1,6 @@
 import styles from './profile-card.module.scss';
 import { Avatar } from '@mui/material';
-import { PathsEnum } from '../../../typedef';
+import { BreakpointsEnum, PathsEnum } from '../../../typedef';
 import { FollowBtn } from '../follow-btn';
 import { UserDataType } from '../../../redux/services/user/typedef';
 
@@ -10,10 +10,12 @@ type Props = {
 };
 
 export const ProfileCard = ({ isLogedUser, user }: Props) => {
+	const isSmall = window.innerWidth >= BreakpointsEnum.Small;
+
 	return (
-		<div>
+		<div className={styles.card}>
 			<Avatar
-				sx={{ width: 260, height: 260 }}
+				sx={{ width: isSmall ? 260 : 130, height: isSmall ? 260 : 130 }}
 				src={`${PathsEnum.Server}${user?.avatarUrl}`}
 			/>
 

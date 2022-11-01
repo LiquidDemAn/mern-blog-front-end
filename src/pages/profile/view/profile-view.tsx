@@ -52,6 +52,8 @@ export const ProfileView = ({
 							className={styles.tabs}
 							value={tabValue}
 							onChange={handleChange}
+							variant='scrollable'
+							visibleScrollbar
 						>
 							<Tab
 								aria-controls={`tabpanel-${TabsEnum.Posts}`}
