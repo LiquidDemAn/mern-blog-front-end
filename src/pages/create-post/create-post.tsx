@@ -215,8 +215,6 @@ export const CreatePost = () => {
 		return <Navigate to={PathsEnum.Login} />;
 	}
 
-	console.log(validError);
-
 	return (
 		<>
 			<CreatePostView
