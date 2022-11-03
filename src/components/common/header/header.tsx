@@ -81,7 +81,9 @@ export const Header = () => {
 							<>
 								<Avatar
 									alt={user?.fullName}
-									src={`${PathsEnum.Server}${user?.avatarUrl}`}
+									src={`${process.env.REACT_APP_API_URL || PathsEnum.Server}${
+										user?.avatarUrl
+									}`}
 								/>
 								<SvgIcon htmlColor='black' fontSize='medium'>
 									<ArrowDropDownIcon />

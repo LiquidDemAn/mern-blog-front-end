@@ -23,7 +23,7 @@ export const UserInfo = ({
 			{avatarUrl ? (
 				<Avatar
 					className={styles.avatar}
-					src={PathsEnum.Server + avatarUrl}
+					src={(process.env.REACT_APP_API_URL || PathsEnum.Server) + avatarUrl}
 					alt={fullName}
 				/>
 			) : (

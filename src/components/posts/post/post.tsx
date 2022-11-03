@@ -104,7 +104,10 @@ export const Post = ({
 				{post.imageUrl && (
 					<img
 						className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
-						src={PathsEnum.Server + post.imageUrl}
+						src={
+							(process.env.REACT_APP_API_URL || PathsEnum.Server) +
+							post.imageUrl
+						}
 						alt={post.title}
 					/>
 				)}

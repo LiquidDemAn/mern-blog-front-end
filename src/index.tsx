@@ -4,7 +4,7 @@ import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from './theme';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './redux/store/store';
 
@@ -14,11 +14,11 @@ const root = ReactDOM.createRoot(
 root.render(
 	<ThemeProvider theme={theme}>
 		<CssBaseline />
-		<HashRouter>
+		<BrowserRouter>
 			<Provider store={store}>
 				<App />
 			</Provider>
-		</HashRouter>
+		</BrowserRouter>
 	</ThemeProvider>
 );
 

@@ -16,7 +16,9 @@ export const ProfileCard = ({ isLogedUser, user }: Props) => {
 		<div className={styles.card}>
 			<Avatar
 				sx={{ width: isSmall ? 260 : 130, height: isSmall ? 260 : 130 }}
-				src={`${PathsEnum.Server}${user?.avatarUrl}`}
+				src={`${process.env.REACT_APP_API_URL || PathsEnum.Server}${
+					user?.avatarUrl
+				}`}
 			/>
 
 			<h1 className={styles.names}>

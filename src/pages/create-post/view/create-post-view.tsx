@@ -101,7 +101,13 @@ export const CreatePostView = ({
 						{isEditing ? (
 							<img
 								className={styles.image}
-								src={link ? link : `${PathsEnum.Server}${post.imageUrl}`}
+								src={
+									link
+										? link
+										: `${process.env.REACT_APP_API_URL || PathsEnum.Server}${
+												post.imageUrl
+										  }`
+								}
 								alt='Uploaded'
 							/>
 						) : (

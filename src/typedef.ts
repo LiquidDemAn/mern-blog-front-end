@@ -10,7 +10,7 @@ export enum PathsEnum {
 	Login = '/login',
 	FullPost = 'posts/:id',
 	EditPost = 'posts/:id/edit',
-	
+
 	CreatePost = 'create/post',
 	Tag = 'tags/:tag',
 	Profile = ':nickName',
