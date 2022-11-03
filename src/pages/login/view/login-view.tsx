@@ -32,7 +32,7 @@ export const LoginView = ({
 			onSubmit={onSubmit}
 			title='Login'
 		>
-			{error?.status === 500 ? (
+			{error && error.status === 500 ? (
 				<Alert severity='error' style={{ width: '100%' }}>
 					Something went wrong! Failed to login!
 				</Alert>
@@ -40,7 +40,7 @@ export const LoginView = ({
 				<></>
 			)}
 
-			{error?.status === 400 ? (
+			{error && error.status !== 500 ? (
 				<Alert severity='error' style={{ width: '100%' }}>
 					Login or password do not match
 				</Alert>
@@ -51,7 +51,7 @@ export const LoginView = ({
 			<TextField
 				fullWidth
 				label='Email'
-				error={Boolean(errors.password?.message)}
+				error={Boolean(errors.email?.message)}
 				helperText={errors.email?.message}
 				type='email'
 				id='email'

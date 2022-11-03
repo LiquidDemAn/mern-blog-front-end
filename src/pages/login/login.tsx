@@ -56,7 +56,7 @@ export const Login = () => {
 		if (emailError) {
 			setError('email', {
 				type: 'email',
-				message: 'Eamil is invalid',
+				message: 'Email is invalid',
 			});
 		}
 	}, [setError, emailError]);

@@ -25,7 +25,7 @@ export const AddComment = ({ createComment }: Props) => {
 			<div className={styles.root}>
 				<Avatar
 					classes={{ root: styles.avatar }}
-					src={process.env.REACT_APP_API_URL || PathsEnum.Server + userAvatar}
+					src={(process.env.REACT_APP_API_URL || PathsEnum.Server) + userAvatar}
 				/>
 				<div className={styles.form}>
 					<TextField
