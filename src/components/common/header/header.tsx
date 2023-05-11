@@ -2,7 +2,6 @@ import styles from './header.module.scss';
 import { MouseEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispach } from 'redux/store/hooks';
-import { logOut } from 'redux/services/user/user.slice';
 import { PathsEnum } from 'typedef';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -18,10 +17,9 @@ import {
 import { useSelf } from 'hooks/useSelf';
 
 export const Header = () => {
-  const dispatch = useAppDispach();
   const navigate = useNavigate();
 
-  const { self, isAuth } = useSelf();
+  const { self, isAuth, logout } = useSelf();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -51,7 +49,7 @@ export const Header = () => {
   };
 
   const onLogOut = () => {
-    dispatch(logOut());
+    logout();
   };
 
   const onCreatePost = () => {

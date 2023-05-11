@@ -1,18 +1,15 @@
-import { useAppDispach, useAppSelector } from "redux/store/hooks";
+import { useAppDispach, useAppSelector } from 'redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { ParamsEnum, RegisterType } from "redux/services/user/typedef";
+import { ParamsEnum, RegisterType } from 'redux/services/user/typedef';
 import { Navigate } from 'react-router-dom';
 import {
   getUserError,
-  getUserLoading,
   getUserValidationParams
 } from '../../redux/services/user/selectors';
-import { registerUser } from '../../redux/services/user/actions';
 import { useState, useEffect } from 'react';
 import { resetErrors } from '../../redux/services/user/user.slice';
-import { Loader } from '../../components/common/loader';
 import { RegistrationView } from './view';
-import { PathsEnum } from '../../typedef';
+import { PathsEnum } from 'typedef';
 import { useSelf } from 'hooks/useSelf';
 
 export const Registration = () => {
@@ -33,10 +30,9 @@ export const Registration = () => {
     },
     mode: 'onChange'
   });
-  const { isAuth } = useSelf();
+  const { isAuth, register: onRegister } = useSelf();
 
   const dispatch = useAppDispach();
-  const loading = useAppSelector(getUserLoading);
   const error = useAppSelector(getUserError);
   const params = useAppSelector(getUserValidationParams);
 
@@ -89,14 +85,9 @@ export const Registration = () => {
 
   const onSubmit = (values: RegisterType) => {
     if (avatar) {
-      dispatch(
-        registerUser({
-          ...values,
-          avatarUrl: avatar
-        })
-      );
+      onRegister({ ...values, avatarUrl: avatar });
     } else {
-      dispatch(registerUser(values));
+      onRegister(values);
     }
   };
 
@@ -105,18 +96,14 @@ export const Registration = () => {
   }
 
   return (
-    <>
-      <RegistrationView
-        isValid={isValid}
-        errors={errors}
-        error={error}
-        handleSubmit={handleSubmit}
-        register={register}
-        onSubmit={onSubmit}
-        setAvatar={setAvatar}
-      />
-
-      <Loader open={loading} />
-    </>
+    <RegistrationView
+      isValid={isValid}
+      errors={errors}
+      error={error}
+      handleSubmit={handleSubmit}
+      register={register}
+      onSubmit={onSubmit}
+      setAvatar={setAvatar}
+    />
   );
 };

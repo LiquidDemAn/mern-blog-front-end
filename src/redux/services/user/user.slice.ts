@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { UserErrorType, UserStateType } from './typedef';
-import { registerUser, follow, unFollow } from './actions';
-import { removeToken } from 'local-storage';
+import { UserStateType } from './typedef';
+import { follow, unFollow } from './actions';
 
 const initialState: UserStateType = {
   data: null,
@@ -14,12 +13,6 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    logOut(state) {
-      state.error = null;
-      state.validationError = null;
-      state.data = null;
-      removeToken();
-    },
     resetErrors(state) {
       state.error = null;
       state.validationError = null;
@@ -27,32 +20,11 @@ export const userSlice = createSlice({
   },
   extraReducers: (bulider) =>
     bulider
-      // CheckAuth
-      // Register
-      .addCase(registerUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-        state.validationError = null;
-      })
-      .addCase(registerUser.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.error = null;
-        state.validationError = null;
-        state.data = payload;
-      })
-      .addCase(registerUser.rejected, (state, { payload }) => {
-        const value = payload as UserErrorType;
-
-        state.loading = false;
-        state.validationError = value.status === 403 ? value : null;
-        state.error = value.status !== 403 ? value : null;
-      })
-
       // follow
       .addCase(follow.pending, (state) => {
         state.error = null;
       })
-      .addCase(follow.fulfilled, (state, { payload, meta }) => {
+      .addCase(follow.fulfilled, (state, { payload }) => {
         state.error = null;
 
         if (payload) {
@@ -68,7 +40,7 @@ export const userSlice = createSlice({
       .addCase(unFollow.pending, (state) => {
         state.error = null;
       })
-      .addCase(unFollow.fulfilled, (state, { payload, meta }) => {
+      .addCase(unFollow.fulfilled, (state, { payload }) => {
         state.error = null;
 
         if (payload && state.data?.following) {
@@ -83,4 +55,4 @@ export const userSlice = createSlice({
       })
 });
 
-export const { logOut, resetErrors } = userSlice.actions;
+export const { resetErrors } = userSlice.actions;

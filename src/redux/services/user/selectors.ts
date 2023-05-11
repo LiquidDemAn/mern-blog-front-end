@@ -1,8 +1,6 @@
 import { AppState } from '../../store/typedef';
 import { UserErrorType, UserValidtionErrorType } from './typedef';
 
-export const getUserLoading = (state: AppState) => state.user.loading;
-
 export const getUserError = (state: AppState) => {
   return state.user.error as UserErrorType | null;
 };

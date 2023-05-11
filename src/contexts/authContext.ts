@@ -1,12 +1,14 @@
 import { createContext } from 'react';
-import { LoginType, UserDataType } from './types';
+import { LoginType, RegisterType, UserDataType } from 'components/Auth/types';
 
 export type AuthContext = {
   self: UserDataType | null;
   isAuth: boolean;
   selfId: string;
   isSelfLoading: boolean;
+  register: (params: RegisterType) => void;
   login: (params: LoginType) => void;
+  logout: () => void;
 };
 
 export const authContext = createContext<AuthContext>({
@@ -14,7 +16,9 @@ export const authContext = createContext<AuthContext>({
   isAuth: false,
   selfId: '',
   isSelfLoading: false,
-  login: () => null
+  register: () => null,
+  login: () => null,
+  logout: () => null
 });
 
 export const AuthProvider = authContext.Provider;

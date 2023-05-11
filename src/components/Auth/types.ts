@@ -15,7 +15,7 @@ export type FollowerType = {
   _id: string;
   fullName: string;
   nickName: string;
-  avatarUrl?: string;
+  avatarUrl: string;
 };
 
 export type UserDataType = {
@@ -30,19 +30,12 @@ export type UserDataType = {
   token: string;
 };
 
-export type UserStateType = {
-  data: null | UserDataType;
-  loading: boolean;
-  error: null | unknown;
-  validationError: null | unknown;
-};
-
 export enum ParamsEnum {
   Password = 'password',
   Email = 'email',
   FullName = 'fullName',
   NickName = 'nickName',
-  AvatarUrl = 'avatarUrl',
+  AvatarUrl = 'avatarUrl'
 }
 
 export type UserValidtionErrorType = {

@@ -1,15 +1,8 @@
 import { customeAxios } from '../../axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  UserDataType,
-  LoginType,
-  RegisterType,
-  FollowerType,
-  FoundUserType
-} from './typedef';
-import { setToken } from '../../../local-storage';
+import { UserDataType, FollowerType, FoundUserType } from './typedef';
 import { AxiosError } from 'axios';
-import { FindUsersEnum } from '../../../typedef';
+import { FindUsersEnum } from 'typedef';
 
 export const loadUser = createAsyncThunk<
   void,
@@ -28,36 +21,6 @@ export const loadUser = createAsyncThunk<
     setProfileError(error);
   }
 });
-
-export const registerUser = createAsyncThunk<UserDataType, RegisterType>(
-  'user/register',
-  async (params, { rejectWithValue }) => {
-    try {
-      const avatar = params.avatarUrl;
-
-      if (avatar) {
-        const { data } = await customeAxios.post('/upload/avatar', { avatar });
-        params.avatarUrl = data.url;
-      }
-
-      const response = await customeAxios.post('/auth/register', params);
-      const data = response.data as UserDataType;
-
-      if (data.token) {
-        setToken(data.token);
-      }
-
-      return data;
-    } catch (err) {
-      const error = err as AxiosError;
-
-      return rejectWithValue({
-        data: error.response?.data,
-        status: error.response?.status
-      });
-    }
-  }
-);
 
 export const follow = createAsyncThunk<FollowerType | undefined, string>(
   'user/follow',

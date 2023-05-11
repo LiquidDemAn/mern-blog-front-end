@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { getUserError, getUserLoading } from 'redux/services/user/selectors';
+import { getUserError } from 'redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from 'redux/store/hooks';
 import { TabsEnum } from 'typedef';
 import { SyntheticEvent, useEffect, useState } from 'react';
@@ -36,7 +36,6 @@ export const Profile = () => {
 
   const { self } = useSelf();
   const logedUserError = useAppSelector(getUserError);
-  const logedUserLoading = useAppSelector(getUserLoading);
 
   const isSelf = nickName === self?.nickName;
 
@@ -99,7 +98,7 @@ export const Profile = () => {
         handleClose={handleErrorClose}
       />
 
-      <Loader open={logedUserLoading || foundUsersLoading} />
+      <Loader open={foundUsersLoading} />
     </>
   );
 };

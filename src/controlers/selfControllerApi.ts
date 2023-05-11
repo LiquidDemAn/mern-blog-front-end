@@ -1,5 +1,6 @@
 import { customeAxios } from 'redux/axios';
-import { LoginType, UserDataType } from 'contexts/types';
+import { LoginType, RegisterType, UserDataType } from 'components/Auth/types';
+import { setToken } from 'local-storage';
 
 export const getSelfApi = async () => {
   const { data } = await customeAxios.get<UserDataType>('/auth/me');
@@ -7,9 +8,23 @@ export const getSelfApi = async () => {
 };
 
 export const loginApi = async (params: LoginType) => {
-  const { data } = await customeAxios.post<UserDataType & { token: string }>(
-    '/auth/login',
-    params
-  );
+  const { data } = await customeAxios.post<string>('/auth/login', params);
+  return data;
+};
+
+export const registerApi = async (params: RegisterType) => {
+  const avatar = params.avatarUrl;
+
+  if (avatar) {
+    const { data } = await customeAxios.post('/upload/avatar', { avatar });
+    params.avatarUrl = data;
+  }
+
+  const { data } = await customeAxios.post<string>('/auth/register', params);
+
+  if (data) {
+    setToken(data);
+  }
+
   return data;
 };
