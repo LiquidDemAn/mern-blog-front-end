@@ -1,8 +1,9 @@
 import { customeAxios } from '../../axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { UserDataType, FollowerType, FoundUserType } from './typedef';
+import { UserDataType, FoundUserType } from './typedef';
 import { AxiosError } from 'axios';
 import { FindUsersEnum } from 'typedef';
+import { FollowerType } from 'api/models/FollowerType';
 
 export const loadUser = createAsyncThunk<
   void,
@@ -38,24 +39,6 @@ export const follow = createAsyncThunk<FollowerType | undefined, string>(
     }
   }
 );
-
-export const unFollow = createAsyncThunk<string | undefined, string>(
-  'user/unFollow',
-  async (id, { rejectWithValue }) => {
-    try {
-      await customeAxios.patch(`/user/unfollow/${id}`);
-      return id;
-    } catch (err) {
-      const error = err as AxiosError;
-
-      return rejectWithValue({
-        data: error.response?.data,
-        status: error.response?.status
-      });
-    }
-  }
-);
-
 export const findUsers = createAsyncThunk<
   void,
   {

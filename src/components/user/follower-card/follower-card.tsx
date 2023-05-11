@@ -1,11 +1,9 @@
 import styles from './follower-card.module.scss';
-import {
-  FollowerType,
-  FoundUserType
-} from '../../../redux/services/user/typedef';
+import { FoundUserType } from '../../../redux/services/user/typedef';
 import { UserInfo } from '../user-info';
-import { FollowBtn } from '../follow-btn';
 import { useSelf } from 'hooks/useSelf';
+import FollowBtn from 'components/FollowBtn';
+import { FollowerType } from 'api/models/FollowerType';
 
 type Props = {
   follower: FollowerType | FoundUserType;

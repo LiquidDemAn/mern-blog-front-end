@@ -1,6 +1,6 @@
 import { useAppDispach, useAppSelector } from 'redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { ParamsEnum, RegisterType } from 'redux/services/user/typedef';
+import { ParamsEnum } from 'redux/services/user/typedef';
 import { Navigate } from 'react-router-dom';
 import {
   getUserError,
@@ -11,6 +11,7 @@ import { resetErrors } from '../../redux/services/user/user.slice';
 import { RegistrationView } from './view';
 import { PathsEnum } from 'typedef';
 import { useSelf } from 'hooks/useSelf';
+import { RegisterType } from 'components/Auth/types';
 
 export const Registration = () => {
   const [avatar, setAvatar] = useState('');

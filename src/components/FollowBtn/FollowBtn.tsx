@@ -1,28 +1,24 @@
-import { Button } from '@mui/material';
-import { follow, unFollow } from '../../../redux/services/user/actions';
-import { useAppDispach, useAppSelector } from '../../../redux/store/hooks';
+import { FC } from 'react';
 import { useSelf } from 'hooks/useSelf';
+import { Button } from '@mui/material';
+import { Props } from './types';
+import { useApi } from 'components/FollowBtn/useApi';
 
-type Props = {
-  id?: string;
-  isFullWidth?: boolean;
-};
-
-export const FollowBtn = ({ id, isFullWidth }: Props) => {
-  const dispatch = useAppDispach();
+const FollowBtn: FC<Props> = ({ id, isFullWidth }) => {
   const { self } = useSelf();
   const isFollow = !!self?.following.find((item) => item._id === id);
 
-  console.log(isFollow);
+  const { follow, unFollow } = useApi();
+
   const onFollow = () => {
     if (id) {
-      dispatch(follow(id));
+      follow.mutate(id);
     }
   };
 
   const onUnFollow = () => {
     if (id) {
-      dispatch(unFollow(id));
+      unFollow.mutate(id);
     }
   };
 
@@ -36,3 +32,5 @@ export const FollowBtn = ({ id, isFullWidth }: Props) => {
     </Button>
   );
 };
+
+export default FollowBtn;

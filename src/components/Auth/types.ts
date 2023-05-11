@@ -1,3 +1,5 @@
+import { FollowerType } from 'api/models/FollowerType';
+
 export type LoginType = {
   email: string;
   password: string;
@@ -6,13 +8,6 @@ export type LoginType = {
 export type RegisterType = {
   email: string;
   password: string;
-  fullName: string;
-  nickName: string;
-  avatarUrl: string;
-};
-
-export type FollowerType = {
-  _id: string;
   fullName: string;
   nickName: string;
   avatarUrl: string;

@@ -1,6 +1,6 @@
 import { useAppDispach, useAppSelector } from 'redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { LoginType, ParamsEnum } from 'redux/services/user/typedef';
+import { ParamsEnum } from 'redux/services/user/typedef';
 import {
   getUserError,
   getUserValidationParams
@@ -12,6 +12,7 @@ import { Loader } from 'components/common/loader';
 import { LoginView } from './view';
 import { PathsEnum } from 'typedef';
 import { useSelf } from 'hooks/useSelf';
+import { LoginType } from 'components/Auth/types';
 
 export const Login = () => {
   const dispatch = useAppDispach();

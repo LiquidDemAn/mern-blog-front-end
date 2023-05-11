@@ -1,7 +1,6 @@
 import styles from './header.module.scss';
 import { MouseEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispach } from 'redux/store/hooks';
 import { PathsEnum } from 'typedef';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import MenuIcon from '@mui/icons-material/Menu';

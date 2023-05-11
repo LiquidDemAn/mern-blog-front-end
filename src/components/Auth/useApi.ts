@@ -4,7 +4,7 @@ import {
   getSelfApi,
   loginApi,
   registerApi
-} from 'controlers/selfControllerApi';
+} from 'api/controllers/selfController';
 import { queryClient } from 'index';
 import { setToken } from 'local-storage';
 import { UserDataType } from 'components/Auth/types';
