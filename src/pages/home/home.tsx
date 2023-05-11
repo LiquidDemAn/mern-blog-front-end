@@ -1,74 +1,76 @@
-import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
-import { useEffect, useState, SyntheticEvent } from 'react';
-import { loadPosts } from '../../redux/services/posts/actions';
-import {
-	getPostError,
-	getPostsLoading,
-} from '../../redux/services/posts/selectors';
-import { loadTags } from '../../redux/services/tags/actions';
-import { getIsAuth, getUserName } from '../../redux/services/user/selectors';
-import { PathsEnum, TabsEnum } from '../../typedef';
-import { Loader } from '../../components/common/loader';
-import { removePostError } from '../../redux/services/posts/posts.slice';
+import { useAppDispach, useAppSelector } from 'redux/store/hooks';
+import { useEffect, useState, SyntheticEvent, useContext } from 'react';
+import { loadPosts } from 'redux/services/posts/actions';
+import { getPostError, getPostsLoading } from 'redux/services/posts/selectors';
+import { loadTags } from 'redux/services/tags/actions';
+import { getIsAuth, getUserName } from 'redux/services/user/selectors';
+import { PathsEnum, TabsEnum } from 'typedef';
+import { Loader } from 'components/common/loader';
+import { removePostError } from 'redux/services/posts/posts.slice';
 import { HomeView } from './view';
-import { getToken } from '../../local-storage';
+import { getToken } from 'local-storage';
 import { useNavigate } from 'react-router-dom';
-import { ErrorDialog } from '../../components/dialogs/error';
+import { ErrorDialog } from 'components/dialogs/error';
+import { authContext } from 'contexts/authContext';
 
 export const Home = () => {
-	const dispatch = useAppDispach();
-	const navigate = useNavigate();
+  const dispatch = useAppDispach();
+  const navigate = useNavigate();
 
-	const isToken = Boolean(getToken());
-	const isAuth = useAppSelector(getIsAuth);
+  const { self } = useContext(authContext);
 
-	const [value, setValue] = useState(TabsEnum.New);
+  console.log(self);
 
-	const userName = useAppSelector(getUserName);
-	const error = useAppSelector(getPostError);
-	const loading = useAppSelector(getPostsLoading);
+  const isToken = Boolean(getToken());
+  const isAuth = useAppSelector(getIsAuth);
 
-	const handleClose = () => {
-		dispatch(removePostError());
-	};
+  const [value, setValue] = useState(TabsEnum.New);
 
-	const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
-		setValue(newValue);
-	};
+  const userName = useAppSelector(getUserName);
+  const error = useAppSelector(getPostError);
+  const loading = useAppSelector(getPostsLoading);
 
-	useEffect(() => {
-		if (!isToken) {
-			navigate(PathsEnum.Login);
-		}
-	}, [isToken, navigate]);
+  const handleClose = () => {
+    dispatch(removePostError());
+  };
 
-	useEffect(() => {
-		if (value === TabsEnum.New) {
-			dispatch(loadPosts('/posts'));
-		}
+  const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
+    setValue(newValue);
+  };
 
-		if (value === TabsEnum.Popular) {
-			dispatch(loadPosts('/posts/popular'));
-		}
-	}, [dispatch, value]);
+  useEffect(() => {
+    if (!isToken) {
+      navigate(PathsEnum.Login);
+    }
+  }, [isToken, navigate]);
 
-	useEffect(() => {
-		dispatch(loadTags());
-	}, [dispatch]);
+  useEffect(() => {
+    if (value === TabsEnum.New) {
+      dispatch(loadPosts('/posts'));
+    }
 
-	return (
-		<>
-			{isAuth && (
-				<HomeView
-					userName={userName}
-					value={value}
-					handleChange={handleChange}
-				/>
-			)}
+    if (value === TabsEnum.Popular) {
+      dispatch(loadPosts('/posts/popular'));
+    }
+  }, [dispatch, value]);
 
-			<ErrorDialog open={Boolean(error)} handleClose={handleClose} />
+  useEffect(() => {
+    dispatch(loadTags());
+  }, [dispatch]);
 
-			<Loader open={loading} />
-		</>
-	);
+  return (
+    <>
+      {isAuth && (
+        <HomeView
+          userName={userName}
+          value={value}
+          handleChange={handleChange}
+        />
+      )}
+
+      <ErrorDialog open={Boolean(error)} handleClose={handleClose} />
+
+      <Loader open={loading} />
+    </>
+  );
 };
