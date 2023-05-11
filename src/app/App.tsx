@@ -6,25 +6,26 @@ import { FullPost } from 'pages/full-post';
 import { Home } from 'pages/home';
 import { Login } from 'pages/login';
 import { Registration } from 'pages/registration';
-import { checkUserAuth } from 'redux/services/user/actions';
-import { useAppDispach, useAppSelector } from 'redux/store/hooks';
+import { useAppDispach } from 'redux/store/hooks';
 import { Tag } from 'pages/tag';
 import { PathsEnum } from 'typedef';
 import { NotFoundPage } from 'pages/not-found';
 import { Profile } from 'pages/profile';
-import { getUserLoading } from 'redux/services/user/selectors';
 import { Loader } from 'components/common/loader';
 import { useApi } from 'app/useApi';
 import { AuthContext, AuthProvider } from 'contexts/authContext';
-import { UserDataType } from 'contexts/types';
+import { LoginType, UserDataType } from 'contexts/types';
 
 function App() {
   const [self, setSelf] = useState<UserDataType | null>(null);
-  const dispatch = useAppDispach();
-  const isLoading = useAppSelector(getUserLoading);
-  const { getSelfQuery } = useApi();
+  const isAuth = !!self;
+  const { getSelfQuery, onLogin } = useApi();
 
   console.log(getSelfQuery.data);
+
+  const login = (params: LoginType) => {
+    onLogin.mutate(params);
+  };
 
   useEffect(() => {
     if (!getSelfQuery?.data) {
@@ -35,12 +36,12 @@ function App() {
   }, [getSelfQuery.data]);
 
   const authProviderValue: AuthContext = {
-    self
+    self,
+    isAuth,
+    selfId: self?._id || '',
+    isSelfLoading: getSelfQuery.isLoading,
+    login
   };
-
-  useEffect(() => {
-    dispatch(checkUserAuth());
-  }, [dispatch]);
 
   return (
     <AuthProvider value={authProviderValue}>
@@ -57,7 +58,7 @@ function App() {
           <Route path={PathsEnum.Profile} element={<Profile />} />
         </Route>
       </Routes>
-      <Loader open={isLoading} />;
+      <Loader open={getSelfQuery.isLoading} />;
     </AuthProvider>
   );
 }

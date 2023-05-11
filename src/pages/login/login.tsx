@@ -1,88 +1,87 @@
-import { loginUser } from '../../redux/services/user/actions';
-import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
+import { useAppDispach, useAppSelector } from 'redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { LoginType, ParamsEnum } from '../../redux/services/user/typedef';
+import { LoginType, ParamsEnum } from 'redux/services/user/typedef';
 import {
-	getUserError,
-	getUserLoading,
-	getUserValidationParams,
-	getIsAuth,
-} from '../../redux/services/user/selectors';
+  getUserError,
+  getUserValidationParams
+} from 'redux/services/user/selectors';
 import { Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { resetErrors } from '../../redux/services/user/user.slice';
-import { Loader } from '../../components/common/loader';
+import { resetErrors } from 'redux/services/user/user.slice';
+import { Loader } from 'components/common/loader';
 import { LoginView } from './view';
-import { PathsEnum } from '../../typedef';
+import { PathsEnum } from 'typedef';
+import { useSelf } from 'hooks/useSelf';
 
 export const Login = () => {
-	const dispatch = useAppDispach();
+  const dispatch = useAppDispach();
 
-	const isAuth = useAppSelector(getIsAuth);
-	const loading = useAppSelector(getUserLoading);
-	const error = useAppSelector(getUserError);
-	const params = useAppSelector(getUserValidationParams);
+  const { isAuth, isSelfLoading } = useSelf();
+  const error = useAppSelector(getUserError);
+  const params = useAppSelector(getUserValidationParams);
 
-	const emailError = params?.includes(ParamsEnum.Email);
-	const passwordError = params?.includes(ParamsEnum.Password);
+  const emailError = params?.includes(ParamsEnum.Email);
+  const passwordError = params?.includes(ParamsEnum.Password);
 
-	const {
-		register,
-		handleSubmit,
-		setError,
-		formState: { errors, isValid },
-	} = useForm({
-		defaultValues: {
-			email: '',
-			password: '',
-		},
-		mode: 'onChange',
-	});
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isValid }
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+    mode: 'onChange'
+  });
 
-	const onSubmit = (values: LoginType) => {
-		dispatch(loginUser(values));
-	};
+  const { login } = useSelf();
 
-	useEffect(() => {
-		if (passwordError) {
-			setError('password', {
-				type: 'password',
-				message: 'Password must be at least 5 characters long',
-			});
-		}
-	}, [setError, passwordError]);
+  const onSubmit = (values: LoginType) => {
+    login(values);
+  };
 
-	useEffect(() => {
-		if (emailError) {
-			setError('email', {
-				type: 'email',
-				message: 'Email is invalid',
-			});
-		}
-	}, [setError, emailError]);
+  useEffect(() => {
+    if (passwordError) {
+      setError('password', {
+        type: 'password',
+        message: 'Password must be at least 5 characters long'
+      });
+    }
+  }, [setError, passwordError]);
 
-	useEffect(() => {
-		return () => {
-			dispatch(resetErrors());
-		};
-	}, [dispatch]);
+  useEffect(() => {
+    if (emailError) {
+      setError('email', {
+        type: 'email',
+        message: 'Email is invalid'
+      });
+    }
+  }, [setError, emailError]);
 
-	if (isAuth) {
-		return <Navigate to={PathsEnum.Home} />;
-	}
+  useEffect(() => {
+    return () => {
+      dispatch(resetErrors());
+    };
+  }, [dispatch]);
 
-	return (
-		<>
-			<LoginView
-				isValid={isValid}
-				errors={errors}
-				error={error}
-				handleSubmit={handleSubmit}
-				register={register}
-				onSubmit={onSubmit}
-			/>
+  if (isAuth) {
+    return <Navigate to={PathsEnum.Home} />;
+  }
 
-			<Loader open={loading} />
-		</>
-	);
+  return (
+    <>
+      <LoginView
+        isValid={isValid}
+        errors={errors}
+        error={error}
+        handleSubmit={handleSubmit}
+        register={register}
+        onSubmit={onSubmit}
+      />
+
+      <Loader open={isSelfLoading} />
+    </>
+  );
 };

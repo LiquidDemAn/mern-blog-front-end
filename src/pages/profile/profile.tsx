@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getUserError, getUserLoading } from 'redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from 'redux/store/hooks';
 import { TabsEnum } from 'typedef';
-import { SyntheticEvent, useContext, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { FoundUserType, UserDataType } from 'redux/services/user/typedef';
 import { AxiosError } from 'axios';
 import { loadPosts } from 'redux/services/posts/actions';
@@ -17,7 +17,7 @@ import { Loader } from 'components/common/loader';
 
 import { ProfileView } from './view';
 import { resetErrors } from 'redux/services/user/user.slice';
-import { authContext } from 'contexts/authContext';
+import { useSelf } from 'hooks/useSelf';
 
 export const Profile = () => {
   const { nickName } = useParams();
@@ -34,7 +34,7 @@ export const Profile = () => {
   const postsLoading = useAppSelector(getPostsLoading);
   const postsError = useAppSelector(getPostsError);
 
-  const { self } = useContext(authContext);
+  const { self } = useSelf();
   const logedUserError = useAppSelector(getUserError);
   const logedUserLoading = useAppSelector(getUserLoading);
 

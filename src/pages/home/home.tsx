@@ -1,9 +1,8 @@
 import { useAppDispach, useAppSelector } from 'redux/store/hooks';
-import { useEffect, useState, SyntheticEvent, useContext } from 'react';
+import { useEffect, useState, SyntheticEvent } from 'react';
 import { loadPosts } from 'redux/services/posts/actions';
 import { getPostError, getPostsLoading } from 'redux/services/posts/selectors';
 import { loadTags } from 'redux/services/tags/actions';
-import { getIsAuth, getUserName } from 'redux/services/user/selectors';
 import { PathsEnum, TabsEnum } from 'typedef';
 import { Loader } from 'components/common/loader';
 import { removePostError } from 'redux/services/posts/posts.slice';
@@ -11,22 +10,21 @@ import { HomeView } from './view';
 import { getToken } from 'local-storage';
 import { useNavigate } from 'react-router-dom';
 import { ErrorDialog } from 'components/dialogs/error';
-import { authContext } from 'contexts/authContext';
+import { useSelf } from 'hooks/useSelf';
 
 export const Home = () => {
   const dispatch = useAppDispach();
   const navigate = useNavigate();
 
-  const { self } = useContext(authContext);
+  const { self } = useSelf();
 
   console.log(self);
 
   const isToken = Boolean(getToken());
-  const isAuth = useAppSelector(getIsAuth);
+  const { isAuth } = useSelf();
 
   const [value, setValue] = useState(TabsEnum.New);
 
-  const userName = useAppSelector(getUserName);
   const error = useAppSelector(getPostError);
   const loading = useAppSelector(getPostsLoading);
 
@@ -62,7 +60,7 @@ export const Home = () => {
     <>
       {isAuth && (
         <HomeView
-          userName={userName}
+          userName={self?.fullName}
           value={value}
           handleChange={handleChange}
         />

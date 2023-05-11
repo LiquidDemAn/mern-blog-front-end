@@ -1,12 +1,11 @@
 import styles from './header.module.scss';
-import { MouseEvent, useContext, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispach, useAppSelector } from 'redux/store/hooks';
+import { useAppDispach } from 'redux/store/hooks';
 import { logOut } from 'redux/services/user/user.slice';
 import { PathsEnum } from 'typedef';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import MenuIcon from '@mui/icons-material/Menu';
-import { getIsAuth } from 'redux/services/user/selectors';
 
 import {
   Avatar,
@@ -16,15 +15,13 @@ import {
   MenuItem,
   SvgIcon
 } from '@mui/material';
-import { authContext } from 'contexts/authContext';
+import { useSelf } from 'hooks/useSelf';
 
 export const Header = () => {
   const dispatch = useAppDispach();
   const navigate = useNavigate();
 
-  const isAuth = useAppSelector(getIsAuth);
-  // const user = useAppSelector(getUser);
-  const { self } = useContext(authContext);
+  const { self, isAuth } = useSelf();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
