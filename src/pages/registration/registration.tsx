@@ -5,9 +5,9 @@ import { Navigate } from 'react-router-dom';
 import {
   getUserError,
   getUserValidationParams
-} from '../../redux/services/user/selectors';
+} from "redux/services/user/selectors";
 import { useState, useEffect } from 'react';
-import { resetErrors } from '../../redux/services/user/user.slice';
+import { resetErrors } from "redux/services/user/user.slice";
 import { RegistrationView } from './view';
 import { PathsEnum } from 'typedef';
 import { useSelf } from 'hooks/useSelf';
