@@ -3,7 +3,7 @@ import { getUserError } from 'redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from 'redux/store/hooks';
 import { TabsEnum } from 'typedef';
 import { SyntheticEvent, useEffect, useState } from 'react';
-import { FoundUserType, UserDataType } from 'redux/services/user/typedef';
+import { FoundUserType } from 'redux/services/user/typedef';
 import { AxiosError } from 'axios';
 import { loadPosts } from 'redux/services/posts/actions';
 import {
@@ -11,13 +11,14 @@ import {
   getPostsLoading,
   getPostsError
 } from 'redux/services/posts/selectors';
-import { loadUser } from 'redux/services/user/actions';
 import { ErrorDialog } from 'components/dialogs/error';
 import { Loader } from 'components/common/loader';
 
 import { ProfileView } from './view';
 import { resetErrors } from 'redux/services/user/user.slice';
 import { useSelf } from 'hooks/useSelf';
+import { UserType } from 'api/models/UserType';
+import { useApi } from 'pages/profile/useApi';
 
 export const Profile = () => {
   const { nickName } = useParams();
@@ -25,7 +26,7 @@ export const Profile = () => {
   const navigate = useNavigate();
 
   const [tabValue, setTabValue] = useState(TabsEnum.FindPerson);
-  const [user, setUser] = useState<UserDataType | null>(null);
+  const [user, setUser] = useState<UserType | null>(null);
   const [foundUsers, setFoundUsers] = useState<FoundUserType[] | null>(null);
   const [profileError, setProfileError] = useState<AxiosError | null>(null);
   const [foundUsersLoading, setFoundUsersLoading] = useState(false);
@@ -38,6 +39,8 @@ export const Profile = () => {
   const logedUserError = useAppSelector(getUserError);
 
   const isSelf = nickName === self?.nickName;
+
+  const { getUserByNickNameQuery } = useApi(isSelf, nickName);
 
   const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
     setTabValue(newValue);
@@ -72,10 +75,10 @@ export const Profile = () => {
   useEffect(() => {
     if (isSelf) {
       setUser(self);
-    } else if (nickName) {
-      dispatch(loadUser({ nickName, setUser, setProfileError }));
+    } else {
+      setUser(getUserByNickNameQuery.data || null);
     }
-  }, [isSelf, nickName, self, dispatch]);
+  }, [isSelf, getUserByNickNameQuery.data]);
 
   return (
     <>

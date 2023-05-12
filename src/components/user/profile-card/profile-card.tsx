@@ -1,12 +1,12 @@
 import styles from './profile-card.module.scss';
 import { Avatar } from '@mui/material';
-import { BreakpointsEnum, PathsEnum } from "typedef";
-import { UserDataType } from '../../../redux/services/user/typedef';
+import { BreakpointsEnum, PathsEnum } from 'typedef';
 import FollowBtn from 'components/FollowBtn';
+import { UserType } from 'api/models/UserType';
 
 type Props = {
   isLogedUser: boolean;
-  user: UserDataType | null;
+  user: UserType | null;
 };
 
 export const ProfileCard = ({ isLogedUser, user }: Props) => {

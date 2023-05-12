@@ -1,8 +1,9 @@
 import { createContext } from 'react';
-import { LoginType, RegisterType, UserDataType } from 'components/Auth/types';
+import { LoginType, RegisterType } from 'components/Auth/types';
+import { UserType } from 'api/models/UserType';
 
 export type AuthContext = {
-  self: UserDataType | null;
+  self: UserType | null;
   isAuth: boolean;
   selfId: string;
   isSelfLoading: boolean;

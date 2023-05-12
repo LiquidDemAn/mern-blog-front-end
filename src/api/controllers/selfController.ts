@@ -1,9 +1,10 @@
 import { customeAxios } from 'redux/axios';
-import { LoginType, RegisterType, UserDataType } from 'components/Auth/types';
+import { LoginType, RegisterType } from 'components/Auth/types';
 import { setToken } from 'local-storage';
+import { UserType } from 'api/models/UserType';
 
 export const getSelfApi = async () => {
-  const { data } = await customeAxios.get<UserDataType>('/auth/me');
+  const { data } = await customeAxios.get<UserType>('/auth/me');
   return data;
 };
 

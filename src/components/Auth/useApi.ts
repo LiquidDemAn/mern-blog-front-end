@@ -7,10 +7,10 @@ import {
 } from 'api/controllers/selfController';
 import { queryClient } from 'index';
 import { setToken } from 'local-storage';
-import { UserDataType } from 'components/Auth/types';
+import { UserType } from 'api/models/UserType';
 
 type useApiProps = {
-  setSelf: (self: (UserDataType & { token: string }) | null) => void;
+  setSelf: (self: UserType | null) => void;
 };
 
 export const useApi = ({ setSelf }: useApiProps) => {

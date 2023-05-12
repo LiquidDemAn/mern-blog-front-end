@@ -1,12 +1,13 @@
 import { FC, PropsWithChildren, useEffect, useState } from 'react';
-import { LoginType, RegisterType, UserDataType } from 'components/Auth/types';
+import { LoginType, RegisterType } from 'components/Auth/types';
 import { useApi } from 'components/Auth/useApi';
 import { AuthContext, AuthProvider } from 'contexts/authContext';
 import { Loader } from 'components/common/loader';
 import { removeToken } from 'local-storage';
+import { UserType } from 'api/models/UserType';
 
 const Auth: FC<PropsWithChildren> = ({ children }) => {
-  const [self, setSelf] = useState<UserDataType | null>(null);
+  const [self, setSelf] = useState<UserType | null>(null);
   const { getSelfQuery, onLogin, onRegister } = useApi({ setSelf });
   const isAuth = !!self;
 

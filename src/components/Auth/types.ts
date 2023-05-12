@@ -1,5 +1,3 @@
-import { FollowerType } from 'api/models/FollowerType';
-
 export type LoginType = {
   email: string;
   password: string;
@@ -12,19 +10,6 @@ export type RegisterType = {
   nickName: string;
   avatarUrl: string;
 };
-
-export type UserDataType = {
-  _id: string;
-  fullName: string;
-  nickName: string;
-  email: string;
-  avatarUrl: string;
-  createdAt: string;
-  followers: FollowerType[];
-  following: FollowerType[];
-  token: string;
-};
-
 export enum ParamsEnum {
   Password = 'password',
   Email = 'email',
