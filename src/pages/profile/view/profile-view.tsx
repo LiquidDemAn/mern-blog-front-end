@@ -6,39 +6,39 @@ import { Followers } from 'components/user/followers';
 import { ProfileCard } from 'components/user/profile-card';
 import { UsersSearch } from 'components/user/users-search';
 import { ErrorType, TabsEnum } from 'typedef';
-import { FoundUserType } from 'redux/services/user/typedef';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { PostType } from 'redux/services/posts/typedef';
-import { AxiosError } from 'axios';
-import { UserType } from 'api/models/UserType';
+import { SearchingUsersRequest, UserType } from 'api/models/UserType';
+import { defaultValues } from 'components/user/users-search/utils';
+import { useSearchUsersForm } from 'components/user/users-search/useSearchUsersForm';
+import { useApi } from 'components/user/users-search/useApi';
+import { useWatch } from 'react-hook-form';
 
 type Props = {
   user: UserType | null;
   posts: PostType[];
-  foundUsers: FoundUserType[] | null;
   tabValue: TabsEnum;
   postsError: ErrorType | null;
   isLogedUser: boolean;
   postsLoading: boolean;
   handleChange: (event: SyntheticEvent, newValue: TabsEnum) => void;
-  setSearchData: (data: FoundUserType[] | null) => void;
-  setProfileError: (error: AxiosError | null) => void;
-  setFoundUsersLoading: (value: boolean) => void;
 };
 
 export const ProfileView = ({
   isLogedUser,
   user,
   posts,
-  foundUsers,
   tabValue,
   handleChange,
   postsError,
-  postsLoading,
-  setSearchData,
-  setProfileError,
-  setFoundUsersLoading
+  postsLoading
 }: Props) => {
+  const [filters, setFilters] = useState<SearchingUsersRequest>(defaultValues);
+  const { form, onSubmit } = useSearchUsersForm(setFilters);
+  const { searchUsersQuery } = useApi(filters);
+  const searchType = useWatch({ control: form.control, name: 'searchType' });
+  const foundUsers = searchUsersQuery.data;
+
   return (
     <div className={styles.profile}>
       {user && (
@@ -48,7 +48,7 @@ export const ProfileView = ({
           <main className={styles.main}>
             <Tabs
               className={styles.tabs}
-              value={tabValue}
+              value={tabValue || TabsEnum.Posts}
               onChange={handleChange}
               variant="scrollable"
               visibleScrollbar
@@ -104,12 +104,11 @@ export const ProfileView = ({
               {isLogedUser && (
                 <TabPanel value={tabValue} index={TabsEnum.FindPerson}>
                   <UsersSearch
-                    setData={setSearchData}
-                    setError={setProfileError}
-                    setLoading={setFoundUsersLoading}
+                    searchType={searchType}
+                    onSubmit={onSubmit}
+                    form={form}
                   />
-
-                  <Followers followers={foundUsers} />
+                  <Followers followers={searchUsersQuery.data} />
                 </TabPanel>
               )}
             </Grid>

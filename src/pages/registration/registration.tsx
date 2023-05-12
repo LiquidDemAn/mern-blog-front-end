@@ -1,7 +1,5 @@
-import { useAppSelector } from 'redux/store/hooks';
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
-import { getUserError } from 'redux/services/user/selectors';
 import { useState } from 'react';
 import { RegistrationView } from './view';
 import { PathsEnum } from 'typedef';
@@ -27,8 +25,6 @@ export const Registration = () => {
   });
   const { isAuth, register: onRegister } = useSelf();
 
-  const error = useAppSelector(getUserError);
-
   const onSubmit = (values: RegisterType) => {
     if (avatar) {
       onRegister({ ...values, avatarUrl: avatar });
@@ -45,7 +41,6 @@ export const Registration = () => {
     <RegistrationView
       isValid={isValid}
       errors={errors}
-      error={error}
       handleSubmit={handleSubmit}
       register={register}
       onSubmit={onSubmit}

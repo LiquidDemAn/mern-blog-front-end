@@ -11,3 +11,20 @@ export type UserType = {
   following: FollowerType[];
   token?: string;
 };
+
+export type SearchingUserType = {
+  _id: string;
+  nickName: string;
+  fullName: string;
+  avatarUrl: string;
+};
+
+export enum FindUsersEnum {
+  NickName = 'nickname',
+  FullName = 'fullname'
+}
+
+export type SearchingUsersRequest = {
+  searchType: FindUsersEnum;
+  value: string;
+};

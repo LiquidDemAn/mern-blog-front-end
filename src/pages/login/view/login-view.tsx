@@ -1,18 +1,16 @@
-import { Alert, TextField } from '@mui/material';
-import { AuthForm } from "components/user/auth-form";
+import { TextField } from '@mui/material';
+import { AuthForm } from 'components/user/auth-form';
 import {
   DeepRequired,
   FieldErrorsImpl,
   UseFormHandleSubmit,
   UseFormRegister
 } from 'react-hook-form';
-import { UserErrorType } from '../../../redux/services/user/typedef';
 import { LoginType } from 'components/Auth/types';
 
 type Props = {
   isValid: boolean;
   errors: FieldErrorsImpl<DeepRequired<LoginType>>;
-  error: UserErrorType | null;
   handleSubmit: UseFormHandleSubmit<LoginType>;
   register: UseFormRegister<LoginType>;
   onSubmit: (values: LoginType) => void;
@@ -21,7 +19,6 @@ type Props = {
 export const LoginView = ({
   isValid,
   errors,
-  error,
   handleSubmit,
   register,
   onSubmit
@@ -33,22 +30,6 @@ export const LoginView = ({
       onSubmit={onSubmit}
       title="Login"
     >
-      {error && error.status === 500 ? (
-        <Alert severity="error" style={{ width: '100%' }}>
-          Something went wrong! Failed to login!
-        </Alert>
-      ) : (
-        <></>
-      )}
-
-      {error && error.status !== 500 ? (
-        <Alert severity="error" style={{ width: '100%' }}>
-          Login or password do not match
-        </Alert>
-      ) : (
-        <></>
-      )}
-
       <TextField
         fullWidth
         label="Email"

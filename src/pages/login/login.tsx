@@ -1,6 +1,4 @@
-import { useAppSelector } from 'redux/store/hooks';
 import { useForm } from 'react-hook-form';
-import { getUserError } from 'redux/services/user/selectors';
 import { Navigate } from 'react-router-dom';
 import { Loader } from 'components/common/loader';
 import { LoginView } from './view';
@@ -10,7 +8,6 @@ import { LoginType } from 'components/Auth/types';
 
 export const Login = () => {
   const { isAuth, isSelfLoading } = useSelf();
-  const error = useAppSelector(getUserError);
 
   const {
     register,
@@ -39,7 +36,6 @@ export const Login = () => {
       <LoginView
         isValid={isValid}
         errors={errors}
-        error={error}
         handleSubmit={handleSubmit}
         register={register}
         onSubmit={onSubmit}

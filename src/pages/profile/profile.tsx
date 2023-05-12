@@ -1,9 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { getUserError } from 'redux/services/user/selectors';
 import { useAppDispach, useAppSelector } from 'redux/store/hooks';
 import { TabsEnum } from 'typedef';
 import { SyntheticEvent, useEffect, useState } from 'react';
-import { FoundUserType } from 'redux/services/user/typedef';
 import { AxiosError } from 'axios';
 import { loadPosts } from 'redux/services/posts/actions';
 import {
@@ -12,10 +10,7 @@ import {
   getPostsError
 } from 'redux/services/posts/selectors';
 import { ErrorDialog } from 'components/dialogs/error';
-import { Loader } from 'components/common/loader';
-
 import { ProfileView } from './view';
-import { resetErrors } from 'redux/services/user/user.slice';
 import { useSelf } from 'hooks/useSelf';
 import { UserType } from 'api/models/UserType';
 import { useApi } from 'pages/profile/useApi';
@@ -27,16 +22,14 @@ export const Profile = () => {
 
   const [tabValue, setTabValue] = useState(TabsEnum.FindPerson);
   const [user, setUser] = useState<UserType | null>(null);
-  const [foundUsers, setFoundUsers] = useState<FoundUserType[] | null>(null);
+
   const [profileError, setProfileError] = useState<AxiosError | null>(null);
-  const [foundUsersLoading, setFoundUsersLoading] = useState(false);
 
   const posts = useAppSelector(getPosts);
   const postsLoading = useAppSelector(getPostsLoading);
   const postsError = useAppSelector(getPostsError);
 
   const { self } = useSelf();
-  const logedUserError = useAppSelector(getUserError);
 
   const isSelf = nickName === self?.nickName;
 
@@ -49,10 +42,6 @@ export const Profile = () => {
   const handleErrorClose = () => {
     if (profileError) {
       setProfileError(null);
-    }
-
-    if (logedUserError) {
-      dispatch(resetErrors());
     }
   };
 
@@ -85,23 +74,19 @@ export const Profile = () => {
       <ProfileView
         user={user}
         posts={posts}
-        foundUsers={foundUsers}
         tabValue={tabValue}
         postsError={postsError}
         isLogedUser={isSelf}
         postsLoading={postsLoading}
         handleChange={handleChange}
-        setSearchData={setFoundUsers}
-        setProfileError={setProfileError}
-        setFoundUsersLoading={setFoundUsersLoading}
       />
 
       <ErrorDialog
-        open={Boolean(profileError) || Boolean(logedUserError)}
+        open={Boolean(profileError)}
         handleClose={handleErrorClose}
       />
 
-      <Loader open={foundUsersLoading} />
+      {/*<Loader open={foundUsersLoading} />*/}
     </>
   );
 };

@@ -1,23 +1,17 @@
-import { Alert, TextField } from '@mui/material';
-import { AuthForm } from "components/user/auth-form";
-
-import {
-  UserErrorType,
-  ParamsEnum
-} from '../../../redux/services/user/typedef';
+import { TextField } from '@mui/material';
+import { AuthForm } from 'components/user/auth-form';
 import {
   DeepRequired,
   FieldErrorsImpl,
   UseFormHandleSubmit,
   UseFormRegister
 } from 'react-hook-form';
-import { AvatarCreator } from "components/user/avatar-creator";
+import { AvatarCreator } from 'components/user/avatar-creator';
 import { RegisterType } from 'components/Auth/types';
 
 type Props = {
   isValid: boolean;
   errors: FieldErrorsImpl<DeepRequired<RegisterType>>;
-  error: UserErrorType | null;
   handleSubmit: UseFormHandleSubmit<RegisterType>;
   register: UseFormRegister<RegisterType>;
   setAvatar: (valuse: string) => void;
@@ -27,7 +21,6 @@ type Props = {
 export const RegistrationView = ({
   isValid,
   errors,
-  error,
   handleSubmit,
   register,
   setAvatar,
@@ -40,22 +33,6 @@ export const RegistrationView = ({
       title="Registration"
       isValid={isValid}
     >
-      {error?.status === 420 && error?.data.param === ParamsEnum.Email ? (
-        <Alert severity="error" style={{ width: '100%' }}>
-          Email already in use!
-        </Alert>
-      ) : (
-        <></>
-      )}
-
-      {error?.status === 420 && error?.data.param === ParamsEnum.NickName ? (
-        <Alert severity="error" style={{ width: '100%' }}>
-          Nick name already in use!
-        </Alert>
-      ) : (
-        <></>
-      )}
-
       <AvatarCreator setAvatar={setAvatar} />
 
       <TextField

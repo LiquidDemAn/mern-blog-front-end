@@ -1,9 +1,9 @@
 import { FollowerType } from 'api/models/FollowerType';
-import { FoundUserType } from '../../../redux/services/user/typedef';
 import { FollowerCard } from '../follower-card';
+import { SearchingUserType } from 'api/models/UserType';
 
 type Props = {
-  followers?: FollowerType[] | FoundUserType[] | null;
+  followers?: FollowerType[] | SearchingUserType[] | null;
 };
 
 export const Followers = ({ followers }: Props) => {

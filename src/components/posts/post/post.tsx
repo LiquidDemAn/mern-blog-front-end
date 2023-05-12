@@ -13,14 +13,10 @@ import styles from './post.module.scss';
 import { UserInfo } from '../../user/user-info';
 import { PostSkeleton } from './skeleton';
 import { Link, useNavigate } from 'react-router-dom';
-import { FullPostType, PostType } from '../../../redux/services/posts/typedef';
-import { PathsEnum } from '../../../typedef';
-import { useAppDispach } from '../../../redux/store/hooks';
-import {
-  deletePost,
-  likePost,
-  unlikePost
-} from '../../../redux/services/posts/actions';
+import { FullPostType, PostType } from 'redux/services/posts/typedef';
+import { PathsEnum } from 'typedef';
+import { useAppDispach } from 'redux/store/hooks';
+import { deletePost, likePost, unlikePost } from 'redux/services/posts/actions';
 import { DeleteDialog } from '../../dialogs/delete';
 import { useSelf } from 'hooks/useSelf';
 
@@ -45,8 +41,8 @@ export const Post = ({
   const [open, setOpen] = useState(false);
 
   const { selfId } = useSelf();
-
   const postId = post?._id;
+  console.log(postId);
   const commentsCount = post?.comments.length;
   const isViewed = post?.viewersIds.includes(selfId);
   const isLiked = post?.likesIds.includes(selfId);
@@ -175,8 +171,6 @@ export const Post = ({
                 </li>
               ) : (
                 <li
-                  // onMouseOver={() => setQq(5)}
-                  // onMouseOut={() => setQq(1)}
                   onClick={isLiked ? unlikeHandle : likeHandle}
                   className={styles.like}
                 >
