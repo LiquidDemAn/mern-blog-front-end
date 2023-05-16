@@ -70,3 +70,5 @@ export const UsersSearch = ({ searchType, onSubmit, form }: Props) => {
     </>
   );
 };
+
+export default UsersSearch;
