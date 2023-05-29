@@ -7,4 +7,5 @@ export type Props<T> = {
   type?: string;
   onChange?: any;
   fullWidth?: boolean;
+  helperText?: string;
 };

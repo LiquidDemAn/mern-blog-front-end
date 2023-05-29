@@ -8,6 +8,7 @@ const TextFieldController = <T extends unknown>({
   type,
   onChange,
   name,
+  helperText,
   fullWidth = true
 }: Props<T>) => {
   return (
@@ -19,6 +20,7 @@ const TextFieldController = <T extends unknown>({
           label={label || ''}
           type={type || 'text'}
           onChange={onChange || field.onChange}
+          helperText={helperText}
         />
       )}
       name={name}

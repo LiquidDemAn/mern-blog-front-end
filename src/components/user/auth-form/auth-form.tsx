@@ -3,7 +3,7 @@ import { FC, PropsWithChildren } from 'react';
 import { Typography, Paper, Button } from '@mui/material';
 
 type Props = {
-  onSubmit: any;
+  onSubmit: () => void;
   title: string;
   btnName?: string;
 };
