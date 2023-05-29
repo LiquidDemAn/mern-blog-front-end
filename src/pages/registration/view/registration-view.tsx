@@ -19,20 +19,13 @@ type Props = {
 };
 
 export const RegistrationView = ({
-  isValid,
   errors,
-  handleSubmit,
   register,
   setAvatar,
   onSubmit
 }: Props) => {
   return (
-    <AuthForm
-      handleSubmit={handleSubmit}
-      onSubmit={onSubmit}
-      title="Registration"
-      isValid={isValid}
-    >
+    <AuthForm onSubmit={onSubmit} title="Registration">
       <AvatarCreator setAvatar={setAvatar} />
 
       <TextField

@@ -1,31 +1,16 @@
-import { useForm } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 import { Loader } from 'components/common/loader';
-import { LoginView } from './view';
 import { PathsEnum } from 'typedef';
 import { useSelf } from 'hooks/useSelf';
-import { LoginType } from 'components/Auth/types';
+import { useLoginForm } from 'pages/login/useLoginForm';
+import { AuthForm } from 'components/user/auth-form';
+import { TextField } from '@mui/material';
 
 export const Login = () => {
   const { isAuth, isSelfLoading } = useSelf();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid }
-  } = useForm({
-    defaultValues: {
-      email: '',
-      password: ''
-    },
-    mode: 'onChange'
-  });
-
-  const { login } = useSelf();
-
-  const onSubmit = (values: LoginType) => {
-    login(values);
-  };
+  const { form, onSubmit } = useLoginForm();
 
   if (isAuth) {
     return <Navigate to={PathsEnum.Home} />;
@@ -33,13 +18,33 @@ export const Login = () => {
 
   return (
     <>
-      <LoginView
-        isValid={isValid}
-        errors={errors}
-        handleSubmit={handleSubmit}
-        register={register}
-        onSubmit={onSubmit}
-      />
+      <AuthForm onSubmit={onSubmit} title="Login">
+        <Controller
+          control={form.control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              label="Email"
+              type="email"
+              onChange={field.onChange}
+            />
+          )}
+          name="email"
+        />
+
+        <Controller
+          control={form.control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              label="Password"
+              type="password"
+              onChange={field.onChange}
+            />
+          )}
+          name="password"
+        />
+      </AuthForm>
 
       <Loader open={isSelfLoading} />
     </>

@@ -36,7 +36,8 @@ const Auth: FC<PropsWithChildren> = ({ children }) => {
     self,
     isAuth,
     selfId: self?._id || '',
-    isSelfLoading: getSelfQuery.isLoading,
+    isSelfLoading:
+      getSelfQuery.isLoading || onLogin.isLoading || onRegister.isLoading,
     register,
     login,
     logout
