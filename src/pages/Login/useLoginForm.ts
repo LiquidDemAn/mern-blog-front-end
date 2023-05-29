@@ -1,5 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useSelf } from 'hooks/useSelf';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { loginSchema } from 'pages/Login/loginSchema';
 
 const defaultValues = {
   email: '',
@@ -8,7 +10,8 @@ const defaultValues = {
 
 export const useLoginForm = () => {
   const form = useForm({
-    defaultValues
+    defaultValues,
+    resolver: yupResolver(loginSchema)
   });
 
   const { login } = useSelf();

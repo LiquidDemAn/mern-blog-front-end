@@ -8,4 +8,5 @@ export type Props<T> = {
   onChange?: any;
   fullWidth?: boolean;
   helperText?: string;
+  placeholder?: string;
 };

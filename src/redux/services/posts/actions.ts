@@ -2,8 +2,15 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { customeAxios } from '../../axios';
 import { FullPostType, PostType } from './typedef';
-import { UserStateType } from '../user/typedef';
 import { useSelf } from 'hooks/useSelf';
+import { UserType } from 'api/models/UserType';
+
+export type UserStateType = {
+  data: null | UserType;
+  loading: boolean;
+  error: null | unknown;
+  validationError: null | unknown;
+};
 
 export const loadPosts = createAsyncThunk<PostType[], string>(
   'posts/load-posts',
