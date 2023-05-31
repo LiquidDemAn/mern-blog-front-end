@@ -1,14 +1,4 @@
 import * as yup from 'yup';
-import {
-  emailValidationText,
-  getLengthErrorText,
-  requiredFieldText
-} from 'utils/constants';
+import { loginSchema as schema } from 'utils/yupSchemes';
 
-export const loginSchema = yup.object({
-  email: yup.string().email(emailValidationText).required(requiredFieldText),
-  password: yup
-    .string()
-    .min(5, getLengthErrorText(5))
-    .required(requiredFieldText)
-});
+export const loginSchema = yup.object().shape(schema);
