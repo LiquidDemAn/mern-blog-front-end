@@ -1,4 +1,9 @@
+export const NOTIFICATION_DURATION = 3000;
+
+export const ERROR_NOTIFICATION_DURATION = 8000;
+
 export const PASSWORDMINLENGTH = 5;
+
 export const NICKNAMEMINLENGTH = 3;
 
 export const serverErrorText = 'Something went wrong...';

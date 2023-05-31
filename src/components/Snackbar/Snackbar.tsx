@@ -8,9 +8,8 @@ import {
 } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { Notification, NotificationFunction, NotificationType } from './types';
-
-export const NOTIFICATION_DURATION = 3000;
-export const ERROR_NOTIFICATION_DURATION = 8000;
+import { NOTIFICATION_DURATION } from 'utils/constants';
+import { ERROR_NOTIFICATION_DURATION } from 'utils/constants';
 
 export let notification: NotificationFunction = () => {};
 export let errorNotification: NotificationFunction = () => {};
@@ -28,7 +27,7 @@ const Snackbar = () => {
     useState<Notification | null>(null);
 
   const isLoading = notificationOptions?.type === NotificationType.LOADING;
-  const isDefault = notificationOptions?.type === NotificationType.DEFAULT;
+  const isError = notificationOptions?.type === NotificationType.ERROR;
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -85,13 +84,19 @@ const Snackbar = () => {
         horizontal: 'right',
         vertical: 'bottom'
       }}
+      ContentProps={{
+        classes: {
+          root: '!p-0 !bg-white',
+          message: '!p-0'
+        }
+      }}
       open={open}
       TransitionComponent={Fade}
       autoHideDuration={
         !isLoading
-          ? isDefault
-            ? NOTIFICATION_DURATION
-            : ERROR_NOTIFICATION_DURATION
+          ? isError
+            ? ERROR_NOTIFICATION_DURATION
+            : NOTIFICATION_DURATION
           : null
       }
       {...notificationOptions}
@@ -99,12 +104,12 @@ const Snackbar = () => {
       message={
         <Alert
           onClose={handleClose}
+          className="bg-red-500"
           severity={
             notificationOptions?.type === NotificationType.ERROR
               ? 'error'
               : 'success'
           }
-          className=""
         >
           {notificationOptions?.message}
         </Alert>
