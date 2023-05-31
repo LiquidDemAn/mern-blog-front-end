@@ -1,22 +1,37 @@
 import * as yup from 'yup';
 import {
+  emailRegex,
+  emailValidationText,
+  fullNameRegex,
+  fullNameValidationText,
   getLengthErrorText,
-  requiredFieldText,
-  validateEmailText
+  NICKNAMEMINLENGTH,
+  nickNameRegex,
+  nickNameValidationText,
+  PASSWORDMINLENGTH,
+  passwordRegex,
+  passwordValidationText,
+  requiredFieldText
 } from 'utils/constants';
 
 export const registrationSchema = yup.object({
-  email: yup.string().email(validateEmailText).required(requiredFieldText),
   fullName: yup
     .string()
-    .min(3, getLengthErrorText(3))
+    .matches(fullNameRegex, fullNameValidationText)
     .required(requiredFieldText),
   nickName: yup
     .string()
-    .min(3, getLengthErrorText(3))
+    .min(NICKNAMEMINLENGTH, getLengthErrorText(NICKNAMEMINLENGTH))
+    .matches(nickNameRegex, nickNameValidationText)
     .required(requiredFieldText),
+  email: yup
+    .string()
+    .email(emailValidationText)
+    .required(requiredFieldText)
+    .matches(emailRegex, emailValidationText),
   password: yup
     .string()
-    .min(5, getLengthErrorText(5))
+    .min(PASSWORDMINLENGTH, getLengthErrorText(PASSWORDMINLENGTH))
+    .matches(passwordRegex, passwordValidationText)
     .required(requiredFieldText)
 });

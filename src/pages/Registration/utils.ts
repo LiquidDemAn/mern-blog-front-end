@@ -1,3 +1,10 @@
+import {
+  emailValidationText,
+  fullNameValidationText,
+  nickNameValidationText,
+  passwordValidationText
+} from 'utils/constants';
+
 export type registerFieldItem = {
   name: string;
   label?: string;
@@ -9,24 +16,23 @@ export const registerFieldItems: registerFieldItem[] = [
   {
     label: 'Full Name',
     name: 'fullName',
-    helperText:
-      'Full name must be at least 3 characters long and not contain special characters!'
+    helperText: fullNameValidationText
   },
   {
     label: 'Nick Name',
     name: 'nickName',
-    helperText:
-      'Nick name must be at least 3 characters long, not contain spaces and special characters!'
+    helperText: nickNameValidationText
   },
   {
     label: 'Email',
     name: 'email',
-    type: 'email'
+    type: 'email',
+    helperText: emailValidationText
   },
   {
     label: 'Password',
     name: 'password',
     type: 'password',
-    helperText: 'Password must be at least 5 characters long!'
+    helperText: passwordValidationText
   }
 ];
