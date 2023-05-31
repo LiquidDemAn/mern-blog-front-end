@@ -8,6 +8,11 @@ import {
 import { queryClient } from 'index';
 import { setToken } from 'local-storage';
 import { UserType } from 'api/models/UserType';
+import { AxiosError } from 'axios';
+import { errorNotification } from 'components/Snackbar/Snackbar';
+import { getAuthErrorText } from 'components/Auth/utils';
+import { AuthRequestType } from 'components/Auth/types';
+import { ErrorDataType } from 'typedef';
 
 type useApiProps = {
   setSelf: (self: UserType | null) => void;
@@ -24,6 +29,11 @@ export const useApi = ({ setSelf }: useApiProps) => {
     onSuccess: (data) => {
       setToken(data);
       queryClient.invalidateQueries([QueryKeysLand.GET_SELF]);
+    },
+    onError: (error: AxiosError<ErrorDataType>) => {
+      errorNotification(
+        getAuthErrorText(AuthRequestType.LOGIN, error.response?.data.code)
+      );
     }
   });
 

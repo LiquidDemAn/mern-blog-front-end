@@ -10,10 +10,12 @@ import { Profile } from 'pages/profile';
 import Auth from 'components/Auth';
 import LoginPage from 'pages/Login';
 import RegistrationPage from 'pages/Registration';
+import Snackbar from 'components/Snackbar';
 
 function App() {
   return (
     <Auth>
+      <Snackbar />
       <Routes>
         <Route path={PathsEnum.Home} element={<Layout />}>
           <Route index element={<Home />} />

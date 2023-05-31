@@ -10,6 +10,12 @@ export type RegisterType = {
   nickName: string;
   avatarUrl: string;
 };
+
+export enum AuthRequestType {
+  LOGIN = 'LOGIN',
+  REGISTER = 'REGISTER',
+  GETSELF = 'GETSELF'
+}
 export enum ParamsEnum {
   Password = 'password',
   Email = 'email',

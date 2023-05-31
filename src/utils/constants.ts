@@ -1,6 +1,7 @@
 export const PASSWORDMINLENGTH = 5;
 export const NICKNAMEMINLENGTH = 3;
 
+export const serverErrorText = 'Something went wrong...';
 export const getLengthErrorText = (length: number) =>
   `Must be at least ${length} characters long!`;
 export const requiredFieldText = `It's required field!`;
