@@ -6,8 +6,10 @@ import {
   UserType
 } from 'api/models/UserType';
 
+const baseUrl = 'users/';
+
 export const getUserByNickNameApi = async (nickName?: string) => {
-  const { data } = await customeAxios.get<UserType>(`/users/${nickName}`);
+  const { data } = await customeAxios.get<UserType>(`${baseUrl}${nickName}`);
   return data;
 };
 
@@ -16,8 +18,8 @@ export const searchUsersApi = async (params: SearchingUsersRequest) => {
 
   const { data } = await customeAxios.get<SearchingUserType[]>(
     searchType === FindUsersEnum.FullName
-      ? `/users/findByFullName/${value}`
-      : `/users/findByNickName/${value}`
+      ? `${baseUrl}findByFullName/${value}`
+      : `${baseUrl}findByNickName/${value}`
   );
 
   return data;

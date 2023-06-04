@@ -70,7 +70,7 @@ export const Profile = () => {
 
   useEffect(() => {
     if (user?._id) {
-      dispatch(loadPosts(`/posts/users/${user._id}`));
+      dispatch(loadPosts(`posts/users/${user._id}`));
     }
   }, [dispatch, user?._id]);
 
