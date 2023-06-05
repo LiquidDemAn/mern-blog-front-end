@@ -5,8 +5,8 @@ import { AxiosError } from 'axios';
 import { loadPosts } from 'redux/services/posts/actions';
 import {
   getPosts,
-  getPostsLoading,
-  getPostsError
+  getPostsError,
+  getPostsLoading
 } from 'redux/services/posts/selectors';
 import { ErrorDialog } from 'components/dialogs/error';
 import { useSelf } from 'hooks/useSelf';
@@ -17,6 +17,7 @@ import styles from 'pages/profile/profile.module.scss';
 import { ProfileCard } from 'components/user/profile-card';
 import TabBar from 'components/TabBar';
 import { useSearchUsersForm } from 'pages/profile/useSearchUsersForm';
+import { TabsEnum } from 'typedef';
 
 export const Profile = () => {
   const [user, setUser] = useState<UserType | null>(null);
@@ -87,7 +88,7 @@ export const Profile = () => {
       <div className={styles.profile}>
         <ProfileCard user={user} isLogedUser={isSelf} />
         <main className={styles.main}>
-          <TabBar tabs={tabs} />
+          <TabBar tabs={tabs} defaultTab={TabsEnum.FindPerson} />
         </main>
       </div>
 

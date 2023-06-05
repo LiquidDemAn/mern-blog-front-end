@@ -1,4 +1,6 @@
 export type Props = {
   tags?: string[];
-  isLoading?: boolean;
+  isLoading: boolean;
+  isError: boolean;
+  handleHideTags: () => void;
 };

@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type ErrorType = {
   status?: number;
   message?: string;
@@ -23,6 +25,12 @@ export enum TabsEnum {
   Following = 'Following',
   FindPerson = 'Find Person'
 }
+
+export type TabType = {
+  value: string;
+  label: ReactNode | string;
+  tabContent: ReactNode;
+};
 
 export type ErrorDataType = {
   message?: string;

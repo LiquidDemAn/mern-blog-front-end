@@ -1,11 +1,6 @@
-import { ReactNode } from 'react';
-
-export type TabType = {
-  value: string;
-  label: ReactNode | string;
-  tabContent: ReactNode;
-};
+import { TabsEnum, TabType } from 'typedef';
 
 export type Props = {
+  defaultTab: TabsEnum;
   tabs: TabType[];
 };

@@ -1,5 +1,4 @@
-import { TabType } from 'components/TabBar/types';
-import { ErrorType, TabsEnum } from 'typedef';
+import { ErrorType, TabsEnum, TabType } from 'typedef';
 import {
   FindUsersEnum,
   SearchingUsersRequest,

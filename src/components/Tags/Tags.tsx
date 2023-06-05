@@ -12,35 +12,37 @@ import { Link } from 'react-router-dom';
 import { FC } from 'react';
 import { Props } from 'components/Tags/types';
 
-const Tags: FC<Props> = ({ tags = [], isLoading }: Props) => {
+const Tags: FC<Props> = ({ tags = [], isLoading, isError, handleHideTags }) => {
   return (
-    <PaperWrapper title="Tags">
-      <List>
-        {tags.length ? (
-          (isLoading ? [...Array(5)] : tags).map((tag, index) => (
+    <PaperWrapper title="Tags" isCloseShow handleClose={handleHideTags}>
+      {!isError && (
+        <List>
+          {(isLoading ? [...Array(5)] : tags).map((tag, index) => (
             <Link
               key={tag || index}
               style={{ textDecoration: 'none', color: 'black' }}
               to={`/tags/${tag}`}
             >
               <ListItem disablePadding>
-                <ListItemButton>
+                <ListItemButton className="!px-0 !py-1">
                   <ListItemIcon>
                     <TagIcon />
                   </ListItemIcon>
                   {isLoading ? (
                     <Skeleton width={100} />
                   ) : (
-                    <ListItemText primary={tag} />
+                    <ListItemText
+                      primaryTypographyProps={{ noWrap: true }}
+                      className="overflow-ellipsis"
+                      primary={tag}
+                    />
                   )}
                 </ListItemButton>
               </ListItem>
             </Link>
-          ))
-        ) : (
-          <ListItem>List is empty</ListItem>
-        )}
-      </List>
+          ))}
+        </List>
+      )}
     </PaperWrapper>
   );
 };
