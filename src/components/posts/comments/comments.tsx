@@ -1,6 +1,6 @@
 import { ChangeEvent, ReactElement, useState } from 'react';
-import { SideBlock } from '../../common/side-block';
-import { PostCommentType } from '../../../redux/services/posts/typedef';
+import { PaperWrapper } from '../../PaperWrapper';
+import { PostCommentType } from 'redux/services/posts/typedef';
 import { CommentsSkeleton } from './skeleton';
 import { List, TextField } from '@mui/material';
 import { Comment } from '../comment';
@@ -95,7 +95,7 @@ export const Comments = ({
 
   return (
     <>
-      <SideBlock title="Comments">
+      <PaperWrapper title="Comments">
         <List>
           {comments.map((item) => (
             <Comment
@@ -109,7 +109,7 @@ export const Comments = ({
           ))}
         </List>
         {children && selfId ? <>{children}</> : <></>}
-      </SideBlock>
+      </PaperWrapper>
 
       {/* Dialogs */}
       <EditDialog

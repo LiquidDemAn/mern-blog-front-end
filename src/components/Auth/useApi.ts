@@ -6,7 +6,7 @@ import {
   registerApi
 } from 'api/controllers/selfController';
 import { queryClient } from 'index';
-import { setToken } from 'local-storage';
+import { getToken, setToken } from 'local-storage';
 import { UserType } from 'api/models/UserType';
 import { AxiosError } from 'axios';
 import { errorNotification } from 'components/Snackbar/Snackbar';
@@ -19,10 +19,13 @@ type useApiProps = {
 };
 
 export const useApi = ({ setSelf }: useApiProps) => {
+  const token = getToken();
+
   const getSelfQuery = useQuery([QueryKeysLand.GET_SELF], getSelfApi, {
     onSuccess: (data) => {
       setSelf(data);
-    }
+    },
+    enabled: !!token
   });
 
   const onLogin = useMutation(loginApi, {
@@ -41,6 +44,11 @@ export const useApi = ({ setSelf }: useApiProps) => {
     onSuccess: (data) => {
       setToken(data);
       queryClient.invalidateQueries([QueryKeysLand.GET_SELF]);
+    },
+    onError: (error: AxiosError<ErrorDataType>) => {
+      errorNotification(
+        getAuthErrorText(AuthRequestType.REGISTER, error.response?.data.code)
+      );
     }
   });
 

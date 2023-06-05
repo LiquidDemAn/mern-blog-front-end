@@ -1,24 +1,18 @@
-import { FC, SyntheticEvent } from 'react';
+import { FC } from 'react';
 import { Tabs, Tab, Grid } from '@mui/material';
-import { BreakpointsEnum, TabsEnum } from '../../../typedef';
+import { BreakpointsEnum, TabsEnum } from 'typedef';
 import { TabPanel } from '../../common/tab-panel';
 import { Posts } from '../posts-wrapper/posts';
-import { useAppSelector } from '../../../redux/store/hooks';
-import { Tags } from '../tags';
-
-import {
-  getTags,
-  getTagsLoading,
-  getTagsError
-} from '../../../redux/services/tags/selectors';
+import { useAppSelector } from 'redux/store/hooks';
 
 import {
   getPostsLoading,
   getPostsError,
   getPosts
-} from '../../../redux/services/posts/selectors';
+} from 'redux/services/posts/selectors';
 import { useApi } from './useApi';
 import { Props } from './types';
+import Tags from 'components/Tags';
 
 export const PostsTagsContent: FC<Props> = ({ value, handleChange }: Props) => {
   const posts = useAppSelector(getPosts);
@@ -50,7 +44,7 @@ export const PostsTagsContent: FC<Props> = ({ value, handleChange }: Props) => {
         />
       </Tabs>
       <Grid container={isMedium} spacing={4}>
-        <Grid xs={8} item>
+        <Grid xs={12} md={8} item>
           <TabPanel value={value} index={TabsEnum.New}>
             <Posts isLoading={postsLoading} error={postsError} posts={posts} />
           </TabPanel>
@@ -59,11 +53,9 @@ export const PostsTagsContent: FC<Props> = ({ value, handleChange }: Props) => {
           </TabPanel>
         </Grid>
 
-        {isMedium && (
-          <Grid xs={4} item>
-            <Tags isError={isTagsError} tags={tags} isLoading={tagsLoading} />
-          </Grid>
-        )}
+        <Grid className="hidden md:block" xs={4} item>
+          <Tags tags={tags} isLoading={tagsLoading} />
+        </Grid>
       </Grid>
     </>
   );

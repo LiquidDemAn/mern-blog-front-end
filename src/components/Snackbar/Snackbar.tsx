@@ -87,7 +87,7 @@ const Snackbar = () => {
       ContentProps={{
         classes: {
           root: '!p-0 !bg-white',
-          message: '!p-0'
+          message: '!p-0 w-[100%]'
         }
       }}
       open={open}
