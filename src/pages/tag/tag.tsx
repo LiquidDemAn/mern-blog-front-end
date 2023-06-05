@@ -8,48 +8,48 @@ import { PostsTagsContent } from '../../components/posts/posts-tags-content';
 import { getToken } from '../../local-storage';
 
 export const Tag = () => {
-	const { tag } = useParams();
-	const dispatch = useAppDispach();
-	const navigate = useNavigate();
+  const { tag } = useParams();
+  const dispatch = useAppDispach();
+  const navigate = useNavigate();
 
-	const isToken = Boolean(getToken());
-	const [value, setValue] = useState(TabsEnum.New);
+  const isToken = Boolean(getToken());
+  const [value, setValue] = useState(TabsEnum.New);
 
-	const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
-		setValue(newValue);
-	};
+  const handleChange = (event: React.SyntheticEvent, newValue: TabsEnum) => {
+    setValue(newValue);
+  };
 
-	useEffect(() => {
-		if (tag) {
-			if (value === TabsEnum.New) {
-				dispatch(loadPosts(`/posts/tags/${tag}`));
-			}
-			if (value === TabsEnum.Popular) {
-				dispatch(loadPosts(`/posts/tags/${tag}/popular`));
-			}
-		}
-	}, [dispatch, value, tag]);
+  useEffect(() => {
+    if (tag) {
+      if (value === TabsEnum.New) {
+        dispatch(loadPosts(`posts/tags/${tag}`));
+      }
+      if (value === TabsEnum.Popular) {
+        dispatch(loadPosts(`posts/tags/${tag}/popular`));
+      }
+    }
+  }, [dispatch, value, tag]);
 
-	useEffect(() => {
-		if (!isToken) {
-			navigate(PathsEnum.Login);
-		}
-	}, [isToken, navigate]);
+  useEffect(() => {
+    if (!isToken) {
+      navigate(PathsEnum.Login);
+    }
+  }, [isToken, navigate]);
 
-	useEffect(() => {
-		dispatch(loadTags());
-	}, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(loadTags());
+  // }, [dispatch]);
 
-	return (
-		<>
-			{isToken ? (
-				<>
-					<h2>Tag: #{tag}</h2>
-					<PostsTagsContent value={value} handleChange={handleChange} />
-				</>
-			) : (
-				<></>
-			)}
-		</>
-	);
+  return (
+    <>
+      {isToken ? (
+        <>
+          <h2>Tag: #{tag}</h2>
+          <PostsTagsContent value={value} handleChange={handleChange} />
+        </>
+      ) : (
+        <></>
+      )}
+    </>
+  );
 };

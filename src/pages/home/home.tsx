@@ -44,17 +44,17 @@ export const Home = () => {
 
   useEffect(() => {
     if (value === TabsEnum.New) {
-      dispatch(loadPosts('/posts'));
+      dispatch(loadPosts('posts'));
     }
 
     if (value === TabsEnum.Popular) {
-      dispatch(loadPosts('/posts/popular'));
+      dispatch(loadPosts('posts/popular'));
     }
   }, [dispatch, value]);
 
-  useEffect(() => {
-    dispatch(loadTags());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(loadTags());
+  // }, [dispatch]);
 
   return (
     <>
