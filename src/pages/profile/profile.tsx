@@ -88,7 +88,7 @@ export const Profile = () => {
       <div className={styles.profile}>
         <ProfileCard user={user} isLogedUser={isSelf} />
         <main className={styles.main}>
-          <TabBar tabs={tabs} defaultTab={TabsEnum.FindPerson} />
+          <TabBar tabs={tabs} defaultTab={TabsEnum.Posts} />
         </main>
       </div>
 

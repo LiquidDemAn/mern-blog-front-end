@@ -20,7 +20,7 @@ const TabBar: FC<PropsWithChildren<Props>> = ({ tabs, defaultTab }) => {
   };
 
   useEffect(() => {
-    setCurrentTab(TabsEnum.Posts);
+    setCurrentTab(defaultTab);
   }, [nickName]);
 
   return (

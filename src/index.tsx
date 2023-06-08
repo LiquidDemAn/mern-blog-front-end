@@ -7,28 +7,12 @@ import { theme } from 'theme';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from 'redux/store/store';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClientProvider } from 'react-query';
+import { queryClient } from 'config/queryClient';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: true,
-      retryOnMount: false
-    }
-  }
-  // queryCache: new QueryCache({
-  //   onError: (error) => errorNotificationHandler(error as QueryError)
-  // }),
-  // mutationCache: new MutationCache({
-  //   onError: (error) => errorNotificationHandler(error as QueryError)
-  // })
-});
 
 root.render(
   <QueryClientProvider client={queryClient}>

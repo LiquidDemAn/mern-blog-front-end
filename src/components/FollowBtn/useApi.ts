@@ -3,8 +3,8 @@ import {
   followUserApi,
   unFollowUserApi
 } from 'api/controllers/followUserController';
-import { queryClient } from 'index';
 import { QueryKeysLand } from 'config/queryKeys';
+import { queryClient } from 'config/queryClient';
 
 export const useApi = () => {
   const follow = useMutation(followUserApi, {

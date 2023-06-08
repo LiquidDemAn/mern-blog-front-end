@@ -5,7 +5,6 @@ import {
   loginApi,
   registerApi
 } from 'api/controllers/selfController';
-import { queryClient } from 'index';
 import { getToken, setToken } from 'local-storage';
 import { UserType } from 'api/models/UserType';
 import { AxiosError } from 'axios';
@@ -13,6 +12,7 @@ import { errorNotification } from 'components/Snackbar/Snackbar';
 import { getAuthErrorText } from 'components/Auth/utils';
 import { AuthRequestType } from 'components/Auth/types';
 import { ErrorDataType } from 'typedef';
+import { queryClient } from 'config/queryClient';
 
 type useApiProps = {
   setSelf: (self: UserType | null) => void;
