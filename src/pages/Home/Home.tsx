@@ -17,7 +17,7 @@ const Home = () => {
 
   return (
     <>
-      <Typography component="h2" className="mb-4">
+      <Typography variant="h6" className="mb-4">
         Hello{self?.nickName && `, ${self.nickName}`}
       </Typography>
       <PostsWithTags value={value} handleChange={handleChange} />
