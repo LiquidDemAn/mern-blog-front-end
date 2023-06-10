@@ -39,7 +39,7 @@ export const getDefaultTabsList = ({
       value: TabsEnum.Posts,
       tabContent: (
         <Posts
-          error={postsError as boolean}
+          isError={postsError as boolean}
           isLoading={postsLoading}
           posts={posts}
         />

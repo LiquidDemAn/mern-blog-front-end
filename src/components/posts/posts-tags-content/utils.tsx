@@ -5,14 +5,16 @@ import { PostType } from 'redux/services/posts/typedef';
 type Props = {
   allPosts?: PostType[];
   popularPosts?: PostType[];
+  isAllPostsError?: boolean;
+  isPopularPostsError?: boolean;
   isLoading?: boolean;
-  isError?: boolean;
 };
 
 export const getPostsTabs = ({
   allPosts,
   popularPosts,
-  isError,
+  isAllPostsError,
+  isPopularPostsError,
   isLoading
 }: Props): TabType[] => {
   return [
@@ -20,14 +22,22 @@ export const getPostsTabs = ({
       label: TabsEnum.New,
       value: TabsEnum.New,
       tabContent: (
-        <Posts isLoading={isLoading} error={isError} posts={allPosts} />
+        <Posts
+          isLoading={isLoading}
+          isError={isAllPostsError}
+          posts={allPosts}
+        />
       )
     },
     {
       label: TabsEnum.Popular,
       value: TabsEnum.Popular,
       tabContent: (
-        <Posts isLoading={isLoading} error={isError} posts={popularPosts} />
+        <Posts
+          isLoading={isLoading}
+          isError={isPopularPostsError}
+          posts={popularPosts}
+        />
       )
     }
   ];

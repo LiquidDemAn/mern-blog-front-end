@@ -1,7 +1,6 @@
 import { ChangeEvent, ReactElement, useState } from 'react';
 import { PaperWrapper } from '../../PaperWrapper';
 import { PostCommentType } from 'redux/services/posts/typedef';
-import { CommentsSkeleton } from './skeleton';
 import { List, TextField } from '@mui/material';
 import { Comment } from '../comment';
 import { EditDialog } from '../../dialogs/edit';
@@ -90,7 +89,7 @@ export const Comments = ({
   };
 
   if (isLoading) {
-    return <CommentsSkeleton />;
+    return <></>;
   }
 
   return (

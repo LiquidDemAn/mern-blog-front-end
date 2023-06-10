@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispach, useAppSelector } from 'redux/store/hooks';
-import { useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { loadPosts } from 'redux/services/posts/actions';
 import {
@@ -23,6 +23,7 @@ export const Profile = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const [filters, setFilters] = useState({} as SearchingUsersRequest);
   const [profileError, setProfileError] = useState<AxiosError | null>(null);
+  const [currentTab, setCurrentTab] = useState(TabsEnum.Posts);
 
   const { nickName } = useParams();
   const dispatch = useAppDispach();
@@ -57,6 +58,10 @@ export const Profile = () => {
     onSubmit
   });
 
+  const handleChange = (event: SyntheticEvent, newTab: TabsEnum) => {
+    setCurrentTab(newTab);
+  };
+
   const handleErrorClose = () => {
     if (profileError) {
       setProfileError(null);
@@ -81,14 +86,18 @@ export const Profile = () => {
     } else {
       setUser(getUserByNickNameQuery.data || null);
     }
-  }, [isSelf, getUserByNickNameQuery.data]);
+  }, [isSelf, getUserByNickNameQuery.data, self]);
 
   return (
     <>
       <div className={styles.profile}>
         <ProfileCard user={user} isLogedUser={isSelf} />
         <main className={styles.main}>
-          <TabBar tabs={tabs} defaultTab={TabsEnum.Posts} />
+          <TabBar
+            tabs={tabs}
+            currentTab={currentTab}
+            handleChange={handleChange}
+          />
         </main>
       </div>
 

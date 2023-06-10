@@ -1,25 +1,28 @@
 import { PostType } from 'redux/services/posts/typedef';
-import { Post } from '../post/post';
+import { Post } from '../post';
+import { serverErrorText } from '../../../utils/constants';
 
 type Props = {
   isLoading?: boolean;
   posts?: PostType[];
-  error?: boolean;
+  isError?: boolean;
 };
 
-export const Posts = ({ isLoading, posts, error }: Props) => {
-  if (error) {
-    return <h2>Something went wrong....</h2>;
+export const Posts = ({ isLoading, posts = [], isError }: Props) => {
+  if (isError) {
+    return <h2>{serverErrorText}</h2>;
   }
 
   return (
     <>
-      {isLoading ? (
-        [...Array(5)].map((_, index) => <Post key={index} />)
-      ) : posts?.length ? (
-        posts.map((post) => <Post key={post._id} post={post} />)
+      {!isLoading ? (
+        posts.length ? (
+          posts.map((post) => <Post key={post._id} post={post} />)
+        ) : (
+          <h3>List of posts is Empty</h3>
+        )
       ) : (
-        <h3>List of posts is Empty</h3>
+        <></>
       )}
     </>
   );

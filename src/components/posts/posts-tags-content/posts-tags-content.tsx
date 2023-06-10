@@ -1,14 +1,11 @@
 import { FC, useState } from 'react';
-import { Tabs, Tab, Grid } from '@mui/material';
-import { TabsEnum } from 'typedef';
-import { TabPanel } from '../../common/tab-panel';
-import { Posts } from '../posts-wrapper/posts';
-
+import { Grid } from '@mui/material';
 import { useApi } from './useApi';
 import { Props } from './types';
 import Tags from 'components/Tags';
 import { getPostsTabs } from 'components/posts/posts-tags-content/utils';
 import { Loader } from 'components/common/loader';
+import TabBar from '../../TabBar';
 
 export const PostsTagsContent: FC<Props> = ({ value, handleChange }: Props) => {
   const [isTagsShow, setIsTagsShow] = useState(true);
@@ -17,61 +14,35 @@ export const PostsTagsContent: FC<Props> = ({ value, handleChange }: Props) => {
     setIsTagsShow(false);
   };
 
-  const { getTagsQuery, getAllPostsQuery, getPopularPostsQuery } = useApi({
+  const {
+    tags,
+    allPosts,
+    popularPosts,
+    isTagsError,
+    isAllPostsError,
+    isPopularPostsError,
+    isLoading
+  } = useApi({
     postsType: value
   });
-
-  const {
-    data: allPosts,
-    isLoading: isAllPostsLoading,
-    isError: allPostsError
-  } = getAllPostsQuery;
-  const {
-    data: popularPosts,
-    isLoading: isPopularPostsLoading,
-    isError: popularPostsError
-  } = getPopularPostsQuery;
-
-  const {
-    data: tags,
-    isLoading: isTagsLoading,
-    isError: isTagsError
-  } = getTagsQuery;
 
   const tabs = getPostsTabs({
     popularPosts,
     allPosts,
-    isError: allPostsError || popularPostsError,
-    isLoading: isPopularPostsLoading || isAllPostsLoading
+    isAllPostsError,
+    isPopularPostsError,
+    isLoading
   });
+
+  if (isLoading) {
+    return <Loader open={isLoading} />;
+  }
 
   return (
     <>
       <Grid container spacing={4}>
         <Grid xs={12} md={isTagsShow ? 8 : 12} item>
-          <Tabs
-            style={{ marginBottom: 15 }}
-            value={value}
-            onChange={handleChange}
-          >
-            <Tab label={TabsEnum.New} value={TabsEnum.New} />
-            <Tab label={TabsEnum.Popular} value={TabsEnum.Popular} />
-          </Tabs>
-
-          <TabPanel value={value} index={TabsEnum.New}>
-            <Posts
-              isLoading={isAllPostsLoading}
-              error={allPostsError}
-              posts={allPosts}
-            />
-          </TabPanel>
-          <TabPanel value={value} index={TabsEnum.Popular}>
-            <Posts
-              isLoading={isPopularPostsLoading}
-              error={popularPostsError}
-              posts={popularPosts}
-            />
-          </TabPanel>
+          <TabBar currentTab={value} tabs={tabs} handleChange={handleChange} />
         </Grid>
 
         {isTagsShow && (
@@ -79,15 +50,12 @@ export const PostsTagsContent: FC<Props> = ({ value, handleChange }: Props) => {
             <Tags
               handleHideTags={handleHideTags}
               tags={tags}
-              isLoading={!isTagsLoading}
+              isLoading={isLoading}
               isError={isTagsError}
             />
           </Grid>
         )}
       </Grid>
-      <Loader
-        open={isAllPostsLoading || isPopularPostsLoading || isTagsLoading}
-      />
     </>
   );
 };

@@ -5,19 +5,41 @@ import { getAllPosts, getPopularPosts } from 'api/controllers/postsController';
 import { TabsEnum } from 'typedef';
 
 export const useApi = ({ postsType }: { postsType: TabsEnum }) => {
-  const getTagsQuery = useQuery([QueryKeysLand.GET_TAGS], getTagsApi);
+  const {
+    data: tags,
+    isLoading: isTagsLoading,
+    isError: isTagsError
+  } = useQuery([QueryKeysLand.GET_TAGS], getTagsApi);
 
-  const getAllPostsQuery = useQuery(
-    [QueryKeysLand.GET_ALL_POSTS, TabsEnum.New],
+  const {
+    data: allPosts,
+    isError: isAllPostsError,
+    isLoading: isAllPostsLoading
+  } = useQuery(
+    [QueryKeysLand.GET_ALL_POSTS, { type: TabsEnum.New }],
     getAllPosts,
-    { enabled: postsType === TabsEnum.New }
+    {
+      enabled: postsType === TabsEnum.New
+    }
   );
 
-  const getPopularPostsQuery = useQuery(
-    [QueryKeysLand.GET_POPULAR_POSTS, TabsEnum.Popular],
+  const {
+    data: popularPosts,
+    isLoading: isPopularPostsLoading,
+    isError: isPopularPostsError
+  } = useQuery(
+    [QueryKeysLand.GET_POPULAR_POSTS, { type: TabsEnum.Popular }],
     getPopularPosts,
     { enabled: postsType === TabsEnum.Popular }
   );
 
-  return { getTagsQuery, getAllPostsQuery, getPopularPostsQuery };
+  return {
+    tags,
+    allPosts,
+    popularPosts,
+    isTagsError,
+    isAllPostsError,
+    isPopularPostsError,
+    isLoading: isAllPostsLoading || isPopularPostsLoading || isTagsLoading
+  };
 };
