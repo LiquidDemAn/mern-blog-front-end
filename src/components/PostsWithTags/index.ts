@@ -1,0 +1,1 @@
+export { PostsWithTags } from './PostsWithTags';

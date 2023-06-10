@@ -62,8 +62,10 @@ const Snackbar = () => {
   errorNotification = updateNotification(NotificationType.ERROR);
   closeNotification = handleClose;
 
+  console.log(notificationOptionsPack);
+
   useEffect(() => {
-    if (notificationOptionsPack.length && !notificationOptions) {
+    if (notificationOptionsPack.length) {
       // Set a new snack when we don't have an active one
       setNotificationOptions({ ...notificationOptionsPack[0] });
       setNotificationOptionsPack((prev) => prev.slice(1));

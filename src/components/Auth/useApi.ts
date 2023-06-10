@@ -32,12 +32,12 @@ export const useApi = ({ setSelf }: useApiProps) => {
     onSuccess: (data) => {
       setToken(data);
       queryClient.invalidateQueries([QueryKeysLand.GET_SELF]);
-    },
-    onError: (error: AxiosError<ErrorDataType>) => {
-      errorNotification(
-        getAuthErrorText(AuthRequestType.LOGIN, error.response?.data.code)
-      );
     }
+    // onError: (error: AxiosError<ErrorDataType>) => {
+    //   errorNotification(
+    //     getAuthErrorText(AuthRequestType.LOGIN, error.response?.data.code)
+    //   );
+    // }
   });
 
   const onRegister = useMutation(registerApi, {
