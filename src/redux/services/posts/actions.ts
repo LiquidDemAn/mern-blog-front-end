@@ -13,7 +13,7 @@ export type UserStateType = {
 };
 
 export const loadPosts = createAsyncThunk<PostType[], string>(
-  'posts/load-posts',
+  'Posts/load-Posts',
   async (url, { rejectWithValue }) => {
     try {
       const response = await customeAxios.get(url);
@@ -35,7 +35,7 @@ export const loadPost = createAsyncThunk<
     id?: string;
     setPost: (value: FullPostType) => void;
   }
->('posts/load-post', async ({ id, setPost }, { rejectWithValue }) => {
+>('Posts/load-post', async ({ id, setPost }, { rejectWithValue }) => {
   try {
     if (id) {
       const { data } = await customeAxios.get(`/posts/${id}`);
@@ -47,7 +47,7 @@ export const loadPost = createAsyncThunk<
 });
 
 export const deletePost = createAsyncThunk(
-  'posts/delete-post',
+  'Posts/delete-post',
   async (id: string, { rejectWithValue }) => {
     try {
       await customeAxios.delete(`/posts/${id}`);
@@ -64,7 +64,7 @@ export const deletePost = createAsyncThunk(
 );
 
 export const likePost = createAsyncThunk<string | undefined, string>(
-  'posts/like-post',
+  'Posts/like-post',
   async (id) => {
     const { self } = useSelf();
 
@@ -78,7 +78,7 @@ export const likePost = createAsyncThunk<string | undefined, string>(
 );
 
 export const unlikePost = createAsyncThunk<string | undefined, string>(
-  'posts/unlike-post',
+  'Posts/unlike-post',
   async (id, { getState }) => {
     const { user } = getState() as { user: UserStateType };
     const userId = user.data?._id;
@@ -99,7 +99,7 @@ export const likeFullPost = createAsyncThunk<
     post: FullPostType;
     setPost: (value: FullPostType) => void;
   }
->('posts/like-full-post', async ({ post, setPost }, { getState }) => {
+>('Posts/like-full-post', async ({ post, setPost }, { getState }) => {
   const { user } = getState() as { user: UserStateType };
   const userId = user.data?._id;
 
@@ -124,7 +124,7 @@ export const unlikeFullPost = createAsyncThunk<
     post: FullPostType;
     setPost: (value: FullPostType) => void;
   }
->('posts/unlike-full-post', async ({ post, setPost }, { getState }) => {
+>('Posts/unlike-full-post', async ({ post, setPost }, { getState }) => {
   const { user } = getState() as { user: UserStateType };
   const userId = user.data?._id;
 
@@ -151,7 +151,7 @@ export const createComment = createAsyncThunk<
     setPost: (value: FullPostType) => void;
   }
 >(
-  'posts/create-comment',
+  'Posts/create-comment',
   async ({ text, post, setPost }, { rejectWithValue }) => {
     try {
       const { data } = await customeAxios.post(
@@ -178,7 +178,7 @@ export const editComment = createAsyncThunk<
     setPost: (value: FullPostType) => void;
   }
 >(
-  'posts/edit-comment',
+  'Posts/edit-comment',
   async ({ commentId, text, post, setPost }, { rejectWithValue }) => {
     try {
       await customeAxios
@@ -211,7 +211,7 @@ export const deleteComment = createAsyncThunk<
     setPost: (value: FullPostType) => void;
   }
 >(
-  'posts/delete-comment',
+  'Posts/delete-comment',
   async ({ commentId, post, setPost }, { rejectWithValue }) => {
     try {
       await customeAxios
@@ -236,7 +236,7 @@ export const likeComment = createAsyncThunk<
     setPost: (value: FullPostType) => void;
   }
 >(
-  'posts/like-comment',
+  'Posts/like-comment',
   async ({ commentId, post, setPost }, { getState, rejectWithValue }) => {
     try {
       const { user } = getState() as { user: UserStateType };
@@ -273,7 +273,7 @@ export const unlikeCommnet = createAsyncThunk<
     setPost: (value: FullPostType) => void;
   }
 >(
-  'posts/unlike-comment',
+  'Posts/unlike-comment',
   async ({ commentId, post, setPost }, { getState, rejectWithValue }) => {
     try {
       const { user } = getState() as { user: UserStateType };

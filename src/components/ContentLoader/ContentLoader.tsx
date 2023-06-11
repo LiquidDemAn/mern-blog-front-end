@@ -2,10 +2,15 @@ import React, { FC } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 import { Props } from './types';
 
-const ContentLoader: FC<Props> = ({ size }) => {
+const ContentLoader: FC<Props> = ({ size, wrapperClasses }) => {
   return (
-    <Box display="flex" justifyContent="center" alignContent="center" mt={15}>
-      <CircularProgress size={size || 75} />;
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignContent="center"
+      className={wrapperClasses}
+    >
+      <CircularProgress size={size || 50} />
     </Box>
   );
 };

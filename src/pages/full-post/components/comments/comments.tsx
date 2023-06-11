@@ -1,10 +1,10 @@
 import { ChangeEvent, ReactElement, useState } from 'react';
-import { PaperWrapper } from '../../PaperWrapper';
+import { PaperWrapper } from '../../../../components/PaperWrapper';
 import { PostCommentType } from 'redux/services/posts/typedef';
 import { List, TextField } from '@mui/material';
 import { Comment } from '../comment';
-import { EditDialog } from '../../dialogs/edit';
-import { DeleteDialog } from '../../dialogs/delete';
+import { EditDialog } from '../../../../components/dialogs/edit';
+import { DeleteDialog } from '../../../../components/dialogs/delete';
 import { useSelf } from 'hooks/useSelf';
 
 type Props = {

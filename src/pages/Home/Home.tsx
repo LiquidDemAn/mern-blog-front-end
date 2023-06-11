@@ -21,7 +21,8 @@ const Home = () => {
     popularPosts,
     isAllPostsError,
     isPopularPostsError,
-    isLoading
+    isPostsLoading,
+    isTagsLoading
   } = useApi({
     postsType: currentTab
   });
@@ -31,7 +32,7 @@ const Home = () => {
     allPosts,
     isAllPostsError,
     isPopularPostsError,
-    isLoading
+    isPostsLoading
   });
 
   useCheckAuth();
@@ -46,6 +47,7 @@ const Home = () => {
         tabs={tabs}
         currentTab={currentTab}
         handleChangeTab={handleChangeTab}
+        isTagsLoading={isTagsLoading}
       />
     </>
   );

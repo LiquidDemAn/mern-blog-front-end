@@ -1,5 +1,5 @@
 import { TabsEnum, TabType } from 'typedef';
-import { Posts } from 'components/posts/posts-wrapper';
+import Posts from 'components/Posts';
 import { PostType } from 'redux/services/posts/typedef';
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
   popularPosts?: PostType[];
   isAllPostsError?: boolean;
   isPopularPostsError?: boolean;
-  isLoading?: boolean;
+  isPostsLoading?: boolean;
 };
 
 export const getPostsTabs = ({
@@ -15,7 +15,7 @@ export const getPostsTabs = ({
   popularPosts,
   isAllPostsError,
   isPopularPostsError,
-  isLoading
+  isPostsLoading
 }: Props): TabType[] => {
   return [
     {
@@ -23,7 +23,7 @@ export const getPostsTabs = ({
       value: TabsEnum.New,
       tabContent: (
         <Posts
-          isLoading={isLoading}
+          isLoading={isPostsLoading}
           isError={isAllPostsError}
           posts={allPosts}
         />
@@ -34,7 +34,7 @@ export const getPostsTabs = ({
       value: TabsEnum.Popular,
       tabContent: (
         <Posts
-          isLoading={isLoading}
+          isLoading={isPostsLoading}
           isError={isPopularPostsError}
           posts={popularPosts}
         />

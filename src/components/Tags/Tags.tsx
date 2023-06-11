@@ -10,32 +10,37 @@ import { PaperWrapper } from 'components/PaperWrapper';
 import { Link } from 'react-router-dom';
 import { FC } from 'react';
 import { Props } from 'components/Tags/types';
+import ContentLoader from '../ContentLoader';
 
-const Tags: FC<Props> = ({ tags = [], handleHideTags }) => {
+const Tags: FC<Props> = ({ tags = [], handleHideTags, isLoading }) => {
   return (
     <PaperWrapper title="Tags" isCloseShow handleClose={handleHideTags}>
-      <List>
-        {tags.map((tag, index) => (
-          <Link
-            key={tag || index}
-            style={{ textDecoration: 'none', color: 'black' }}
-            to={`/tags/${tag}`}
-          >
-            <ListItem disablePadding>
-              <ListItemButton className="!px-0 !py-1">
-                <ListItemIcon>
-                  <TagIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primaryTypographyProps={{ noWrap: true }}
-                  className="overflow-ellipsis"
-                  primary={tag}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-        ))}
-      </List>
+      {isLoading ? (
+        <ContentLoader />
+      ) : (
+        <List>
+          {tags.map((tag, index) => (
+            <Link
+              key={tag || index}
+              style={{ textDecoration: 'none', color: 'black' }}
+              to={`/tags/${tag}`}
+            >
+              <ListItem disablePadding>
+                <ListItemButton className="!px-0 !py-1">
+                  <ListItemIcon>
+                    <TagIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primaryTypographyProps={{ noWrap: true }}
+                    className="overflow-ellipsis"
+                    primary={tag}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ))}
+        </List>
+      )}
     </PaperWrapper>
   );
 };

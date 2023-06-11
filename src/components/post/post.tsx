@@ -10,13 +10,13 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { SvgIcon } from '@mui/material';
 
 import styles from './post.module.scss';
-import { UserInfo } from '../../user/user-info';
+import { UserInfo } from '../user/user-info';
 import { Link, useNavigate } from 'react-router-dom';
 import { FullPostType, PostType } from 'redux/services/posts/typedef';
 import { PathsEnum } from 'typedef';
 import { useAppDispach } from 'redux/store/hooks';
 import { deletePost, likePost, unlikePost } from 'redux/services/posts/actions';
-import { DeleteDialog } from '../../dialogs/delete';
+import { DeleteDialog } from '../dialogs/delete';
 import { useSelf } from 'hooks/useSelf';
 
 type Props = {

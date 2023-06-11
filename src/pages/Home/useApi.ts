@@ -40,6 +40,7 @@ export const useApi = ({ postsType }: { postsType: TabsEnum }) => {
     isTagsError,
     isAllPostsError,
     isPopularPostsError,
-    isLoading: isAllPostsLoading || isPopularPostsLoading || isTagsLoading
+    isTagsLoading,
+    isPostsLoading: isAllPostsLoading || isPopularPostsLoading
   };
 };

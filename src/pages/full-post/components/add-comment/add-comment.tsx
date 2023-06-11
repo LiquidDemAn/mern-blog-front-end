@@ -1,8 +1,8 @@
 import styles from './add-comment.module.scss';
 import { useState } from 'react';
 import { TextField, Avatar, Button } from '@mui/material';
-import { useAppSelector } from '../../../redux/store/hooks';
-import { PathsEnum } from '../../../typedef';
+import { useAppSelector } from '../../../../redux/store/hooks';
+import { PathsEnum } from '../../../../typedef';
 import { useSelf } from 'hooks/useSelf';
 
 type Props = {

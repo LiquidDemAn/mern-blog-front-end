@@ -5,6 +5,7 @@ export type Props = {
   currentTab: TabsEnum;
   tabs: TabType[];
   handleChangeTab: (event: SyntheticEvent, newValue: TabsEnum) => void;
-  showTags?: boolean;
   tags?: string[];
+  showTags?: boolean;
+  isTagsLoading?: boolean;
 };

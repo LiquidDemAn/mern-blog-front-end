@@ -1,7 +1,7 @@
 import { customeAxios } from 'redux/axios';
 import { PostType } from 'api/models/PostsType';
 
-const baseUrl = 'posts/';
+const baseUrl = 'Posts/';
 
 export const getAllPosts = async () => {
   const { data } = await customeAxios.get<PostType[]>(`${baseUrl}`);

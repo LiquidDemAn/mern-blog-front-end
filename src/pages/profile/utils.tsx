@@ -5,7 +5,7 @@ import {
   SearchingUserType,
   UserType
 } from 'api/models/UserType';
-import { Posts } from 'components/posts/posts-wrapper';
+import Posts from 'components/Posts';
 import { PostType } from 'redux/services/posts/typedef';
 import { Followers } from 'components/user/followers';
 import { UseFormReturn } from 'react-hook-form';

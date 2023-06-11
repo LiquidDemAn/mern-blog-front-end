@@ -5,11 +5,12 @@ import Tags from 'components/Tags';
 import TabBar from '../TabBar';
 
 export const PostsWithTags: FC<Props> = ({
+  tabs,
   currentTab,
   handleChangeTab,
-  showTags = true,
   tags,
-  tabs
+  showTags = true,
+  isTagsLoading
 }: Props) => {
   const [isTagsShow, setIsTagsShow] = useState(showTags);
 
@@ -29,7 +30,11 @@ export const PostsWithTags: FC<Props> = ({
 
       {isTagsShow && (
         <Grid className="hidden md:block mt-16" xs={4} item>
-          <Tags handleHideTags={handleHideTags} tags={tags} />
+          <Tags
+            handleHideTags={handleHideTags}
+            tags={tags}
+            isLoading={isTagsLoading}
+          />
         </Grid>
       )}
     </Grid>

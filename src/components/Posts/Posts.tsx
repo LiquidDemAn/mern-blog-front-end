@@ -1,7 +1,7 @@
 import { PostType } from 'redux/services/posts/typedef';
 import { Post } from '../post';
 import { Typography } from '@mui/material';
-import ContentLoader from '../../ContentLoader';
+import ContentLoader from '../ContentLoader';
 
 type Props = {
   isLoading?: boolean;
@@ -9,9 +9,9 @@ type Props = {
   isError?: boolean;
 };
 
-export const Posts = ({ isLoading, posts = [], isError }: Props) => {
+const Posts = ({ isLoading, posts = [], isError }: Props) => {
   if (isLoading) {
-    return <ContentLoader />;
+    return <ContentLoader wrapperClasses="mt-48" />;
   }
 
   return (
@@ -24,3 +24,5 @@ export const Posts = ({ isLoading, posts = [], isError }: Props) => {
     </>
   );
 };
+
+export default Posts;

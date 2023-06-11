@@ -1,5 +1,5 @@
 import styles from './comment.module.scss';
-import { PostCommentType } from '../../../redux/services/posts/typedef';
+import { PostCommentType } from '../../../../redux/services/posts/typedef';
 import {
   ListItem,
   ListItemText,
@@ -11,7 +11,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
-import { UserInfo } from '../../user/user-info';
+import { UserInfo } from '../../../../components/user/user-info';
 import { useSelf } from 'hooks/useSelf';
 
 type Props = {
