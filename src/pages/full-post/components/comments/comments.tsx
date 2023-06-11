@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactElement, useState } from 'react';
-import { PaperWrapper } from '../../../../components/PaperWrapper';
+import PaperWrapper from '../../../../components/PaperWrapper';
 import { PostCommentType } from 'redux/services/posts/typedef';
 import { List, TextField } from '@mui/material';
 import { Comment } from '../comment';

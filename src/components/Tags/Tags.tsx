@@ -6,7 +6,7 @@ import {
   ListItemText
 } from '@mui/material';
 import TagIcon from '@mui/icons-material/Tag';
-import { PaperWrapper } from 'components/PaperWrapper';
+import PaperWrapper from 'components/PaperWrapper';
 import { Link } from 'react-router-dom';
 import { FC } from 'react';
 import { Props } from 'components/Tags/types';

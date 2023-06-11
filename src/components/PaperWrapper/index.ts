@@ -1,1 +1,1 @@
-export { PaperWrapper } from 'components/PaperWrapper/PaperWrapper';
+export { default } from './PaperWrapper';

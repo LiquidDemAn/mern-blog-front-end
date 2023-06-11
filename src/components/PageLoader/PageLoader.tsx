@@ -5,7 +5,7 @@ type Props = {
   open: boolean;
 };
 
-export const PageLoader = ({ open }: Props) => {
+const PageLoader = ({ open }: Props) => {
   return (
     <>
       <Backdrop

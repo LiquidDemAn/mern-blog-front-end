@@ -3,7 +3,7 @@ import { Typography, Paper, Box, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Props } from 'components/PaperWrapper/types';
 
-export const PaperWrapper: FC<PropsWithChildren<Props>> = ({
+const PaperWrapper: FC<PropsWithChildren<Props>> = ({
   title,
   children,
   isCloseShow = false,
@@ -30,3 +30,5 @@ export const PaperWrapper: FC<PropsWithChildren<Props>> = ({
     </Paper>
   );
 };
+
+export default PaperWrapper;
