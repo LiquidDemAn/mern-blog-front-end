@@ -37,22 +37,22 @@ const Home = () => {
 
   useCheckAuth();
 
+  if (!self) {
+    return <></>;
+  }
+
   return (
     <>
-      {!!self && (
-        <>
-          <Typography variant="h6" className="mb-4">
-            Hello{self?.nickName && `, ${self.nickName}`}
-          </Typography>
-          <PostsWithTags
-            tags={tags}
-            tabs={tabs}
-            currentTab={currentTab}
-            handleChangeTab={handleChangeTab}
-            isTagsLoading={isTagsLoading}
-          />
-        </>
-      )}
+      <Typography variant="h6" className="mb-4">
+        Hello {self.nickName}
+      </Typography>
+      <PostsWithTags
+        tags={tags}
+        tabs={tabs}
+        currentTab={currentTab}
+        handleChangeTab={handleChangeTab}
+        isTagsLoading={isTagsLoading}
+      />
     </>
   );
 };

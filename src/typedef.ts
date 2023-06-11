@@ -59,3 +59,8 @@ export enum BreakpointsEnum {
   Large = 992,
   Extra = 1200
 }
+
+export type LinkItem = {
+  label: string;
+  to: string;
+};

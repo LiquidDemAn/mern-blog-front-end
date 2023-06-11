@@ -1,6 +1,6 @@
 import { Container } from '@mui/system';
 import { Outlet } from 'react-router-dom';
-import { Header } from '../common/header';
+import Header from '../Header';
 import { useSelf } from '../../hooks/useSelf';
 import PageLoader from '../PageLoader';
 

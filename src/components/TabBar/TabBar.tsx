@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { Tab, Tabs } from '@mui/material';
 import { Props } from './types';
-import { TabPanel } from 'components/common/tab-panel';
+import TabPanel from 'components/TabPanel';
 
 const TabBar: FC<PropsWithChildren<Props>> = ({
   tabs,
