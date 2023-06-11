@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { loadPosts } from '../../redux/services/posts/actions';
 import { useAppDispach } from '../../redux/store/hooks';
 import { PathsEnum, TabsEnum } from '../../typedef';
-import { PostsWithTags } from '../../components/PostsWithTags';
 import { getToken } from '../../local-storage';
 
 export const Tag = () => {
@@ -44,7 +43,7 @@ export const Tag = () => {
       {isToken ? (
         <>
           <h2>Tag: #{tag}</h2>
-          <PostsWithTags value={value} handleChange={handleChange} />
+          {/*<PostsWithTags value={value} handleChange={handleChange} />*/}
         </>
       ) : (
         <></>

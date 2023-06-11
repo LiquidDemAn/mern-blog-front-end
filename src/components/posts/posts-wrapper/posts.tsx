@@ -1,6 +1,7 @@
 import { PostType } from 'redux/services/posts/typedef';
 import { Post } from '../post';
-import { serverErrorText } from '../../../utils/constants';
+import { Typography } from '@mui/material';
+import ContentLoader from '../../ContentLoader';
 
 type Props = {
   isLoading?: boolean;
@@ -9,20 +10,16 @@ type Props = {
 };
 
 export const Posts = ({ isLoading, posts = [], isError }: Props) => {
-  if (isError) {
-    return <h2>{serverErrorText}</h2>;
+  if (isLoading) {
+    return <ContentLoader />;
   }
 
   return (
     <>
-      {!isLoading ? (
-        posts.length ? (
-          posts.map((post) => <Post key={post._id} post={post} />)
-        ) : (
-          <h3>List of posts is Empty</h3>
-        )
+      {!isError || !posts.length ? (
+        posts.map((post) => <Post key={post._id} post={post} />)
       ) : (
-        <></>
+        <Typography variant="subtitle1">List of posts is Empty</Typography>
       )}
     </>
   );

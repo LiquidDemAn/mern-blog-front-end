@@ -4,14 +4,35 @@ import { useSelf } from 'hooks/useSelf';
 import { PostsWithTags } from '../../components/PostsWithTags';
 import { useCheckAuth } from '../../hooks/useCheckAuth';
 import { Typography } from '@mui/material';
+import { useApi } from './useApi';
+import { getPostsTabs } from './utils';
 
 const Home = () => {
   const { self } = useSelf();
-  const [value, setValue] = useState(TabsEnum.New);
+  const [currentTab, setCurrentTab] = useState(TabsEnum.New);
 
-  const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
-    setValue(newValue);
+  const handleChangeTab = (event: SyntheticEvent, newTab: TabsEnum) => {
+    setCurrentTab(newTab);
   };
+
+  const {
+    tags,
+    allPosts,
+    popularPosts,
+    isAllPostsError,
+    isPopularPostsError,
+    isLoading
+  } = useApi({
+    postsType: currentTab
+  });
+
+  const tabs = getPostsTabs({
+    popularPosts,
+    allPosts,
+    isAllPostsError,
+    isPopularPostsError,
+    isLoading
+  });
 
   useCheckAuth();
 
@@ -20,7 +41,12 @@ const Home = () => {
       <Typography variant="h6" className="mb-4">
         Hello{self?.nickName && `, ${self.nickName}`}
       </Typography>
-      <PostsWithTags value={value} handleChange={handleChange} />
+      <PostsWithTags
+        tags={tags}
+        tabs={tabs}
+        currentTab={currentTab}
+        handleChangeTab={handleChangeTab}
+      />
     </>
   );
 };

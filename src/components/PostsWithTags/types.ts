@@ -1,8 +1,10 @@
-import { TabsEnum } from '../../typedef';
+import { TabsEnum, TabType } from '../../typedef';
 import { SyntheticEvent } from 'react';
 
 export type Props = {
-  value: TabsEnum;
-  handleChange: (event: SyntheticEvent, newValue: TabsEnum) => void;
+  currentTab: TabsEnum;
+  tabs: TabType[];
+  handleChangeTab: (event: SyntheticEvent, newValue: TabsEnum) => void;
   showTags?: boolean;
+  tags?: string[];
 };
