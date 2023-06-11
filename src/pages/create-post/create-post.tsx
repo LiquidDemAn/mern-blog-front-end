@@ -3,10 +3,10 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getToken } from '../../local-storage';
 import { customeAxios } from '../../redux/axios';
 import { ErrorType, PathsEnum } from '../../typedef';
-import { Loader } from '../../components/common/loader';
 import { CreatePostView } from './view';
 import { AxiosError } from 'axios';
 import { useSelf } from 'hooks/useSelf';
+import PageLoader from '../../components/PageLoader';
 
 export type CreatePostType = {
   title: string;
@@ -232,7 +232,7 @@ export const CreatePost = () => {
         onTitle={onTitle}
       />
 
-      <Loader open={loading} />
+      <PageLoader open={loading} />
     </>
   );
 };

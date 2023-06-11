@@ -1,7 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
-import { Post } from '../../../components/post';
+import Post from '../../../components/Post';
 import { FullPostType } from '../../../redux/services/posts/typedef';
 import { Comments } from '../components/comments';
 import { AddComment } from '../components/add-comment';

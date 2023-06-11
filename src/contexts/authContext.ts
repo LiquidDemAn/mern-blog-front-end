@@ -6,7 +6,7 @@ export type AuthContext = {
   self: UserType | null;
   isAuth: boolean;
   selfId: string;
-  isSelfLoading: boolean;
+  isLoading: boolean;
   register: (params: RegisterType) => void;
   login: (params: LoginType) => void;
   logout: () => void;
@@ -16,7 +16,7 @@ export const authContext = createContext<AuthContext>({
   self: null,
   isAuth: false,
   selfId: '',
-  isSelfLoading: false,
+  isLoading: false,
   register: () => null,
   login: () => null,
   logout: () => null

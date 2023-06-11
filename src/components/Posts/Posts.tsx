@@ -1,5 +1,5 @@
 import { PostType } from 'redux/services/posts/typedef';
-import { Post } from '../post';
+import Post from '../Post';
 import { Typography } from '@mui/material';
 import ContentLoader from '../ContentLoader';
 

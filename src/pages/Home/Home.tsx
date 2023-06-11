@@ -39,16 +39,20 @@ const Home = () => {
 
   return (
     <>
-      <Typography variant="h6" className="mb-4">
-        Hello{self?.nickName && `, ${self.nickName}`}
-      </Typography>
-      <PostsWithTags
-        tags={tags}
-        tabs={tabs}
-        currentTab={currentTab}
-        handleChangeTab={handleChangeTab}
-        isTagsLoading={isTagsLoading}
-      />
+      {!!self && (
+        <>
+          <Typography variant="h6" className="mb-4">
+            Hello{self?.nickName && `, ${self.nickName}`}
+          </Typography>
+          <PostsWithTags
+            tags={tags}
+            tabs={tabs}
+            currentTab={currentTab}
+            handleChangeTab={handleChangeTab}
+            isTagsLoading={isTagsLoading}
+          />
+        </>
+      )}
     </>
   );
 };

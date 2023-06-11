@@ -27,7 +27,7 @@ type Props = {
   onUnlikeFullPost?: () => void;
 };
 
-export const Post = ({
+const Post = ({
   post,
   children,
   isFullPost,
@@ -202,3 +202,5 @@ export const Post = ({
     </>
   );
 };
+
+export default Post;

@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { Layout } from 'components/common/layout';
+import { Layout } from 'components/Layout';
 import { CreatePost } from 'pages/create-post';
 import { FullPost } from 'pages/full-post';
 import { Tag } from 'pages/tag';

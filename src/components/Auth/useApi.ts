@@ -33,28 +33,20 @@ export const useApi = ({ setSelf }: useApiProps) => {
       setToken(data);
       queryClient.invalidateQueries([QueryKeysLand.GET_SELF]);
     }
-    // onError: (error: AxiosError<ErrorDataType>) => {
-    //   errorNotification(
-    //     getAuthErrorText(AuthRequestType.LOGIN, error.response?.data.code)
-    //   );
-    // }
   });
 
   const onRegister = useMutation(registerApi, {
     onSuccess: (data) => {
       setToken(data);
       queryClient.invalidateQueries([QueryKeysLand.GET_SELF]);
-    },
-    onError: (error: AxiosError<ErrorDataType>) => {
-      errorNotification(
-        getAuthErrorText(AuthRequestType.REGISTER, error.response?.data.code)
-      );
     }
   });
 
   return {
     getSelfQuery,
     onLogin,
-    onRegister
+    onRegister,
+    isLoading:
+      getSelfQuery.isLoading || onLogin.isLoading || onRegister.isLoading
   };
 };
