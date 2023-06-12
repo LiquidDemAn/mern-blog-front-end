@@ -1,11 +1,11 @@
 import { ChangeEvent, ReactElement, useState } from 'react';
 import PaperWrapper from '../../../../components/PaperWrapper';
 import { PostCommentType } from 'redux/services/posts/typedef';
-import { Button, Grid, List, TextField, Typography } from '@mui/material';
+import { List, TextField } from '@mui/material';
 import { Comment } from '../comment';
-import { EditDialog } from "components/dialogs/edit";
+import { EditDialog } from 'components/dialogs/edit';
 import { useSelf } from 'hooks/useSelf';
-import Dialog from 'components/Dialog';
+import ConfirmationDialog from 'components/ConfirmationDialog';
 
 type Props = {
   comments?: PostCommentType[];
@@ -127,36 +127,13 @@ export const Comments = ({
         />
       </EditDialog>
 
-      <Dialog
-        open={openDelete}
+      <ConfirmationDialog
         title="Deleting a comment!"
+        text="Do you really want to delete this comment?"
+        open={openDelete}
         handleClose={handleDeleteClose}
-      >
-        <Grid container direction="column" spacing={3}>
-          <Grid item>
-            <Typography variant="subtitle1">
-              Do you really want to delete this comment?
-            </Typography>
-          </Grid>
-
-          <Grid item container justifyContent="flex-end" spacing={1}>
-            <Grid item>
-              <Button variant="contained" onClick={handleDeleteClose}>
-                Cancel
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={onDeleteSubmit}
-                variant="contained"
-                color="error"
-              >
-                Delete
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Dialog>
+        onSubmit={onDeleteSubmit}
+      />
     </>
   );
 };
