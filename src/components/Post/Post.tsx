@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { ReactElement, useState } from 'react';
-import { IconButton } from '@mui/material';
+import { IconButton, Typography, Button, Grid } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
@@ -16,8 +16,8 @@ import { FullPostType, PostType } from 'redux/services/posts/typedef';
 import { PathsEnum } from 'typedef';
 import { useAppDispach } from 'redux/store/hooks';
 import { deletePost, likePost, unlikePost } from 'redux/services/posts/actions';
-import { DeleteDialog } from '../dialogs/delete';
 import { useSelf } from 'hooks/useSelf';
+import Dialog from 'components/Dialog';
 
 type Props = {
   post?: PostType | FullPostType | null;
@@ -191,14 +191,28 @@ const Post = ({
         </div>
       </div>
 
-      <DeleteDialog
-        title="Deleting a post!"
-        onDelete={handleDelete}
-        handleClose={handleClose}
-        open={open}
-      >
-        <>Do you really want to delete this post?</>
-      </DeleteDialog>
+      <Dialog open={open} title="Deleting a post!" handleClose={handleClose}>
+        <Grid container direction="column" spacing={3}>
+          <Grid item>
+            <Typography variant="subtitle1">
+              Do you really want to delete this post?
+            </Typography>
+          </Grid>
+
+          <Grid item container justifyContent="flex-end" spacing={1}>
+            <Grid item>
+              <Button variant="contained" onClick={handleClose}>
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button onClick={handleDelete} variant="contained" color="error">
+                Delete
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Dialog>
     </>
   );
 };

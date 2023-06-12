@@ -1,11 +1,11 @@
 import { ChangeEvent, ReactElement, useState } from 'react';
 import PaperWrapper from '../../../../components/PaperWrapper';
 import { PostCommentType } from 'redux/services/posts/typedef';
-import { List, TextField } from '@mui/material';
+import { Button, Grid, List, TextField, Typography } from '@mui/material';
 import { Comment } from '../comment';
-import { EditDialog } from '../../../../components/dialogs/edit';
-import { DeleteDialog } from '../../../../components/dialogs/delete';
+import { EditDialog } from "components/dialogs/edit";
 import { useSelf } from 'hooks/useSelf';
+import Dialog from 'components/Dialog';
 
 type Props = {
   comments?: PostCommentType[];
@@ -127,14 +127,36 @@ export const Comments = ({
         />
       </EditDialog>
 
-      <DeleteDialog
-        title="Deleting a Comment!"
+      <Dialog
         open={openDelete}
+        title="Deleting a comment!"
         handleClose={handleDeleteClose}
-        onDelete={onDeleteSubmit}
       >
-        <> Do you really want to delete this Comment?</>
-      </DeleteDialog>
+        <Grid container direction="column" spacing={3}>
+          <Grid item>
+            <Typography variant="subtitle1">
+              Do you really want to delete this comment?
+            </Typography>
+          </Grid>
+
+          <Grid item container justifyContent="flex-end" spacing={1}>
+            <Grid item>
+              <Button variant="contained" onClick={handleDeleteClose}>
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                onClick={onDeleteSubmit}
+                variant="contained"
+                color="error"
+              >
+                Delete
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Dialog>
     </>
   );
 };

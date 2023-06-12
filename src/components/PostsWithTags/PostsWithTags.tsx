@@ -29,7 +29,7 @@ export const PostsWithTags: FC<Props> = ({
       </Grid>
 
       {isTagsShow && (
-        <Grid className="hidden md:block mt-16" xs={4} item>
+        <Grid item mt={6} xs={4} className="hidden md:block">
           <Tags
             handleHideTags={handleHideTags}
             tags={tags}
