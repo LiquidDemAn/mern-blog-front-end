@@ -1,108 +1,110 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-	getUser,
-	getUserError,
-	getUserLoading,
-} from '../../redux/services/user/selectors';
-import { useAppDispach, useAppSelector } from '../../redux/store/hooks';
-import { TabsEnum } from '../../typedef';
+import { useAppDispach, useAppSelector } from 'redux/store/hooks';
 import { SyntheticEvent, useEffect, useState } from 'react';
-import { FoundUserType, UserDataType } from '../../redux/services/user/typedef';
 import { AxiosError } from 'axios';
-import { loadPosts } from '../../redux/services/posts/actions';
+import { loadPosts } from 'redux/services/posts/actions';
 import {
-	getPosts,
-	getPostsLoading,
-	getPostsError,
-} from '../../redux/services/posts/selectors';
-import { loadUser } from '../../redux/services/user/actions';
-import { ErrorDialog } from '../../components/dialogs/error';
-import { Loader } from '../../components/common/loader';
-
-import { ProfileView } from './view';
-import { resetErrors } from '../../redux/services/user/user.slice';
+  getPosts,
+  getPostsError,
+  getPostsLoading
+} from 'redux/services/posts/selectors';
+import { ErrorDialog } from 'components/dialogs/error';
+import { useSelf } from 'hooks/useSelf';
+import { SearchingUsersRequest, UserType } from 'api/models/UserType';
+import { useApi } from 'pages/profile/useApi';
+import { getDefaultTabsList } from 'pages/profile/utils';
+import styles from 'pages/profile/profile.module.scss';
+import { ProfileCard } from 'components/user/profile-card';
+import TabBar from 'components/TabBar';
+import { useSearchUsersForm } from 'pages/profile/useSearchUsersForm';
+import { TabsEnum } from 'typedef';
 
 export const Profile = () => {
-	const { nickName } = useParams();
-	const dispatch = useAppDispach();
-	const navigate = useNavigate();
+  const [user, setUser] = useState<UserType | null>(null);
+  const [filters, setFilters] = useState({} as SearchingUsersRequest);
+  const [profileError, setProfileError] = useState<AxiosError | null>(null);
+  const [currentTab, setCurrentTab] = useState(TabsEnum.Posts);
 
-	const [tabValue, setTabValue] = useState(TabsEnum.FindPerson);
-	const [user, setUser] = useState<UserDataType | null>(null);
-	const [foundUsers, setFoundUsers] = useState<FoundUserType[] | null>(null);
-	const [profileError, setProfileError] = useState<AxiosError | null>(null);
-	const [foundUsersLoading, setFoundUsersLoading] = useState(false);
+  const { nickName } = useParams();
+  const dispatch = useAppDispach();
+  const navigate = useNavigate();
 
-	const posts = useAppSelector(getPosts);
-	const postsLoading = useAppSelector(getPostsLoading);
-	const postsError = useAppSelector(getPostsError);
+  const posts = useAppSelector(getPosts);
+  const postsLoading = useAppSelector(getPostsLoading);
+  const postsError = useAppSelector(getPostsError);
 
-	const logedUser = useAppSelector(getUser);
-	const logedUserError = useAppSelector(getUserError);
-	const logedUserLoading = useAppSelector(getUserLoading);
+  const { self } = useSelf();
+  const isSelf = nickName === self?.nickName;
 
-	const isLogedUser = nickName === logedUser?.nickName;
+  const { getUserByNickNameQuery, searchUsersQuery } = useApi(
+    isSelf,
+    filters,
+    nickName
+  );
 
-	const handleChange = (event: SyntheticEvent, newValue: TabsEnum) => {
-		setTabValue(newValue);
-	};
+  const foundUsers = searchUsersQuery.data;
 
-	const handleErrorClose = () => {
-		if (profileError) {
-			setProfileError(null);
-		}
+  const { form, onSubmit, searchType } = useSearchUsersForm(setFilters);
 
-		if (logedUserError) {
-			dispatch(resetErrors());
-		}
-	};
+  const tabs = getDefaultTabsList({
+    user,
+    isSelf,
+    foundUsers,
+    posts,
+    postsError,
+    postsLoading,
+    form,
+    searchType,
+    onSubmit
+  });
 
-	useEffect(() => {
-		if (profileError) {
-			navigate(`/${logedUser?.nickName}`);
-		}
-	}, [profileError, logedUser?.nickName, navigate]);
+  const handleChange = (event: SyntheticEvent, newTab: TabsEnum) => {
+    setCurrentTab(newTab);
+  };
 
-	useEffect(() => {
-		setTabValue(TabsEnum.Posts);
-	}, [nickName]);
+  const handleErrorClose = () => {
+    if (profileError) {
+      setProfileError(null);
+    }
+  };
 
-	useEffect(() => {
-		if (user?._id) {
-			dispatch(loadPosts(`/posts/users/${user._id}`));
-		}
-	}, [dispatch, user?._id]);
+  useEffect(() => {
+    if (profileError) {
+      navigate(`/${self?.nickName}`);
+    }
+  }, [profileError, self?.nickName, navigate]);
 
-	useEffect(() => {
-		if (isLogedUser) {
-			setUser(logedUser);
-		} else if (nickName) {
-			dispatch(loadUser({ nickName, setUser, setProfileError }));
-		}
-	}, [isLogedUser, nickName, logedUser, dispatch]);
+  useEffect(() => {
+    if (user?._id) {
+      dispatch(loadPosts(`posts/users/${user._id}`));
+    }
+  }, [dispatch, user?._id]);
 
-	return (
-		<>
-			<ProfileView
-				user={user}
-				posts={posts}
-				foundUsers={foundUsers}
-				tabValue={tabValue}
-				postsError={postsError}
-				isLogedUser={isLogedUser}
-				postsLoading={postsLoading}
-				handleChange={handleChange}
-				setSearchData={setFoundUsers}
-				setProfileError={setProfileError}
-				setFoundUsersLoading={setFoundUsersLoading}
-			/>
+  useEffect(() => {
+    if (isSelf) {
+      setUser(self);
+    } else {
+      setUser(getUserByNickNameQuery.data || null);
+    }
+  }, [isSelf, getUserByNickNameQuery.data, self]);
 
-			<ErrorDialog
-				open={Boolean(profileError) || Boolean(logedUserError)}
-				handleClose={handleErrorClose}
-			/>
+  return (
+    <>
+      <div className={styles.profile}>
+        <ProfileCard user={user} isLogedUser={isSelf} />
+        <main className={styles.main}>
+          <TabBar
+            tabs={tabs}
+            currentTab={currentTab}
+            handleChange={handleChange}
+          />
+        </main>
+      </div>
 
-			<Loader open={logedUserLoading || foundUsersLoading} />
-		</>
-	);
+      <ErrorDialog
+        open={Boolean(profileError)}
+        handleClose={handleErrorClose}
+      />
+    </>
+  );
 };

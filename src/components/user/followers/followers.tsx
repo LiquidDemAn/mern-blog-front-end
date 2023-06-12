@@ -1,18 +1,19 @@
-import { FollowerType, FoundUserType } from '../../../redux/services/user/typedef';
+import { FollowerType } from 'api/models/FollowerType';
 import { FollowerCard } from '../follower-card';
+import { SearchingUserType } from 'api/models/UserType';
 
 type Props = {
-	followers?: FollowerType[] | FoundUserType[] | null;
+  followers?: FollowerType[] | SearchingUserType[] | null;
 };
 
 export const Followers = ({ followers }: Props) => {
-	return (
-		<>
-			{followers && !followers.length ? <>List is Empty</> : <></>}
+  return (
+    <>
+      {followers && !followers.length ? <>List is Empty</> : <></>}
 
-			{followers?.map((follower) => (
-				<FollowerCard key={follower._id} follower={follower} />
-			))}
-		</>
-	);
+      {followers?.map((follower) => (
+        <FollowerCard key={follower._id} follower={follower} />
+      ))}
+    </>
+  );
 };
